@@ -3,6 +3,7 @@ import { Table } from "@tanstack/react-table";
 
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;
@@ -16,6 +17,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 				selected.
 			</div>
 			<div className="flex items-center space-x-6 lg:space-x-8">
+				<DataTableViewOptions table={table} />
 				<div className="flex items-center space-x-2">
 					<p className="text-sm font-medium">Rows per page</p>
 					<Select

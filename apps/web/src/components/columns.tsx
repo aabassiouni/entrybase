@@ -81,6 +81,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 		header: "Status",
 	},
 	{
+		// accessorKey: "invite",
 		header: "Invite",
 		cell: ({ row }) => {
 			return (
