@@ -117,9 +117,10 @@ async function LatestSignupsCard() {
 }
 async function PastWeekChart() {
 	const today = new Date();
-	const fiveDaysAgo = formatDate(new Date(today.getDate() - 5));
-	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(fiveDaysAgo, formatDate(today));
-	console.log(pastWeekSignupsData);
+	const sevenDaysAgo = new Date();
+	sevenDaysAgo.setDate(today.getDate() - 7);
+	
+	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(formatDate(sevenDaysAgo), formatDate(today));
 
 	return (
 		<Card className="">
@@ -128,7 +129,7 @@ async function PastWeekChart() {
 			</CardHeader>
 			<CardContent className="">
 				<Chart
-					data={pastWeekSignupsData}
+					data={pastWeekSignupsData.entries}
 					margin={{
 						top: 0,
 						right: 0,
