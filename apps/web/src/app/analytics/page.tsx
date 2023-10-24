@@ -6,6 +6,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Entry } from "@/types";
 
 const sleep = (delay: number) => new Promise((resolve) => setTimeout(resolve, delay));
 
@@ -14,9 +15,9 @@ function AnalyticsPageLoading() {
 		<div className=" min-h-screen grow overflow-y-scroll p-4 ">
 			<div className="p-4">
 				<div className="p-4">
-					<Skeleton className="h-8 w-1/2" />
+					<Skeleton className="h-8 w-32" />
 				</div>
-				<Skeleton className="h-96 w-full" />
+				<Skeleton className="h-[350px] w-full" />
 				<Table>
 					<TableHeader>
 						<TableRow>
@@ -47,8 +48,8 @@ function AnalyticsPageLoading() {
 }
 function AnalyticsPage() {
 
-	const [signups, setSignups] = useState([]);
-	const [timeframe, setTimeframe] = useState("pastMonth");
+	const [signups, setSignups] = useState<{entries: Entry[], dayString: string }>({entries: [], dayString: ""});
+	const [timeframe, setTimeframe] = useState("today");
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
@@ -94,7 +95,7 @@ function AnalyticsPage() {
 
 			const data = await fetch(`/api/stats?${params}`, {}).then((res) => res.json());
 			console.log(data);
-			setSignups(data.signups);
+			setSignups(data);
 			setIsLoading(false);
 		}
 
@@ -105,13 +106,28 @@ function AnalyticsPage() {
 		return <AnalyticsPageLoading />;
 	}
 
+	const selectLabel = (timeframe: string) => {
+		switch (timeframe) {
+			case "today":
+				return "Today";
+			case "yesterday":
+				return "Yesterday";
+			case "pastWeek":
+				return "Past Week";
+			case "pastMonth":
+				return "Past Month";
+			default:
+				return "Select a timeframe";
+		}
+	}
+
 	return (
 		<div className=" min-h-screen grow overflow-y-scroll p-4 ">
 			<div className="p-4">
 				<div className="p-4">
 					<Select defaultValue={timeframe} onValueChange={setTimeframe}>
-						<SelectTrigger className="w-44">
-							<SelectValue placeholder="Select a timeframe ">{timeframe}</SelectValue>
+						<SelectTrigger className="w-fit">
+							<SelectValue placeholder="Select a timeframe ">{selectLabel(timeframe) + ` (${signups.dayString})`}</SelectValue>
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value="today">Today</SelectItem>
@@ -120,9 +136,10 @@ function AnalyticsPage() {
 							<SelectItem value="pastMonth">Past month</SelectItem>
 						</SelectContent>
 					</Select>
+					<p>{}</p>
 				</div>
 				<Chart
-					data={signups}
+					data={signups.entries}
 					margin={{
 						top: 30,
 						right: 30,
@@ -130,8 +147,6 @@ function AnalyticsPage() {
 						bottom: 5,
 					}}
 				/>
-				{/* </div> */}
-				{/* <div className="px-4 text-2xl"> */}
 				<Table>
 					<TableHeader>
 						<TableRow>
@@ -143,7 +158,7 @@ function AnalyticsPage() {
 						{isLoading ? (
 							<></>
 						) : (
-							signups.map((row: any) => (
+							signups.entries.map((row: any) => (
 								<TableRow className="" key={row.name}>
 									<TableCell>{row.label}</TableCell>
 									<TableCell>{row.value}</TableCell>

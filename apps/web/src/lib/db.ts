@@ -97,10 +97,11 @@ export async function getDayChartLabelsAndValues(day: string) {
 		const label = new Date(row.timestep).toLocaleTimeString("en-US", { hour: "numeric", hour12: true });
 		const value = Number(row.signups_count);
 		const tooltipLabel = `${label}: ${value}`;
-		return { label, value, tooltipLabel };
+		return { label, value, tooltipLabel};
 	});
+	const dayString = new Date(day).toDateString().split(" ").slice(1, 3).join(" ");
 	console.log(entries);
-	return entries;
+	return {entries, dayString};
 }
 
 export async function getDayRangeChartLabelsAndValues(from: string, to: string) {
@@ -112,8 +113,11 @@ export async function getDayRangeChartLabelsAndValues(from: string, to: string) 
 		const tooltipLabel = `${label}: ${value}`;
 		return { label, value, tooltipLabel };
 	});
+	const fromString = new Date(from).toDateString().split(" ").slice(1, 3).join(" ");
+	const toString = new Date(to).toDateString().split(" ").slice(1, 3).join(" ");
+	const dayString = `${fromString} - ${toString}`;
 
-	return entries;
+	return {entries, dayString};
 }
 
 export async function getCounts() {

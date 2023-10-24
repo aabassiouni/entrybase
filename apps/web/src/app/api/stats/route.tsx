@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDayChartLabelsAndValues, getDayRangeChartLabelsAndValues} from "@/lib/db";
+import { getDayChartLabelsAndValues, getDayRangeChartLabelsAndValues } from "@/lib/db";
 
 export async function GET(request: NextRequest) {
 	const from = request.nextUrl.searchParams.get("from");
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 	if (from === to) {
 		const data = await getDayChartLabelsAndValues(from);
 		console.log(data);
-		return NextResponse.json({ signups: data });
+		return NextResponse.json(data);
 	}
 
 	console.log("request params are", from, to);
@@ -20,5 +20,5 @@ export async function GET(request: NextRequest) {
 	const data = await getDayRangeChartLabelsAndValues(from, to);
 	console.log(data);
 
-	return NextResponse.json({ signups: data });
+	return NextResponse.json(data);
 }
