@@ -9,7 +9,6 @@ import { DBResult, Entry } from "@/types";
 neonConfig.fetchConnectionCache = true;
 
 const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
-const db = drizzle(neonDB);
 
 export const signups = pgTable("signups", {
 	id: uuid("id").primaryKey(),
@@ -20,10 +19,11 @@ export const signups = pgTable("signups", {
 	date_signed_up: timestamp("date_signed_up").defaultNow(),
 	status: varchar("status", { length: 50 }).notNull(),
 });
+const db = drizzle(neonDB, {schema: {signups}});
 
 export async function getSignupsList() {
-	console.log("getSignupsList");
-	return db.select().from(signups).orderBy(desc(signups.date_signed_up));
+	const signupsList = await db.select().from(signups).orderBy(desc(signups.date_signed_up));
+	return signupsList;
 }
 
 export async function getEmailsList() {
@@ -75,13 +75,23 @@ export async function getSignupsCountForDayRange(from: string, to: string) {
 
 	return db
 		.execute(
-			sql`SELECT
-			date(date_signed_up) AS timestep,
-			COUNT(*) AS signups_count
-		FROM signups
-		WHERE date_signed_up BETWEEN ${fromTimestamp} AND ${toTimestamp}
-		GROUP BY timestep
-		ORDER BY timestep;
+			sql`WITH date_series AS (
+				SELECT generate_series(
+					${fromTimestamp}::DATE,
+					${toTimestamp}::DATE,
+					interval '1 day'
+				)::DATE AS timestep
+			)
+			
+			SELECT 
+				date_series.timestep,
+				COALESCE(COUNT(signups.date_signed_up), 0) AS signups_count
+			FROM date_series
+			LEFT JOIN signups 
+				ON date(signups.date_signed_up) = date_series.timestep
+				AND signups.date_signed_up BETWEEN ${fromTimestamp} AND ${toTimestamp}
+			GROUP BY date_series.timestep
+			ORDER BY date_series.timestep;			
 		`,
 		)
 		.then((result) => {
