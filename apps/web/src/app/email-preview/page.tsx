@@ -7,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { setEmailTemplateForUser } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { Suspense } from "react";
 
 function EmailPreviewPage() {
 	async function submitFormAction(formData: FormData) {

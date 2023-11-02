@@ -19,3 +19,9 @@ export type Entry = {
 	value: number;
 	tooltipLabel: string;
 };
+
+export type EmailTemplateProps = {
+	email: string;
+	bodyText: string;
+	headerSectionColor: string;
+};

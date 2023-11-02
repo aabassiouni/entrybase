@@ -2,10 +2,9 @@
 import { Card } from "@/components/ui/card";
 import EmailTemplate from "./email/template";
 import { renderAsync } from "@react-email/components";
-import { EmailTemplateProps } from "@/types";
 import { getEmailTemplateForUser } from "@/lib/db";
 
-async function EmailPreview2() {
+async function EmailPreview() {
 	// const [html, setHtml] = useState("");
 
 	const values = await getEmailTemplateForUser();
@@ -24,4 +23,4 @@ async function EmailPreview2() {
 	);
 }
 
-export default EmailPreview2;
+export default EmailPreview;
