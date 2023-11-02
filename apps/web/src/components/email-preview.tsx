@@ -1,14 +1,21 @@
-"use client";
-import React, { useEffect, useState } from "react";
+// "use client";
 import { Card } from "@/components/ui/card";
 import EmailTemplate from "./email/template";
-import { render } from "@react-email/render";
+import { renderAsync } from "@react-email/components";
+import { EmailTemplateProps } from "@/types";
+import { getEmailTemplateForUser } from "@/lib/db";
 
-function EmailPreview({ email, headerSectionColor }: { email: string; headerSectionColor: string }) {
-  
-	const html = render(<EmailTemplate email={email} headerSectionColor={headerSectionColor} />, {
-		pretty: true,
-	});
+async function EmailPreview2() {
+	// const [html, setHtml] = useState("");
+
+	const values = await getEmailTemplateForUser();
+	const html = await renderAsync(
+		<EmailTemplate
+			bodyText={values[0].body_text}
+			email={values[0].email}
+			headerSectionColor={values[0].section_color}
+		/>,
+	);
 
 	return (
 		<Card className="h-[calc(100vh_-_150px)] p-2">
@@ -17,4 +24,4 @@ function EmailPreview({ email, headerSectionColor }: { email: string; headerSect
 	);
 }
 
-export default EmailPreview;
+export default EmailPreview2;

@@ -1,9 +1,9 @@
 import "server-only";
 
 import { neon, neonConfig } from "@neondatabase/serverless";
-import { sql, desc } from "drizzle-orm";
+import { sql, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
-import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { DBResult, Entry } from "@/types";
 
 neonConfig.fetchConnectionCache = true;
@@ -19,7 +19,28 @@ export const signups = pgTable("signups", {
 	date_signed_up: timestamp("date_signed_up").defaultNow(),
 	status: varchar("status", { length: 50 }).notNull(),
 });
-const db = drizzle(neonDB, {schema: {signups}});
+
+export const email_templates = pgTable("email_templates", {
+	id: uuid("id").primaryKey(),
+	clerk_user_id: varchar("clerk_user_id", { length: 50 }).notNull(),
+	email: varchar("email", { length: 255 }).notNull(),
+	section_color: varchar("section_color", { length: 50 }).notNull(),
+	body_text: text("body_text").notNull(),
+});
+
+const db = drizzle(neonDB, { schema: { signups } });
+
+export async function setEmailTemplateForUser(emailTemplate: any) {
+	console.log("inserting email template");
+	return await db
+		.update(email_templates)
+		.set({ body_text: emailTemplate.bodyText, section_color: emailTemplate.sectionColor, email: emailTemplate.email })
+		.where(eq(email_templates.clerk_user_id, "test"));
+}
+
+export async function getEmailTemplateForUser() {
+	return db.select().from(email_templates).where(eq(email_templates.clerk_user_id, "test"));
+}
 
 export async function getSignupsList() {
 	const signupsList = await db.select().from(signups).orderBy(desc(signups.date_signed_up));
@@ -42,7 +63,7 @@ export async function getSignupsCountForDay(day: string) {
 	console.log(day);
 	const fromTimestamp = day + " 00:00:00";
 	const toTimestamp = day + " 23:59:59";
-	return db
+	return await db
 		.execute(
 			sql.raw(`WITH hourly_series AS (
 				SELECT generate_series(
@@ -69,11 +90,10 @@ export async function getSignupsCountForDay(day: string) {
 }
 
 export async function getSignupsCountForDayRange(from: string, to: string) {
-
 	const fromTimestamp = from + " 00:00:00";
 	const toTimestamp = to + " 23:59:59";
 
-	return db
+	return await db
 		.execute(
 			sql`WITH date_series AS (
 				SELECT generate_series(
@@ -100,18 +120,17 @@ export async function getSignupsCountForDayRange(from: string, to: string) {
 }
 
 export async function getDayChartLabelsAndValues(day: string) {
-
 	const data = await getSignupsCountForDay(day);
 
 	const entries: Entry[] = data.map((row) => {
 		const label = new Date(row.timestep).toLocaleTimeString("en-US", { hour: "numeric", hour12: true });
 		const value = Number(row.signups_count);
 		const tooltipLabel = `${label}: ${value}`;
-		return { label, value, tooltipLabel};
+		return { label, value, tooltipLabel };
 	});
 	const dayString = new Date(day).toDateString().split(" ").slice(1, 3).join(" ");
 	console.log(entries);
-	return {entries, dayString};
+	return { entries, dayString };
 }
 
 export async function getDayRangeChartLabelsAndValues(from: string, to: string) {
@@ -127,7 +146,7 @@ export async function getDayRangeChartLabelsAndValues(from: string, to: string) 
 	const toString = new Date(to).toDateString().split(" ").slice(1, 3).join(" ");
 	const dayString = `${fromString} - ${toString}`;
 
-	return {entries, dayString};
+	return { entries, dayString };
 }
 
 export async function getCounts() {
