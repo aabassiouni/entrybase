@@ -4,6 +4,7 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRow
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
+import { useState } from "react";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -11,11 +12,19 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+	const [rowSelection, setRowSelection] = useState({})
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
+		onRowSelectionChange: setRowSelection,
+		state: {
+			// sorting,
+			// columnFilters,
+			// columnVisibility,
+			rowSelection,
+		  },
 	});
 
 	return (

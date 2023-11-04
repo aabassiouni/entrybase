@@ -4,19 +4,35 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DataTableViewOptions } from "./data-table-view-options";
-
+import { useInvites } from "./context/invite-context";
+import { useRouter } from "next/navigation";
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;
 }
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
+	const { invites, setInvites } = useInvites();
+	const router = useRouter();
 	return (
 		<div className="flex items-center justify-between px-2 py-2">
 			<div className="text-muted-foreground flex-1 text-sm">
 				{table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
 				selected.
 			</div>
+			{/* {table.getFilteredSelectedRowModel()?.rows.map((row) => {
+
+				return <p>{row.original.email}</p>
+			})} */}
 			<div className="flex items-center space-x-6 lg:space-x-8">
+				{table.getFilteredSelectedRowModel().rows.length > 0 && (
+					<Button onClick={()=>{
+						setInvites(table.getFilteredSelectedRowModel().rows.map((row) => {
+							return row.original.email
+						}))
+						router.push(`/invite`)
+
+					}} className="h-8 px-3 py-2">Invite {table.getFilteredSelectedRowModel().rows.length}</Button>
+				)}
 				<DataTableViewOptions table={table} />
 				<div className="flex items-center space-x-2">
 					<p className="text-sm font-medium">Rows per page</p>
@@ -30,7 +46,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 							<SelectValue placeholder={table.getState().pagination.pageSize} />
 						</SelectTrigger>
 						<SelectContent side="top">
-							{[10, 20, 30, 40, 50].map((pageSize) => (
+							{[10, 20, 50, 100].map((pageSize) => (
 								<SelectItem key={pageSize} value={`${pageSize}`}>
 									{pageSize}
 								</SelectItem>

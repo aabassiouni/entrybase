@@ -5,9 +5,7 @@ import { Button } from "./ui/button";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { Checkbox } from "./ui/checkbox";
-
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import InviteButton from "./invite-button";
 
 type Signup = {
 	id?: string;
@@ -82,16 +80,11 @@ export const signupColumns: ColumnDef<Signup>[] = [
 	},
 	{
 		// accessorKey: "invite",
-		header: "Invite",
+		id:"invite",
+		// header: "Invite",
 		cell: ({ row }) => {
 			return (
-				<Link href={`mailto:${row.getValue("email")}`}>
-					<Button variant="default"  className="gap-2">
-						<p>Invite{}</p>
-
-						<PaperPlaneIcon width={20} height={20} />
-					</Button>
-				</Link>
+				<InviteButton />
 			);
 		},
 	},

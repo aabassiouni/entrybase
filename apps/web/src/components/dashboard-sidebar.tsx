@@ -21,10 +21,10 @@ export default function DashboardSidebar() {
 						Users
 					</Button>
 				</Link>
-				<Link href="/invite">
+				<Link href="/email-preview">
 					<Button variant="ghost" className="h-7 w-full justify-start gap-2 p-4 text-lg ">
 						<PaperPlaneIcon width={"1.125rem"} height={"1.125rem"} />
-						Invite
+						Email Preview
 					</Button>
 				</Link>
 				<Link href="/analytics">
