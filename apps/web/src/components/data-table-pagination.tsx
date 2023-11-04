@@ -27,7 +27,8 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 				{table.getFilteredSelectedRowModel().rows.length > 0 && (
 					<Button onClick={()=>{
 						setInvites(table.getFilteredSelectedRowModel().rows.map((row) => {
-							return row.original.email
+							//@ts-ignore
+							return row.original?.email
 						}))
 						router.push(`/invite`)
 
