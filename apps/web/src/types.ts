@@ -25,3 +25,7 @@ export type EmailTemplateProps = {
 	bodyText: string;
 	headerSectionColor: string;
 };
+
+export type EntryResponse = {entries: Entry[], dayString: string};
+
+export type SearchParams = { [key: string]: string | string[] | undefined }

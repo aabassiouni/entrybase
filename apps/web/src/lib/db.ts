@@ -4,7 +4,7 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { sql, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { DBResult, Entry } from "@/types";
+import { DBResult, Entry, EntryResponse } from "@/types";
 
 neonConfig.fetchConnectionCache = true;
 
@@ -119,7 +119,7 @@ export async function getSignupsCountForDayRange(from: string, to: string) {
 		});
 }
 
-export async function getDayChartLabelsAndValues(day: string) {
+export async function getDayChartLabelsAndValues(day: string) : Promise<EntryResponse> {
 	const data = await getSignupsCountForDay(day);
 
 	const entries: Entry[] = data.map((row) => {
@@ -133,7 +133,7 @@ export async function getDayChartLabelsAndValues(day: string) {
 	return { entries, dayString };
 }
 
-export async function getDayRangeChartLabelsAndValues(from: string, to: string) {
+export async function getDayRangeChartLabelsAndValues(from: string, to: string) : Promise<EntryResponse>{
 	const data = await getSignupsCountForDayRange(from, to);
 
 	const entries: Entry[] = data.map((row) => {
