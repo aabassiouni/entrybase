@@ -1,26 +1,13 @@
 import Chart from "@/components/Chart";
-import DashboardSidebar from "../components/dashboard-sidebar";
-import { Button } from "@/components/ui/button";
-import { Card, CardFooter, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card,  CardContent,  CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { PersonIcon, HomeIcon, AvatarIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
-import { getCounts, getDayRangeChartLabelsAndValues, getEmailsList, getSignupsCountForDayRange } from "@/lib/db";
+import { getCounts, getDayRangeChartLabelsAndValues, getEmailsList} from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const revalidate = 20;
-
-const data = [
-	{ name: "Day 1", signups: 400 },
-	{ name: "Day 2", signups: 300 },
-	{ name: "Day 3", signups: 200 },
-	{ name: "Day 4", signups: 278 },
-	{ name: "Day 5", signups: 189 },
-];
-const emails = Array.from({ length: 50 }).map((_, i, a) => `v1.2.0-beta.${a.length - i}`);
 
 function CountCardsLoading() {
 	return (
@@ -65,8 +52,8 @@ function LatestSignupsCardLoading() {
 			<CardContent>
 				<ScrollArea className="h-96">
 					<div>
-						{emails.map((email) => (
-							<div key={email}>
+						{[...Array(6)].map((_, i) => ( 
+							<div >
 								<div className="p-3">
 									<Skeleton className="h-8 w-1/2" />
 								</div>
@@ -131,8 +118,8 @@ async function PastWeekChart() {
 				<Chart
 					data={pastWeekSignupsData.entries}
 					margin={{
-						top: 0,
-						right: 0,
+						top: 5,
+						right: 5,
 						left: 0,
 						bottom: 0,
 					}}
@@ -202,6 +189,7 @@ export default async function Home() {
 					</Suspense>
 					<Suspense fallback={<LatestSignupsCardLoading />}>
 						<LatestSignupsCard />
+
 					</Suspense>
 				</div>
 			</div>

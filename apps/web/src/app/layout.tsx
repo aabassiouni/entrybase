@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import DashboardSidebar from "../components/dashboard-sidebar";
 import { ClerkProvider } from "@clerk/nextjs";
 import { InviteProvider } from "@/components/context/invite-context";
-import type { Viewport } from 'next'
+import type { Viewport } from 'next'	
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,7 +15,6 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-//   themeColor: 'black',
   colorScheme: 'dark',
 
 }
