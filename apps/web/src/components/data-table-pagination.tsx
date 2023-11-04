@@ -1,6 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon, DoubleArrowLeftIcon, DoubleArrowRightIcon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
-
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DataTableViewOptions } from "./data-table-view-options";
@@ -19,10 +18,6 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 				{table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
 				selected.
 			</div>
-			{/* {table.getFilteredSelectedRowModel()?.rows.map((row) => {
-
-				return <p>{row.original.email}</p>
-			})} */}
 			<div className="flex items-center space-x-6 lg:space-x-8">
 				{table.getFilteredSelectedRowModel().rows.length > 0 && (
 					<Button onClick={()=>{

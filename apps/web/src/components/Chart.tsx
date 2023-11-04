@@ -7,10 +7,8 @@ import {
 	Tooltip,
 	Legend,
 	ResponsiveContainer,
-	// Label,
 	AreaChart,
 	Area,
-	// CartesianAxis,
 } from "recharts";
 import type { Margin } from "recharts/types/util/types";
 import { TooltipProps } from "recharts";
@@ -28,7 +26,6 @@ function CustomTooltip({ active, payload, label }: TooltipProps<ValueType, NameT
 
 
 function Chart({ data, margin }: { data: any; margin: Margin }) {
-	// let maxSignups = Math.max(...data.map((item: any) => item.signups_count));
 	return (
 		<ResponsiveContainer width="100%" minHeight={350}>
 			<AreaChart data={data} margin={margin}>
@@ -39,21 +36,18 @@ function Chart({ data, margin }: { data: any; margin: Margin }) {
 					</linearGradient>
 				</defs>
 				<XAxis tickLine={false} dataKey="label">
-					{/* <Label value="Days" offset={0} position="end" /> */}
 				</XAxis>
 				<YAxis 
 					scale={"auto"}
-				 	// domain={[0, maxSignups]}
 				  	allowDecimals={false}
 				   	tickLine={false}
 				   >
-					{/* <Label value="Signups" offset={-20} angle={0} position="insideLeft" /> */}
 				</YAxis>
 
 				<Tooltip content={<CustomTooltip />} />
 				<Legend payload={[{ value: "Signups", type: "line" }]} />
 				<CartesianGrid vertical={false}  strokeOpacity={0.1} strokeDasharray={"3 3"}  />
-				<Area dot={true}   dataKey="value" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+				<Area dot={true} type={"monotone"}   dataKey="value" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
 			</AreaChart>
 		</ResponsiveContainer>
 	);

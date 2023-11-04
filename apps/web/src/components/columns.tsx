@@ -1,9 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "./ui/button";
-import { PaperPlaneIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import { Checkbox } from "./ui/checkbox";
 import InviteButton from "./invite-button";
 
