@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { PersonIcon, HomeIcon, AvatarIcon, BarChartIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function DashboardSidebar() {
 	return (
-		<div className="border- flex min-h-screen w-72 shrink-0 flex-col items-center  border-r bg-black  py-10">
+		<div className="border- flex min-h-screen w-72 shrink-0 flex-col items-center border-r dark:bg-black py-10">
 			<h1 className="pb-10 text-4xl font-black">waitlister</h1>
 			<div className="h-full w-full space-y-2 grow px-2 py-4">
 				<Link href="/">
@@ -41,6 +42,7 @@ export default function DashboardSidebar() {
 					<p>Ali Bassiouni</p>
 				</Button>
 			</div>
+			<ThemeToggle />
 		</div>
 	);
 }
