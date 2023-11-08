@@ -30,9 +30,9 @@ function TimeframeSelect({ dayString }: { dayString: string }) {
 				router.push(`/analytics/?timeframe=${value}`);
 			}}
 		>
-			<SelectTrigger className="w-fit">
+			<SelectTrigger className="w-40">
 				<SelectValue placeholder="Select a timeframe ">
-					{selectLabel(timeframe) + ` (${dayString})`}
+					{selectLabel(timeframe) }
 				</SelectValue>
 			</SelectTrigger>
 			<SelectContent>

@@ -79,6 +79,7 @@ function PastWeekChartLoading() {
 		</Card>
 	);
 }
+
 async function LatestSignupsCard() {
 	const emailsList = await getEmailsList();
 
@@ -102,6 +103,7 @@ async function LatestSignupsCard() {
 		</Card>
 	);
 }
+
 async function PastWeekChart() {
 	const today = new Date();
 	const sevenDaysAgo = new Date();
@@ -119,8 +121,8 @@ async function PastWeekChart() {
 					data={pastWeekSignupsData.entries}
 					margin={{
 						top: 5,
-						right: 5,
-						left: 0,
+						right: 20,
+						left: -5,
 						bottom: 0,
 					}}
 				/>

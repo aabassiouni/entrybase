@@ -24,6 +24,12 @@ function CustomTooltip({ active, payload, label }: TooltipProps<ValueType, NameT
 	}
 }
 
+function renderLegend(value: string, entry: any) {
+	const { color } = entry;
+
+	return <span style={{ color }}>Signups</span>;
+}
+
 
 function Chart({ data, margin }: { data: any; margin: Margin }) {
 	return (
@@ -45,7 +51,7 @@ function Chart({ data, margin }: { data: any; margin: Margin }) {
 				</YAxis>
 
 				<Tooltip content={<CustomTooltip />} />
-				<Legend payload={[{ value: "Signups", type: "line" }]} />
+				<Legend formatter={renderLegend} />
 				<CartesianGrid vertical={false}  strokeOpacity={0.1} strokeDasharray={"3 3"}  />
 				<Area dot={true} type={"monotone"}   dataKey="value" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
 			</AreaChart>
