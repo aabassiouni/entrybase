@@ -1,8 +1,8 @@
 import Chart from "@/components/Chart";
-import { Card,  CardContent,  CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { getCounts, getDayRangeChartLabelsAndValues, getEmailsList} from "@/lib/db";
+import { getCounts, getDayRangeChartLabelsAndValues, getEmailsList } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -52,8 +52,8 @@ function LatestSignupsCardLoading() {
 			<CardContent>
 				<ScrollArea className="h-96">
 					<div>
-						{[...Array(6)].map((_, i) => ( 
-							<div >
+						{[...Array(6)].map((_, i) => (
+							<div>
 								<div className="p-3">
 									<Skeleton className="h-8 w-1/2" />
 								</div>
@@ -106,7 +106,7 @@ async function PastWeekChart() {
 	const today = new Date();
 	const sevenDaysAgo = new Date();
 	sevenDaysAgo.setDate(today.getDate() - 7);
-	
+
 	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(formatDate(sevenDaysAgo), formatDate(today));
 
 	return (
@@ -166,7 +166,9 @@ export default async function Home() {
 	return (
 		<main className="flex  min-h-screen w-full">
 			<div className="flex w-full flex-col p-10 ">
-				<h1 className="p-3 text-3xl font-bold">Dashboard</h1>
+				<div className="flex justify-between">
+					<h1 className="p-3 text-3xl font-bold">Dashboard</h1>
+				</div>
 				<Separator />
 				<div className="p-4"></div>
 				<div className="grid grid-cols-5 gap-4">
@@ -189,7 +191,6 @@ export default async function Home() {
 					</Suspense>
 					<Suspense fallback={<LatestSignupsCardLoading />}>
 						<LatestSignupsCard />
-
 					</Suspense>
 				</div>
 			</div>

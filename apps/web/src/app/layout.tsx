@@ -1,9 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import DashboardSidebar from "../components/dashboard-sidebar";
 import { ClerkProvider } from "@clerk/nextjs";
-import { InviteProvider } from "@/components/context/invite-context";
 import type { Viewport } from 'next'	
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,10 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body className={inter.className + " flex h-screen"}>
 				<ClerkProvider>
-					<InviteProvider>
-						<DashboardSidebar />
 						{children}
-					</InviteProvider>
 				</ClerkProvider>
 			</body>
 		</html>
