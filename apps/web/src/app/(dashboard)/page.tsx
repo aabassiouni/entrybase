@@ -6,6 +6,7 @@ import { getCounts, getDayRangeChartLabelsAndValues, getEmailsList } from "@/lib
 import { formatDate } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 
 export const revalidate = 20;
 
@@ -133,15 +134,19 @@ async function PastWeekChart() {
 
 async function CountCards() {
 	const counts = await getCounts();
-
+	
 	return (
 		<>
-			<Card className="h-40 w-full ">
+			<Card className="h-40 w-full">
 				<CardHeader>
 					<CardTitle>Signups</CardTitle>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="flex items-center justify-between gap-4">
 					<p className="text-3xl font-bold">{counts.total}</p>
+					<Badge className=" relative z-30 inline-flex items-center justify-center text-sm text-black bg-green-500 dark:bg-green-500">
+						<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur"></div>
+						<p className="z-5">{"+" + counts.delta}</p>
+					</Badge>
 				</CardContent>
 			</Card>
 			<Card className="h-40 w-full ">

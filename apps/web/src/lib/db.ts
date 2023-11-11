@@ -34,7 +34,11 @@ export async function setEmailTemplateForUser(emailTemplate: any) {
 	console.log("inserting email template");
 	return await db
 		.update(email_templates)
-		.set({ body_text: emailTemplate.bodyText, section_color: emailTemplate.sectionColor, email: emailTemplate.email })
+		.set({
+			body_text: emailTemplate.bodyText,
+			section_color: emailTemplate.sectionColor,
+			email: emailTemplate.email,
+		})
 		.where(eq(email_templates.clerk_user_id, "test"));
 }
 
@@ -119,7 +123,7 @@ export async function getSignupsCountForDayRange(from: string, to: string) {
 		});
 }
 
-export async function getDayChartLabelsAndValues(day: string) : Promise<EntryResponse> {
+export async function getDayChartLabelsAndValues(day: string): Promise<EntryResponse> {
 	const data = await getSignupsCountForDay(day);
 
 	const entries: Entry[] = data.map((row) => {
@@ -133,7 +137,7 @@ export async function getDayChartLabelsAndValues(day: string) : Promise<EntryRes
 	return { entries, dayString };
 }
 
-export async function getDayRangeChartLabelsAndValues(from: string, to: string) : Promise<EntryResponse>{
+export async function getDayRangeChartLabelsAndValues(from: string, to: string): Promise<EntryResponse> {
 	const data = await getSignupsCountForDayRange(from, to);
 
 	const entries: Entry[] = data.map((row) => {
@@ -150,16 +154,43 @@ export async function getDayRangeChartLabelsAndValues(from: string, to: string) 
 }
 
 export async function getCounts() {
-	const data = await db
-		.select({
-			total_count: sql<number>`count(*)`,
-			invited_count: sql<number>`count(case when status = 'invited' then 1 end)`,
-		})
-		.from(signups);
+	// const data = await db
+	// 	.select({
+	// 		total_count: sql<number>`count(*)`,
+	// 		invited_count: sql<number>`COUNT(*) FILTER (WHERE status = 'invited')`,
+	// 	})
+	// 	.from(signups);
 
+	const data = await db.execute(sql
+			`
+			WITH signups_today AS (
+				SELECT COUNT(*) AS count_today
+				FROM signups
+				WHERE DATE(date_signed_up) = CURRENT_DATE
+			),
+			signups_yesterday AS (
+				SELECT COUNT(*) AS count_yesterday
+				FROM signups
+				WHERE DATE(date_signed_up) = CURRENT_DATE - INTERVAL '1 day'
+			)
+			
+			select 
+				count(*) as total_count,
+				count(*) filter (where status = 'invited') as invited_count,
+				(select count_today from signups_today) -
+				(select count_yesterday from signups_yesterday) as delta
+			from signups;
+				
+				`,
+		)
+		.then((result) => {
+			return result.rows as { total_count: number; invited_count: number; delta: number }[];
+		});
+	console.log(data);
 	return {
 		total: data[0].total_count,
 		invited: data[0].invited_count,
 		waiting: data[0].total_count - data[0].invited_count,
+		delta: data[0].delta,
 	};
 }
