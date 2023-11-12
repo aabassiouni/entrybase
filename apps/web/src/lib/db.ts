@@ -167,18 +167,12 @@ export async function getCounts() {
 				SELECT COUNT(*) AS count_today
 				FROM signups
 				WHERE DATE(date_signed_up) = CURRENT_DATE
-			),
-			signups_yesterday AS (
-				SELECT COUNT(*) AS count_yesterday
-				FROM signups
-				WHERE DATE(date_signed_up) = CURRENT_DATE - INTERVAL '1 day'
 			)
 			
 			select 
 				count(*) as total_count,
 				count(*) filter (where status = 'invited') as invited_count,
-				(select count_today from signups_today) -
-				(select count_yesterday from signups_yesterday) as delta
+				(select count_today from signups_today)  as delta
 			from signups;
 				
 				`,
