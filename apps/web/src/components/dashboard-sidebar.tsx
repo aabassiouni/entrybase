@@ -1,48 +1,61 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { PersonIcon, HomeIcon, AvatarIcon, BarChartIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { ThemeToggle } from "./theme-toggle";
+import UserButton from "./user-button";
+import WaitlistSelect from "./waitlist-select";
+import { Home, LineChart, List, SendHorizonal } from "lucide-react";
+
+function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children: React.ReactNode; href: string }) {
+	return (
+		<Link href={href}>
+			<Button variant="ghost" className="h-10 w-full justify-start gap-2 p-4 text-base ">
+				<div className="bg-secondary rounded-md p-1">{icon}</div>
+				{children}
+			</Button>
+		</Link>
+	);
+}
 
 export default function DashboardSidebar() {
 	return (
-		<div className="border- flex min-h-screen w-72 shrink-0 flex-col items-center border-r dark:bg-black py-10">
-			<h1 className="pb-10 text-4xl font-black">waitlister</h1>
-			<div className="h-full w-full space-y-2 grow px-2 py-4">
-				<Link href="/">
-					<Button variant="ghost" className="h-7 w-full justify-start gap-2 p-4 text-lg ">
-						<HomeIcon width={"1.125rem"} height={"1.125rem"} />
-						Home
-					</Button>
-				</Link>
-				<Link href="/users">
-					<Button variant="ghost" className="h-7 w-full justify-start gap-2 p-4 text-lg ">
-						<PersonIcon width={"1.125rem"} height={"1.125rem"} />
-						Users
-					</Button>
-				</Link>
-				<Link href="/email-preview">
-					<Button variant="ghost" className="h-7 w-full justify-start gap-2 p-4 text-lg ">
-						<PaperPlaneIcon width={"1.125rem"} height={"1.125rem"} />
-						Email Preview
-					</Button>
-				</Link>
-				<Link href="/analytics">
-					<Button variant="ghost" className="h-7 w-full justify-start gap-2 p-4 text-lg ">
-						<BarChartIcon width={"1.125rem"} height={"1.125rem"} />
-						Analytics
-					</Button>
-				</Link>
+		<div className="flex min-h-screen w-72 shrink-0 flex-col items-center rounded-r-2xl border-r border-neutral-800  bg-primary/50 dark:bg-black">
+			<div className="py-10">
+				<h1 className=" text-4xl font-black">waitlister</h1>
 			</div>
 			<Separator />
-			<div className="flex w-full  px-2 py-4">
-				<Button variant={"ghost"} className="inline-flex w-full items-center justify-start gap-2 text-xl">
-					<AvatarIcon height={20} width={20} />
-					<p>Ali Bassiouni</p>
-				</Button>
+			<WaitlistSelect />
+			<p className="p self-start px-3 text-sm text-neutral-400">General</p>
+			<div className="h-full w-full grow space-y-2 px-4">
+				<SidebarItem
+					href={"/"}
+					icon={<Home className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
+				>
+					Home
+				</SidebarItem>
+				<SidebarItem
+					href={"/users"}
+					icon={<List className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
+				>
+					Signups
+				</SidebarItem>
+				<SidebarItem
+					href={"/email-preview"}
+					icon={<SendHorizonal className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
+				>
+					Email Preview
+				</SidebarItem>
+				<SidebarItem
+					href={"/analytics"}
+					icon={<LineChart className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
+				>
+					Analytics
+				</SidebarItem>
 			</div>
-			<ThemeToggle />
+			<Separator />
+			<div className="w-full p-4">
+				<UserButton />
+			</div>
 		</div>
 	);
 }
