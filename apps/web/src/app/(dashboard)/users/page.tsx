@@ -8,8 +8,8 @@ async function UsersPage() {
 	const signupList = await getSignupsList();
 
 	return (
-		<main className="flex min-h-screen w-full flex-col overflow-y-scroll p-4">
-			<h1 className="text-3xl">Signups</h1>
+		<main className="flex min-h-screen w-full flex-col overflow-y-scroll p-12 pt-8">
+			<h1 className="text-3xl font-bold">Signups</h1>
 			<Separator className="my-4" />
 			<DataTable columns={signupColumns} data={signupList} />
 		</main>
