@@ -33,13 +33,13 @@ const db = drizzle(neonDB, { schema: { signups } });
 export async function setEmailTemplateForUser(emailTemplate: any) {
 	console.log("inserting email template");
 	return await db
-		.update(email_templates)
-		.set({
-			body_text: emailTemplate.bodyText,
-			section_color: emailTemplate.sectionColor,
-			email: emailTemplate.email,
-		})
-		.where(eq(email_templates.clerk_user_id, "test"));
+	.update(email_templates)
+	.set({
+		body_text: emailTemplate.bodyText,
+		section_color: emailTemplate.sectionColor,
+		email: emailTemplate.email,
+	})
+	.where(eq(email_templates.clerk_user_id, "test"));
 }
 
 export async function getEmailTemplateForUser() {
@@ -49,6 +49,10 @@ export async function getEmailTemplateForUser() {
 export async function getSignupsList() {
 	const signupsList = await db.select().from(signups).orderBy(desc(signups.date_signed_up));
 	return signupsList;
+}
+
+export async function deleteSignupById(id: string) {
+	return db.delete(signups).where(eq(signups.id, id));
 }
 
 export async function getEmailsList() {
@@ -152,6 +156,7 @@ export async function getDayRangeChartLabelsAndValues(from: string, to: string):
 
 	return { entries, dayString };
 }
+
 
 export async function getCounts() {
 	// const data = await db

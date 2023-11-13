@@ -3,9 +3,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "./ui/checkbox";
 import InviteButton from "./invite-button";
+import DeleteButton from "./delete-button";
 
 type Signup = {
-	id?: string;
+	id: string;
 	clerk_user_id: string;
 	email?: string;
 	first_name?: string;
@@ -20,7 +21,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 		header: ({ table }) => (
 			<Checkbox
 				checked={table.getIsAllPageRowsSelected()}
-				onCheckedChange={(value : any) => table.toggleAllPageRowsSelected(!!value)}
+				onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
 				aria-label="Select all"
 				className="translate-y-[2px]"
 			/>
@@ -28,7 +29,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 		cell: ({ row }) => (
 			<Checkbox
 				checked={row.getIsSelected()}
-				onCheckedChange={(value : any) => row.toggleSelected(!!value)}
+				onCheckedChange={(value: any) => row.toggleSelected(!!value)}
 				aria-label="Select row"
 				className="translate-y-[2px]"
 			/>
@@ -39,13 +40,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 	{
 		accessorKey: "email",
 		header: "Email",
-		// cell: ({ row }) => {
-		//   return (
-		//     <div>
-		//       <span className="w-fit truncate">{row.getValue('generation_id_uuid')}</span>
-		//     </div>
-		//   );
-		// }
+
 	},
 	{
 		accessorKey: "first_name",
@@ -59,30 +54,29 @@ export const signupColumns: ColumnDef<Signup>[] = [
 		accessorKey: "date_signed_up",
 		header: "Signed Up On",
 		cell: ({ row }) => {
-			const date = new Date( row.getValue("date_signed_up"))
-			const formattedDate = date.toDateString()
-			// const formattedDate = date ? `${date.getMonth()+1}-${date.getDate()}-${date.getFullYear()}` : '';
-			// console.log(formattedDate);
-			// console.log(row.getValue("date_signed_up"));
+			const date = new Date(row.getValue("date_signed_up"));
+			const formattedDate = date.toDateString();
 			return (
 				<div>
 					<span className="w-fit truncate">{formattedDate}</span>
 				</div>
 			);
-		}
+		},
 	},
 	{
 		accessorKey: "status",
 		header: "Status",
 	},
 	{
-		// accessorKey: "invite",
-		id:"invite",
-		// header: "Invite",
+		id: "invite",
 		cell: ({ row }) => {
-			return (
-				<InviteButton />
-			);
+			return <InviteButton />;
+		},
+	},
+	{
+		id: "delete",
+		cell: ({ row }) => {
+			return <DeleteButton id={row.original.id} />;
 		},
 	},
 ];
