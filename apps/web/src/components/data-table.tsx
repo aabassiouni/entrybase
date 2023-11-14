@@ -1,6 +1,14 @@
 "use client";
 
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable, getPaginationRowModel } from "@tanstack/react-table";
+import {
+	ColumnDef,
+	flexRender,
+	getCoreRowModel,
+	useReactTable,
+	getPaginationRowModel,
+	getFilteredRowModel,
+	ColumnFiltersState
+} from "@tanstack/react-table";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DataTablePagination } from "./data-table-pagination";
@@ -12,26 +20,30 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
-	const [rowSelection, setRowSelection] = useState({})
+	const [rowSelection, setRowSelection] = useState({});
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+		[]
+	  )
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
 		onRowSelectionChange: setRowSelection,
+		onColumnFiltersChange: setColumnFilters,
+		getFilteredRowModel: getFilteredRowModel(),
 		state: {
-			// sorting,
-			// columnFilters,
-			// columnVisibility,
+			columnFilters,
 			rowSelection,
-		  },
+			// sorting,
+			// columnVisibility,
+		},
 	});
 
 	return (
-		// <div className="rounded-md border">
 		<>
 			<DataTablePagination table={table} />
-			<div className="border rounded-md border-gray-800 ">
+			<div className="rounded-md border border-gray-800 ">
 				<Table className="">
 					<TableHeader className="">
 						{table.getHeaderGroups().map((headerGroup) => (

@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { DataTableViewOptions } from "./data-table-view-options";
 import { useInvites } from "./context/invite-context";
 import { useRouter } from "next/navigation";
+import { Input } from "./ui/input";
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;
 }
@@ -14,20 +15,36 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 	const router = useRouter();
 	return (
 		<div className="flex items-center justify-between px-2 py-2">
-			<div className="text-muted-foreground flex-1 text-sm">
-				{table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-				selected.
+			<div className="flex items-center gap-3">
+				<div className="text-muted-foreground flex-1 text-sm">
+					{table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length}{" "}
+					row(s) selected.
+				</div>
+				<div className="">
+					<Input
+						placeholder="Filter emails..."
+						value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+						onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
+						className="max-w-sm"
+					/>
+				</div>
 			</div>
 			<div className="flex items-center space-x-6 lg:space-x-8">
 				{table.getFilteredSelectedRowModel().rows.length > 0 && (
-					<Button onClick={()=>{
-						setInvites(table.getFilteredSelectedRowModel().rows.map((row) => {
-							//@ts-ignore
-							return row.original?.email
-						}))
-						router.push(`/invite`)
-
-					}} className="h-8 px-3 py-2">Invite {table.getFilteredSelectedRowModel().rows.length}</Button>
+					<Button
+						onClick={() => {
+							setInvites(
+								table.getFilteredSelectedRowModel().rows.map((row) => {
+									//@ts-ignore
+									return row.original?.email;
+								}),
+							);
+							router.push(`/invite`);
+						}}
+						className="h-8 px-3 py-2"
+					>
+						Invite {table.getFilteredSelectedRowModel().rows.length}
+					</Button>
 				)}
 				<DataTableViewOptions table={table} />
 				<div className="flex items-center space-x-2">
