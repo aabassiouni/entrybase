@@ -5,10 +5,15 @@ import EmailPreview from "@/components/email-preview";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { setEmailTemplateForUser } from "@/lib/db";
+import { getEmailTemplateForUser, setEmailTemplateForUser } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-function EmailPreviewPage() {
+async function EmailPreviewPage() {
+	await sleep(1000);
+	const values = await getEmailTemplateForUser();
 	async function submitFormAction(formData: FormData) {
 		"use server";
 		console.log(formData);
@@ -18,24 +23,24 @@ function EmailPreviewPage() {
 			bodyText: formData.get("body"),
 			sectionColor: formData.get("sectionColor"),
 		});
-		revalidatePath("/email-preview2");
+		revalidatePath("/email-preview");
 	}
 
 	return (
 		<div className="flex w-full px-4">
 			<div className="w-1/2 p-8">
-				<h1 className="text-3xl">Edit Invite Email</h1>
+				<h1 className="text-3xl font-bold">Customize Email</h1>
 				<Separator className="my-4" />
 				<div className="space-y-5">
-					<form action={submitFormAction}>
+					<form className="space-y-2" action={submitFormAction}>
 						<div>
 							<Label htmlFor="email">Subject</Label>
-							<Input name="email" id="email" className="my-1 w-1/4" />
+							<Input defaultValue={values[0].email} name="email" id="email" className="my-1 w-1/4" />
 						</div>
 						<div>
 							<Label htmlFor="headerSelect">Header Color</Label>
-							<Select name="sectionColor">
-								<SelectTrigger id="headerSelect" className="w-fit">
+							<Select defaultValue={values[0].section_color} name="sectionColor">
+								<SelectTrigger id="headerSelect" className="w-1/4">
 									<SelectValue placeholder="Header Section Color" />
 								</SelectTrigger>
 								<SelectContent>
@@ -47,17 +52,16 @@ function EmailPreviewPage() {
 						</div>
 						<div>
 							<Label htmlFor="bodyText">Body</Label>
-							<Textarea name="body" id="bodyText" className="h-32 w-full" />
+							<Textarea defaultValue={values[0].body_text} name="body" id="bodyText" className="h-32 w-full" />
 						</div>
 						<Button type="submit">Submit</Button>
 					</form>
 				</div>
 			</div>
-			<div className="w-1/2">
-				<div>
-					<h1 className="py-8 text-center text-3xl">Invite Preview</h1>
-				</div>
-				<EmailPreview />
+			<div className="w-1/2 py-8">
+				<Suspense fallback={<Skeleton className="h-full" />}>
+					<EmailPreview />
+				</Suspense>
 			</div>
 		</div>
 	);
