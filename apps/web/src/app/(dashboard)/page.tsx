@@ -7,8 +7,11 @@ import { formatDate } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import ActionsCard from "@/components/actions-card";
+import clsx from "clsx";
+import InviteAction from "@/components/invite-action";
 
-export const revalidate = 20;
+// export const revalidate = 20;
 
 function CountCardsLoading() {
 	return (
@@ -134,7 +137,7 @@ async function PastWeekChart() {
 
 async function CountCards() {
 	const counts = await getCounts();
-	
+
 	return (
 		<>
 			<Card className="h-40 w-full">
@@ -143,7 +146,7 @@ async function CountCards() {
 				</CardHeader>
 				<CardContent className="flex items-center justify-between gap-4">
 					<p className="text-3xl font-bold">{counts.total}</p>
-					<Badge className=" relative z-30 inline-flex items-center justify-center text-sm text-black bg-green-500 dark:bg-green-500">
+					<Badge className=" relative z-30 inline-flex items-center justify-center bg-green-500 text-sm text-black dark:bg-primary">
 						<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur"></div>
 						<p className="z-5">{"+" + counts.delta}</p>
 					</Badge>
@@ -169,6 +172,29 @@ async function CountCards() {
 	);
 }
 
+function ActionsCardContent({ children, className }: { children: React.ReactNode; className?: string }) {
+	return <div className={clsx("w-[250px] flex-none snap-center  sm:w-[390px] ", className)}>{children}</div>;
+}
+
+function ActionsCardStats() {
+	return (
+		<div className="flex h-full w-full items-center justify-between">
+			<div className="">
+				<h1 className="text-center text-xl font-bold">Past Week</h1>
+				<p className="text-center text-xl font-bold">647</p>
+			</div>
+			<div className="">
+				<h1 className="text-center text-xl font-bold">Past Month</h1>
+				<p className="text-center text-xl font-bold">872</p>
+			</div>
+			<div className="">
+				<h1 className="text-center text-xl font-bold">Open Rate</h1>
+				<p className="text-center text-xl font-bold">33%</p>
+			</div>
+		</div>
+	);
+}
+
 export default async function Home() {
 	return (
 		<main className="flex  min-h-screen w-full">
@@ -182,14 +208,14 @@ export default async function Home() {
 					<Suspense fallback={<CountCardsLoading />}>
 						<CountCards />
 					</Suspense>
-					<Card className="col-span-2 h-40 w-full ">
-						<CardHeader>
-							<CardTitle>Signups</CardTitle>
-						</CardHeader>
-						<CardContent>
-							<p className="text-3xl font-bold">10</p>
-						</CardContent>
-					</Card>
+					<ActionsCard>
+						<ActionsCardContent className="">
+							<ActionsCardStats />
+						</ActionsCardContent>
+						<ActionsCardContent>
+							<InviteAction />
+						</ActionsCardContent>
+					</ActionsCard>
 				</div>
 				<div className="p-4"></div>
 				<div className="grid grid-cols-2 gap-4">
