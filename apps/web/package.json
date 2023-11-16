@@ -28,7 +28,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "drizzle-orm": "^0.28.6",
-    "lodash": "^4.17.21",
     "lucide-react": "^0.287.0",
     "next": "14.0.1",
     "next-themes": "^0.2.1",
