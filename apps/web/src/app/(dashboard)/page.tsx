@@ -2,7 +2,7 @@ import Chart from "@/components/Chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { getCounts, getDayRangeChartLabelsAndValues, getEmailsList } from "@/lib/db";
+import { getCounts, getDayRangeChartLabelsAndValues, getSignupsEmailListforUser } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import ActionsCard from "@/components/actions-card";
 import clsx from "clsx";
 import InviteAction from "@/components/invite-action";
+import { currentUser } from "@clerk/nextjs";
 
 // export const revalidate = 20;
 
@@ -85,7 +86,10 @@ function PastWeekChartLoading() {
 }
 
 async function LatestSignupsCard() {
-	const emailsList = await getEmailsList();
+	const user = await currentUser();
+	if (!user) return;
+	
+	const emailsList = await getSignupsEmailListforUser(user.id);
 
 	return (
 		<Card className="">
@@ -109,11 +113,14 @@ async function LatestSignupsCard() {
 }
 
 async function PastWeekChart() {
+	const user = await currentUser();
+	if (!user) return;
+	
 	const today = new Date();
 	const sevenDaysAgo = new Date();
 	sevenDaysAgo.setDate(today.getDate() - 7);
 
-	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(formatDate(sevenDaysAgo), formatDate(today));
+	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(user.id, formatDate(sevenDaysAgo), formatDate(today));
 
 	return (
 		<Card className="">
@@ -136,7 +143,10 @@ async function PastWeekChart() {
 }
 
 async function CountCards() {
-	const counts = await getCounts();
+	const user = await currentUser();
+	if (!user) return;
+
+	const counts = await getCounts(user?.id);
 
 	return (
 		<>
@@ -209,7 +219,7 @@ export default async function Home() {
 						<CountCards />
 					</Suspense>
 					<ActionsCard>
-						<ActionsCardContent className="">
+						<ActionsCardContent>
 							<ActionsCardStats />
 						</ActionsCardContent>
 						<ActionsCardContent>

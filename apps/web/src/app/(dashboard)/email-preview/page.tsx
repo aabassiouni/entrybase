@@ -9,16 +9,21 @@ import { getEmailTemplateForUser, setEmailTemplateForUser } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+import SubmitEmailTemplateButton from "@/components/submit-email-template-button";
+import { currentUser } from "@clerk/nextjs";
 
 async function EmailPreviewPage() {
-	await sleep(1000);
-	const values = await getEmailTemplateForUser();
+	const user = await currentUser();
+
+	if (!user) return;
+
+	const values = await getEmailTemplateForUser(user.id);
+
 	async function submitFormAction(formData: FormData) {
 		"use server";
-		console.log(formData);
+		if (!user) return;
 		await setEmailTemplateForUser({
-			clerk_user_id: "test",
+			clerk_user_id: user.id,
 			email: formData.get("email"),
 			bodyText: formData.get("body"),
 			sectionColor: formData.get("sectionColor"),
@@ -52,9 +57,14 @@ async function EmailPreviewPage() {
 						</div>
 						<div>
 							<Label htmlFor="bodyText">Body</Label>
-							<Textarea defaultValue={values[0].body_text} name="body" id="bodyText" className="h-32 w-full" />
+							<Textarea
+								defaultValue={values[0].body_text}
+								name="body"
+								id="bodyText"
+								className="h-32 w-full"
+							/>
 						</div>
-						<Button type="submit">Submit</Button>
+						<SubmitEmailTemplateButton />
 					</form>
 				</div>
 			</div>

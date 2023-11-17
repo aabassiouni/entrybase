@@ -7,12 +7,17 @@ import { getDayChartLabelsAndValues, getDayRangeChartLabelsAndValues } from "@/l
 import TimeframeSelect from "@/components/timeframe-select";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { currentUser } from "@clerk/nextjs";
 
 async function AnalyticsPage({ searchParams }: { searchParams: SearchParams }) {
+	const user = await currentUser();
+	if (!user) return null;
+
 	let signups: EntryResponse;
 	let timeframe = searchParams?.timeframe ?? "today";
 	let from, to;
 
+	//this is just here to make the url look nice
 	switch (timeframe) {
 		case "today":
 			from = new Date();
@@ -43,9 +48,9 @@ async function AnalyticsPage({ searchParams }: { searchParams: SearchParams }) {
 	}
 
 	if (timeframe === "today" || timeframe === "yesterday") {
-		signups = await getDayChartLabelsAndValues(formatDate(from));
+		signups = await getDayChartLabelsAndValues(user.id, formatDate(from));
 	} else {
-		signups = await getDayRangeChartLabelsAndValues(formatDate(from), formatDate(to));
+		signups = await getDayRangeChartLabelsAndValues(user.id, formatDate(from), formatDate(to));
 	}
 
 	return (
@@ -70,7 +75,6 @@ async function AnalyticsPage({ searchParams }: { searchParams: SearchParams }) {
 					</CardContent>
 					<CardFooter />
 				</Card>
-				<h2 className="pt-4 text-xl">Signups</h2>
 				<div className="py-4">
 					<div className="rounded-md border border-gray-800">
 						<Table>
