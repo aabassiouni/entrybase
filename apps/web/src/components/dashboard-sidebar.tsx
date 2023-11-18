@@ -10,14 +10,14 @@ function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children
 	return (
 		<Link href={href}>
 			<Button variant="ghost" className="h-10 w-full justify-start gap-2 p-4 text-base ">
-				<div className="bg-secondary rounded-md p-1">{icon}</div>
+				<div className="rounded-md bg-secondary p-1">{icon}</div>
 				{children}
 			</Button>
 		</Link>
 	);
 }
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 	return (
 		<div className="flex min-h-screen w-72 shrink-0 flex-col items-center rounded-r-2xl border-r border-neutral-800  bg-primary/50 dark:bg-black">
 			<div className="py-10">
@@ -28,25 +28,25 @@ export default function DashboardSidebar() {
 			<p className="p self-start px-3 text-sm text-neutral-400">General</p>
 			<div className="h-full w-full grow space-y-2 px-4">
 				<SidebarItem
-					href={"/"}
+					href={`/dashboard/${wtSegment}`}
 					icon={<Home className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
 				>
 					Home
 				</SidebarItem>
 				<SidebarItem
-					href={"/users"}
+					href={`/dashboard/${wtSegment}/users`}
 					icon={<List className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
 				>
 					Signups
 				</SidebarItem>
 				<SidebarItem
-					href={"/email-preview"}
+					href={`/dashboard/${wtSegment}/email-preview`}
 					icon={<SendHorizonal className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
 				>
 					Email Preview
 				</SidebarItem>
 				<SidebarItem
-					href={"/analytics"}
+					href={`/dashboard/${wtSegment}/analytics`}
 					icon={<LineChart className="text-neutral-200" width={"1.125rem"} height={"1.125rem"} />}
 				>
 					Analytics

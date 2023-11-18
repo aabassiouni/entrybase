@@ -56,7 +56,7 @@ async function CreateWaitlistDialog({ userID }: { userID: string }) {
 
 function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitlistName: string }) {
 	return (
-		<Link href={`/wt/${waitlistID}`}>
+		<Link href={`/dashboard/${waitlistID}`}>
 			<Card className="w-[330px] h-60">
 				<div className="relative h-40 w-full rounded-t-lg">
 					<div className="absolute inset-0 z-10 h-full w-full rounded-t-lg bg-primary bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></div>
