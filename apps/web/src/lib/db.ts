@@ -6,6 +6,8 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { DBResult, Entry, EntryResponse } from "@/types";
 
+import { newId } from "./id";
+
 neonConfig.fetchConnectionCache = true;
 
 if (process.env.NODE_ENV === "development") {
@@ -17,8 +19,6 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
-
-
 
 export const signups = pgTable("signups", {
 	id: uuid("id").primaryKey(),
@@ -38,9 +38,25 @@ export const email_templates = pgTable("email_templates", {
 	body_text: text("body_text").notNull(),
 });
 
+export const waitlists = pgTable("waitlists", {
+	waitlistID: varchar("waitlist_id", { length: 256 }).primaryKey().notNull(),
+	userID: varchar("user_id", { length: 50 }).notNull(),
+	waitlistName: varchar("waitlist_name", { length: 255 }).notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 const db = drizzle(neonDB, { schema: { signups } });
 
-// console.log(db.execute(sql`SELECT 1;`));
+export async function createWaitlist(waitlist: string, userID: string) {
+	return await db
+		.insert(waitlists)
+		.values({ waitlistName: waitlist, userID: userID, waitlistID: newId("wt") })
+		.returning({ waitlistID: waitlists.waitlistID });
+}
+
+export async function getWaitlistsForUser(userID: string) {
+	return await db.select().from(waitlists).where(eq(waitlists.userID, userID));
+}
 
 export async function setEmailTemplateForUser(emailTemplate: any) {
 	console.log("inserting email template");
