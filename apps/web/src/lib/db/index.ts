@@ -3,10 +3,9 @@ import "server-only";
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { sql, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
-import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { DBResult, Entry, EntryResponse } from "@/types";
-
-import { newId } from "./id";
+import { email_templates, signups, waitlists } from "./schema";
+import { newId } from "../id";
 
 neonConfig.fetchConnectionCache = true;
 
@@ -20,32 +19,7 @@ if (process.env.NODE_ENV === "development") {
 
 const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
 
-export const signups = pgTable("signups", {
-	id: uuid("id").primaryKey(),
-	clerk_user_id: varchar("clerk_user_id", { length: 50 }).notNull(),
-	email: varchar("email", { length: 255 }).notNull(),
-	first_name: varchar("first_name", { length: 255 }).notNull(),
-	last_name: varchar("last_name", { length: 255 }).notNull(),
-	date_signed_up: timestamp("date_signed_up").defaultNow(),
-	status: varchar("status", { length: 50 }).notNull(),
-});
-
-export const email_templates = pgTable("email_templates", {
-	id: uuid("id").primaryKey(),
-	clerk_user_id: varchar("clerk_user_id", { length: 50 }).notNull(),
-	email: varchar("email", { length: 255 }).notNull(),
-	section_color: varchar("section_color", { length: 50 }).notNull(),
-	body_text: text("body_text").notNull(),
-});
-
-export const waitlists = pgTable("waitlists", {
-	waitlistID: varchar("waitlist_id", { length: 256 }).primaryKey().notNull(),
-	userID: varchar("user_id", { length: 50 }).notNull(),
-	waitlistName: varchar("waitlist_name", { length: 255 }).notNull(),
-	createdAt: timestamp("created_at").notNull().defaultNow(),
-});
-
-const db = drizzle(neonDB, { schema: { signups } });
+const db = drizzle(neonDB, { schema: { signups, waitlists, email_templates } });
 
 export async function createWaitlist(waitlist: string, userID: string) {
 	return await db
