@@ -20,5 +20,5 @@ export async function createWaitlistAction(userID: string, formData: FormData) {
 
 	const [{ waitlistID }] = await createWaitlist(waitlistName, userID);
 
-	redirect(`/wt/${waitlistID}`)
+	redirect(`/dashboard/${waitlistID}`)
 }
