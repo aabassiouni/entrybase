@@ -1,10 +1,21 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import UserButton from "./user-button";
-import WaitlistSelect from "./waitlist-select";
 import { Home, LineChart, List, SendHorizonal } from "lucide-react";
+import { Skeleton } from "./ui/skeleton";
+import WaitlistSelect from "./waitlist-select";
+
+function WaitlistSelectLoading() {
+	return (
+		<>
+			<div className="w-full p-4">
+				<Skeleton className="h-10" />
+			</div>
+		</>
+	);
+}
 
 function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children: React.ReactNode; href: string }) {
 	return (
@@ -21,10 +32,14 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 	return (
 		<div className="flex min-h-screen w-72 shrink-0 flex-col items-center rounded-r-2xl border-r border-neutral-800  bg-primary/50 dark:bg-black">
 			<div className="py-10">
-				<h1 className=" text-4xl font-black">waitlister</h1>
+				<Link href="/dashboard">
+					<h1 className=" text-4xl font-black">waitlister</h1>
+				</Link>
 			</div>
 			<Separator />
-			<WaitlistSelect />
+			<Suspense fallback={<WaitlistSelectLoading />}>
+				<WaitlistSelect />
+			</Suspense>
 			<p className="p self-start px-3 text-sm text-neutral-400">General</p>
 			<div className="h-full w-full grow space-y-2 px-4">
 				<SidebarItem

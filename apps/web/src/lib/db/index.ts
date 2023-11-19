@@ -29,7 +29,13 @@ export async function createWaitlist(waitlist: string, userID: string) {
 }
 
 export async function getWaitlistsForUser(userID: string) {
-	return await db.select().from(waitlists).where(eq(waitlists.userID, userID));
+	return await db
+		.select({
+			waitlistID: waitlists.waitlistID,
+			waitlistName: waitlists.waitlistName,
+		})
+		.from(waitlists)
+		.where(eq(waitlists.userID, userID));
 }
 
 export async function setEmailTemplateForUser(emailTemplate: any) {
