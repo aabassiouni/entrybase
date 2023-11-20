@@ -97,16 +97,23 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 				<CardTitle>Latest Signups</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<ScrollArea className="h-96">
-					<div>
+				{emailsList.length > 0 ? (
+					<ScrollArea className="h-96">
 						{emailsList.map((email) => (
 							<div key={email.email}>
 								<div className="p-3">{email.email}</div>
 								<Separator />
 							</div>
 						))}
+					</ScrollArea>
+				) : (
+					<div className="flex h-96 items-center justify-center">
+						<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-2 rounded-md bg-neutral-900 ">
+							<p className="text-lg font-medium">No signups yet</p>
+							<p className="text-sm text-neutral-500">Your latest signups will show up here</p>
+						</div>
 					</div>
-				</ScrollArea>
+				)}
 			</CardContent>
 		</Card>
 	);
@@ -161,10 +168,12 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 				</CardHeader>
 				<CardContent className="flex items-center justify-between gap-4">
 					<p className="text-3xl font-bold">{counts.total}</p>
-					<Badge className=" relative z-30 inline-flex items-center justify-center bg-green-500 text-sm text-black dark:bg-primary">
-						<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur"></div>
-						<p className="z-5">{"+" + counts.delta}</p>
-					</Badge>
+					{counts.delta > 0 ? (
+						<Badge className=" relative z-30 inline-flex items-center justify-center bg-green-500 text-sm text-black dark:bg-primary">
+							<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur"></div>
+							<p className="z-5">{"+" + counts.delta}</p>
+						</Badge>
+					) : null}
 				</CardContent>
 			</Card>
 			<Card className="h-40 w-full ">
@@ -221,7 +230,7 @@ export default async function Home({ params }: { params: { waitlist: string } })
 				<div className="p-4"></div>
 				<div className="grid grid-cols-5 gap-4">
 					<Suspense fallback={<CountCardsLoading />}>
-						<CountCards waitlistID={params.waitlist}/>
+						<CountCards waitlistID={params.waitlist} />
 					</Suspense>
 					<ActionsCard>
 						<ActionsCardContent>
