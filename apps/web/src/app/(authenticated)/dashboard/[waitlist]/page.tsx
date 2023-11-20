@@ -59,7 +59,7 @@ function LatestSignupsCardLoading() {
 					<div>
 						{[...Array(6)].map((_, i) => (
 							<div>
-								<div className="p-3">
+								<div key={i} className="p-3">
 									<Skeleton className="h-8 w-1/2" />
 								</div>
 								<Separator />
@@ -85,11 +85,11 @@ function PastWeekChartLoading() {
 	);
 }
 
-async function LatestSignupsCard() {
+async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 	const user = await currentUser();
 	if (!user) return;
-	
-	const emailsList = await getSignupsEmailListforUser(user.id);
+
+	const emailsList = await getSignupsEmailListforUser(waitlistID, user.id);
 
 	return (
 		<Card className="">
@@ -112,15 +112,20 @@ async function LatestSignupsCard() {
 	);
 }
 
-async function PastWeekChart() {
+async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
 	const user = await currentUser();
 	if (!user) return;
-	
+
 	const today = new Date();
 	const sevenDaysAgo = new Date();
 	sevenDaysAgo.setDate(today.getDate() - 7);
 
-	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(user.id, formatDate(sevenDaysAgo), formatDate(today));
+	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(
+		waitlistID,
+		user.id,
+		formatDate(sevenDaysAgo),
+		formatDate(today),
+	);
 
 	return (
 		<Card className="">
@@ -142,11 +147,11 @@ async function PastWeekChart() {
 	);
 }
 
-async function CountCards() {
+async function CountCards({ waitlistID }: { waitlistID: string }) {
 	const user = await currentUser();
 	if (!user) return;
 
-	const counts = await getCounts(user?.id);
+	const counts = await getCounts(waitlistID, user?.id);
 
 	return (
 		<>
@@ -205,7 +210,7 @@ function ActionsCardStats() {
 	);
 }
 
-export default async function Home() {
+export default async function Home({ params }: { params: { waitlist: string } }) {
 	return (
 		<main className="flex  min-h-screen w-full">
 			<div className="flex w-full flex-col p-10 ">
@@ -216,7 +221,7 @@ export default async function Home() {
 				<div className="p-4"></div>
 				<div className="grid grid-cols-5 gap-4">
 					<Suspense fallback={<CountCardsLoading />}>
-						<CountCards />
+						<CountCards waitlistID={params.waitlist}/>
 					</Suspense>
 					<ActionsCard>
 						<ActionsCardContent>
@@ -230,10 +235,10 @@ export default async function Home() {
 				<div className="p-4"></div>
 				<div className="grid grid-cols-2 gap-4">
 					<Suspense fallback={<PastWeekChartLoading />}>
-						<PastWeekChart />
+						<PastWeekChart waitlistID={params.waitlist} />
 					</Suspense>
 					<Suspense fallback={<LatestSignupsCardLoading />}>
-						<LatestSignupsCard />
+						<LatestSignupsCard waitlistID={params.waitlist} />
 					</Suspense>
 				</div>
 			</div>

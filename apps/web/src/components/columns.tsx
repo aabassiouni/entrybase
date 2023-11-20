@@ -6,13 +6,13 @@ import InviteButton from "./invite-button";
 import DeleteButton from "./delete-button";
 
 type Signup = {
-	id: string;
-	clerk_user_id: string;
+	signupID: string;
+	userID: string;
 	email?: string;
-	first_name?: string;
-	last_name?: string;
-	date_signed_up: Date | null;
-	status: string;
+	firstName: string | null;
+	lastName: string | null;
+	createdAt: Date | null;
+	status: "waiting" | "invited";
 };
 
 export const signupColumns: ColumnDef<Signup>[] = [
@@ -40,7 +40,6 @@ export const signupColumns: ColumnDef<Signup>[] = [
 	{
 		accessorKey: "email",
 		header: "Email",
-
 	},
 	{
 		accessorKey: "first_name",
@@ -76,7 +75,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 	{
 		id: "delete",
 		cell: ({ row }) => {
-			return <DeleteButton id={row.original.id} />;
+			return <DeleteButton id={row.original.signupID} />;
 		},
 	},
 ];

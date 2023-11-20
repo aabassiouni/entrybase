@@ -12,23 +12,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 import SubmitEmailTemplateButton from "@/components/submit-email-template-button";
 import { currentUser } from "@clerk/nextjs";
 
-async function EmailPreviewPage() {
+async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 	const user = await currentUser();
 
 	if (!user) return;
 
-	const values = await getEmailTemplateForUser(user.id);
-
+	const values = await getEmailTemplateForUser(params.waitlist, user.id);
 	async function submitFormAction(formData: FormData) {
 		"use server";
-		if (!user) return;
+		console.log("submitting form")
 		await setEmailTemplateForUser({
-			clerk_user_id: user.id,
+			waitlistID: params.waitlist,
+			userID: user!.id,
 			email: formData.get("email"),
 			bodyText: formData.get("body"),
 			sectionColor: formData.get("sectionColor"),
 		});
 		revalidatePath("/email-preview");
+		console.log("submitted form")
 	}
 
 	return (
@@ -40,11 +41,11 @@ async function EmailPreviewPage() {
 					<form className="space-y-2" action={submitFormAction}>
 						<div>
 							<Label htmlFor="email">Subject</Label>
-							<Input defaultValue={values[0].email} name="email" id="email" className="my-1 w-1/4" />
+							<Input defaultValue={values[0]?.email} name="email" id="email" className="my-1 w-1/4" />
 						</div>
 						<div>
 							<Label htmlFor="headerSelect">Header Color</Label>
-							<Select defaultValue={values[0].section_color} name="sectionColor">
+							<Select defaultValue={values[0]?.sectionColor} name="sectionColor">
 								<SelectTrigger id="headerSelect" className="w-1/4">
 									<SelectValue placeholder="Header Section Color" />
 								</SelectTrigger>
@@ -58,7 +59,7 @@ async function EmailPreviewPage() {
 						<div>
 							<Label htmlFor="bodyText">Body</Label>
 							<Textarea
-								defaultValue={values[0].body_text}
+								defaultValue={values[0]?.bodyText}
 								name="body"
 								id="bodyText"
 								className="h-32 w-full"
@@ -70,7 +71,7 @@ async function EmailPreviewPage() {
 			</div>
 			<div className="w-1/2 py-8">
 				<Suspense fallback={<Skeleton className="h-full" />}>
-					<EmailPreview />
+					<EmailPreview waitlistID={params.waitlist}/>
 				</Suspense>
 			</div>
 		</div>

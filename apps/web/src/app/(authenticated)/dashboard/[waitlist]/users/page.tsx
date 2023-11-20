@@ -5,10 +5,10 @@ import { Separator } from "@/components/ui/separator";
 import { getSignupsList } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 
-async function UsersPage() {
+async function UsersPage({ params }: { params: { waitlist: string } }) {
 	const user = await currentUser();
 	if (!user) return null;
-	const signupList = await getSignupsList(user.id);
+	const signupList = await getSignupsList(params.waitlist, user.id);
 
 	return (
 		<main className="flex min-h-screen w-full flex-col overflow-y-scroll p-12 pt-8">

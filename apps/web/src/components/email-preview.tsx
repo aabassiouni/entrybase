@@ -5,17 +5,17 @@ import { renderAsync } from "@react-email/components";
 import { getEmailTemplateForUser } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 
-async function EmailPreview() {
+async function EmailPreview({waitlistID}: {waitlistID: string}) {
 	// const [html, setHtml] = useState("");
 	const user = await currentUser();
 	if (!user) return;
 
-	const values = await getEmailTemplateForUser(user.id);
+	const values = await getEmailTemplateForUser(waitlistID, user.id);
 	const html = await renderAsync(
 		<EmailTemplate
-			bodyText={values[0].body_text}
-			email={values[0].email}
-			headerSectionColor={values[0].section_color}
+			bodyText={values[0]?.bodyText}
+			email={values[0]?.email}
+			headerSectionColor={values[0]?.sectionColor}
 		/>,
 	);
 

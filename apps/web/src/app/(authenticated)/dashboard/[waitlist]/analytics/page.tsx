@@ -9,7 +9,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Separator } from "@/components/ui/separator";
 import { currentUser } from "@clerk/nextjs";
 
-async function AnalyticsPage({ searchParams }: { searchParams: SearchParams }) {
+async function AnalyticsPage({ params, searchParams }: { params: { waitlist: string }; searchParams: SearchParams }) {
 	const user = await currentUser();
 	if (!user) return null;
 
@@ -48,9 +48,9 @@ async function AnalyticsPage({ searchParams }: { searchParams: SearchParams }) {
 	}
 
 	if (timeframe === "today" || timeframe === "yesterday") {
-		signups = await getDayChartLabelsAndValues(user.id, formatDate(from));
+		signups = await getDayChartLabelsAndValues(params.waitlist, user.id, formatDate(from));
 	} else {
-		signups = await getDayRangeChartLabelsAndValues(user.id, formatDate(from), formatDate(to));
+		signups = await getDayRangeChartLabelsAndValues(params.waitlist, user.id, formatDate(from), formatDate(to));
 	}
 
 	return (

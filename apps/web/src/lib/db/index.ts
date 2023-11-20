@@ -1,7 +1,7 @@
 import "server-only";
 
 import { neon, neonConfig } from "@neondatabase/serverless";
-import { sql, desc, eq } from "drizzle-orm";
+import { sql, desc, eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 import { DBResult, Entry, EntryResponse } from "@/types";
 import { email_templates, signups, waitlists } from "./schema";
@@ -46,18 +46,26 @@ export async function setEmailTemplateForUser(emailTemplate: any) {
 			sectionColor: emailTemplate.sectionColor,
 			email: emailTemplate.email,
 		})
-		.where(eq(email_templates.userID, "test"));
+		.where(
+			and(
+				eq(email_templates.userID, emailTemplate.userID),
+				eq(email_templates.waitlistID, emailTemplate.waitlistID),
+			),
+		);
 }
 
-export async function getEmailTemplateForUser(userID: string) {
-	return db.select().from(email_templates).where(eq(email_templates.userID, userID));
+export async function getEmailTemplateForUser(waitlistID: string, userID: string) {
+	return db
+		.select()
+		.from(email_templates)
+		.where(and(eq(email_templates.userID, userID), eq(email_templates.waitlistID, waitlistID)));
 }
 
-export async function getSignupsList(userID: string) {
+export async function getSignupsList(waitlistID: string, userID: string) {
 	const signupsList = await db
 		.select()
 		.from(signups)
-		.where(eq(signups.userID, userID))
+		.where(and(eq(signups.userID, userID), eq(signups.waitlistID, waitlistID)))
 		.orderBy(desc(signups.createdAt));
 	return signupsList;
 }
@@ -66,20 +74,20 @@ export async function deleteSignupById(id: string) {
 	return db.delete(signups).where(eq(signups.signupID, id));
 }
 
-export async function getSignupsEmailListforUser(userID: string) {
+export async function getSignupsEmailListforUser(waitlistID: string, userID: string) {
 	const result = await db
 		.select({
 			email: signups.email,
 		})
 		.from(signups)
-		.where(eq(signups.userID, userID))
+		.where(and(eq(signups.waitlistID, waitlistID), eq(signups.userID, userID)))
 		.orderBy(desc(signups.createdAt))
 		.limit(10);
 
 	return result;
 }
 
-export async function getSignupsCountForDay(userID: string, day: string) {
+export async function getSignupsCountForDay(waitlistID: string, userID: string, day: string) {
 	console.log(day);
 	const fromTimestamp = day + " 00:00:00";
 	const toTimestamp = day + " 23:59:59";
@@ -101,6 +109,7 @@ export async function getSignupsCountForDay(userID: string, day: string) {
 				ON date_trunc('hour', signups.created_at) = hourly_series.signup_hour
 				AND signups.created_at BETWEEN '${fromTimestamp}' AND '${toTimestamp}'
 				AND signups.user_id = '${userID}'
+				AND signups.waitlist_id = '${waitlistID}'
 			GROUP BY hourly_series.signup_hour
 			ORDER BY hourly_series.signup_hour;
 			`),
@@ -110,7 +119,7 @@ export async function getSignupsCountForDay(userID: string, day: string) {
 		});
 }
 
-export async function getSignupsCountForDayRange(userID: string, from: string, to: string) {
+export async function getSignupsCountForDayRange(waitlistID: string, userID: string, from: string, to: string) {
 	const fromTimestamp = from + " 00:00:00";
 	const toTimestamp = to + " 23:59:59";
 
@@ -132,6 +141,7 @@ export async function getSignupsCountForDayRange(userID: string, from: string, t
 				ON date(signups.created_at) = date_series.timestep
 				AND signups.created_at BETWEEN ${fromTimestamp} AND ${toTimestamp}
 				AND signups.user_id = ${userID}
+				AND signups.waitlist_id = ${waitlistID}
 			GROUP BY date_series.timestep
 			ORDER BY date_series.timestep;			
 		`,
@@ -141,8 +151,12 @@ export async function getSignupsCountForDayRange(userID: string, from: string, t
 		});
 }
 
-export async function getDayChartLabelsAndValues(userID: string, day: string): Promise<EntryResponse> {
-	const data = await getSignupsCountForDay(userID, day);
+export async function getDayChartLabelsAndValues(
+	waitlist: string,
+	userID: string,
+	day: string,
+): Promise<EntryResponse> {
+	const data = await getSignupsCountForDay(waitlist, userID, day);
 
 	const entries: Entry[] = data.map((row) => {
 		const label = new Date(row.timestep).toLocaleTimeString("en-US", { hour: "numeric", hour12: true });
@@ -156,11 +170,12 @@ export async function getDayChartLabelsAndValues(userID: string, day: string): P
 }
 
 export async function getDayRangeChartLabelsAndValues(
+	waitlist: string,
 	userID: string,
 	from: string,
 	to: string,
 ): Promise<EntryResponse> {
-	const data = await getSignupsCountForDayRange(userID, from, to);
+	const data = await getSignupsCountForDayRange(waitlist, userID, from, to);
 
 	const entries: Entry[] = data.map((row) => {
 		const label = new Date(row.timestep).toDateString().split(" ").slice(1, 3).join(" ");
@@ -175,21 +190,21 @@ export async function getDayRangeChartLabelsAndValues(
 	return { entries, dayString };
 }
 
-export async function getCounts(userID: string) {
+export async function getCounts(waitlistID: string, userID: string) {
 	const data = await db
 		.execute(
 			sql`
 			WITH signups_today AS (
 				SELECT COUNT(*) AS count_today
 				FROM signups
-				WHERE DATE(created_at) = CURRENT_DATE
+				WHERE DATE(created_at) = CURRENT_DATE AND waitlist_id = ${waitlistID}
 			)
 			
 			select 
 				count(*) as total_count,
-				count(*) filter (where status = 'invited') as invited_count,
+				count(*) filter (where status = 'invited' AND waitlist_id = ${waitlistID}) as invited_count,
 				(select count_today from signups_today)  as delta
-			from signups where user_id = ${userID};
+			from signups where user_id = ${userID} AND waitlist_id = ${waitlistID};
 				
 				`,
 		)
