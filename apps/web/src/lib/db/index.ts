@@ -39,32 +39,31 @@ export async function getWaitlistsForUser(userID: string) {
 }
 
 export async function setEmailTemplateForUser(emailTemplate: any) {
-	console.log("inserting email template");
 	return await db
 		.update(email_templates)
 		.set({
-			body_text: emailTemplate.bodyText,
-			section_color: emailTemplate.sectionColor,
+			bodyText: emailTemplate.bodyText,
+			sectionColor: emailTemplate.sectionColor,
 			email: emailTemplate.email,
 		})
-		.where(eq(email_templates.clerk_user_id, "test"));
+		.where(eq(email_templates.userID, "test"));
 }
 
 export async function getEmailTemplateForUser(userID: string) {
-	return db.select().from(email_templates).where(eq(email_templates.clerk_user_id, userID));
+	return db.select().from(email_templates).where(eq(email_templates.userID, userID));
 }
 
 export async function getSignupsList(userID: string) {
 	const signupsList = await db
 		.select()
 		.from(signups)
-		.where(eq(signups.clerk_user_id, userID))
-		.orderBy(desc(signups.date_signed_up));
+		.where(eq(signups.userID, userID))
+		.orderBy(desc(signups.createdAt));
 	return signupsList;
 }
 
 export async function deleteSignupById(id: string) {
-	return db.delete(signups).where(eq(signups.id, id));
+	return db.delete(signups).where(eq(signups.signupID, id));
 }
 
 export async function getSignupsEmailListforUser(userID: string) {
@@ -73,8 +72,8 @@ export async function getSignupsEmailListforUser(userID: string) {
 			email: signups.email,
 		})
 		.from(signups)
-		.where(eq(signups.clerk_user_id, userID))
-		.orderBy(desc(signups.date_signed_up))
+		.where(eq(signups.userID, userID))
+		.orderBy(desc(signups.createdAt))
 		.limit(10);
 
 	return result;
@@ -96,12 +95,12 @@ export async function getSignupsCountForDay(userID: string, day: string) {
 
 			SELECT
 				hourly_series.signup_hour as timestep,
-				COALESCE(COUNT(signups.date_signed_up), 0) AS signups_count
+				COALESCE(COUNT(signups.created_at), 0) AS signups_count
 			FROM hourly_series
 			LEFT JOIN signups
-				ON date_trunc('hour', signups.date_signed_up) = hourly_series.signup_hour
-				AND signups.date_signed_up BETWEEN '${fromTimestamp}' AND '${toTimestamp}'
-				AND signups.clerk_user_id = '${userID}'
+				ON date_trunc('hour', signups.created_at) = hourly_series.signup_hour
+				AND signups.created_at BETWEEN '${fromTimestamp}' AND '${toTimestamp}'
+				AND signups.user_id = '${userID}'
 			GROUP BY hourly_series.signup_hour
 			ORDER BY hourly_series.signup_hour;
 			`),
@@ -127,12 +126,12 @@ export async function getSignupsCountForDayRange(userID: string, from: string, t
 			
 			SELECT 
 				date_series.timestep,
-				COALESCE(COUNT(signups.date_signed_up), 0) AS signups_count
+				COALESCE(COUNT(signups.created_at), 0) AS signups_count
 			FROM date_series
 			LEFT JOIN signups 
-				ON date(signups.date_signed_up) = date_series.timestep
-				AND signups.date_signed_up BETWEEN ${fromTimestamp} AND ${toTimestamp}
-				AND signups.clerk_user_id = ${userID}
+				ON date(signups.created_at) = date_series.timestep
+				AND signups.created_at BETWEEN ${fromTimestamp} AND ${toTimestamp}
+				AND signups.user_id = ${userID}
 			GROUP BY date_series.timestep
 			ORDER BY date_series.timestep;			
 		`,
@@ -183,14 +182,14 @@ export async function getCounts(userID: string) {
 			WITH signups_today AS (
 				SELECT COUNT(*) AS count_today
 				FROM signups
-				WHERE DATE(date_signed_up) = CURRENT_DATE
+				WHERE DATE(created_at) = CURRENT_DATE
 			)
 			
 			select 
 				count(*) as total_count,
 				count(*) filter (where status = 'invited') as invited_count,
 				(select count_today from signups_today)  as delta
-			from signups where clerk_user_id = ${userID};
+			from signups where user_id = ${userID};
 				
 				`,
 		)
