@@ -6,6 +6,7 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { DBResult, Entry, EntryResponse } from "@/types";
 import { email_templates, signups, waitlists } from "./schema";
 import { newId } from "../id";
+import { notFound, redirect } from "next/navigation";
 
 neonConfig.fetchConnectionCache = true;
 
@@ -20,6 +21,16 @@ if (process.env.NODE_ENV === "development") {
 const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
 
 const db = drizzle(neonDB, { schema: { signups, waitlists, email_templates } });
+
+async function checkAuth(waitlistID: string, userID: string) {
+	const authCheck = await db
+		.select()
+		.from(waitlists)
+		.where(and(eq(waitlists.userID, userID), eq(waitlists.waitlistID, waitlistID)));
+	if (authCheck.length === 0) {
+		return redirect("/dashboard");
+	}
+}
 
 export async function createWaitlist(waitlist: string, userID: string) {
 	return await db
@@ -62,10 +73,12 @@ export async function getEmailTemplateForUser(waitlistID: string, userID: string
 }
 
 export async function getSignupsList(waitlistID: string, userID: string) {
+	await checkAuth(waitlistID, userID);
+
 	const signupsList = await db
 		.select()
 		.from(signups)
-		.where(and(eq(signups.userID, userID), eq(signups.waitlistID, waitlistID)))
+		.where(eq(signups.waitlistID, waitlistID))
 		.orderBy(desc(signups.createdAt));
 	return signupsList;
 }
@@ -80,7 +93,7 @@ export async function getSignupsEmailListforUser(waitlistID: string, userID: str
 			email: signups.email,
 		})
 		.from(signups)
-		.where(and(eq(signups.waitlistID, waitlistID), eq(signups.userID, userID)))
+		.where(eq(signups.waitlistID, waitlistID))
 		.orderBy(desc(signups.createdAt))
 		.limit(10);
 
@@ -108,7 +121,7 @@ export async function getSignupsCountForDay(waitlistID: string, userID: string, 
 			LEFT JOIN signups
 				ON date_trunc('hour', signups.created_at) = hourly_series.signup_hour
 				AND signups.created_at BETWEEN '${fromTimestamp}' AND '${toTimestamp}'
-				AND signups.user_id = '${userID}'
+				
 				AND signups.waitlist_id = '${waitlistID}'
 			GROUP BY hourly_series.signup_hour
 			ORDER BY hourly_series.signup_hour;
@@ -140,7 +153,7 @@ export async function getSignupsCountForDayRange(waitlistID: string, userID: str
 			LEFT JOIN signups 
 				ON date(signups.created_at) = date_series.timestep
 				AND signups.created_at BETWEEN ${fromTimestamp} AND ${toTimestamp}
-				AND signups.user_id = ${userID}
+				
 				AND signups.waitlist_id = ${waitlistID}
 			GROUP BY date_series.timestep
 			ORDER BY date_series.timestep;			
@@ -191,6 +204,8 @@ export async function getDayRangeChartLabelsAndValues(
 }
 
 export async function getCounts(waitlistID: string, userID: string) {
+	await checkAuth(waitlistID, userID);
+
 	const data = await db
 		.execute(
 			sql`
@@ -204,7 +219,7 @@ export async function getCounts(waitlistID: string, userID: string) {
 				count(*) as total_count,
 				count(*) filter (where status = 'invited' AND waitlist_id = ${waitlistID}) as invited_count,
 				(select count_today from signups_today)  as delta
-			from signups where user_id = ${userID} AND waitlist_id = ${waitlistID};
+			from signups where waitlist_id = ${waitlistID};
 				
 				`,
 		)

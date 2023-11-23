@@ -14,7 +14,6 @@ export const signups = pgTable("signups", {
 	waitlistID: varchar("waitlist_id", { length: 256 })
 		.notNull()
 		.references(() => waitlists.waitlistID),
-	userID: varchar("user_id", { length: 50 }).notNull(),
 	email: varchar("email", { length: 255 }).notNull(),
 	firstName: varchar("first_name", { length: 255 }),
 	lastName: varchar("last_name", { length: 255 }),
