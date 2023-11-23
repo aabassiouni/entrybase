@@ -1,13 +1,12 @@
-import { Separator } from "@/components/ui/separator";
+import { PageHeading } from "@/components/typography";
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 
 function EmailPreviewPageLoading() {
 	return (
-		<div className="flex w-full px-4">
-			<div className="w-1/2 p-8">
-				<h1 className="text-3xl font-bold">Customize Email</h1>
-				<Separator className="my-4" />
+		<div className="flex w-full">
+			<div className="w-1/2 p-10">
+				<PageHeading>Email Preview</PageHeading>
 				<div className="space-y-5">
 					<div className="space-y-2">
 						<div className="space-y-2">

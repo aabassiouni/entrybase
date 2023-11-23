@@ -11,6 +11,8 @@ import ActionsCard from "@/components/actions-card";
 import clsx from "clsx";
 import InviteAction from "@/components/invite-action";
 import { currentUser } from "@clerk/nextjs";
+import { MainLayout } from "@/components/layout";
+import { PageHeading } from "@/components/typography";
 
 // export const revalidate = 20;
 
@@ -108,7 +110,7 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 					</ScrollArea>
 				) : (
 					<div className="flex h-96 items-center justify-center">
-						<div className="border border-primary flex h-1/2 w-1/2 flex-col items-center justify-center gap-2 rounded-md bg-neutral-900 ">
+						<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-2 rounded-md border border-primary bg-neutral-900 ">
 							<p className="text-lg font-medium">No signups yet</p>
 							<p className="text-sm text-neutral-500">Your latest signups will show up here</p>
 						</div>
@@ -221,36 +223,30 @@ function ActionsCardStats() {
 
 export default async function Home({ params }: { params: { waitlist: string } }) {
 	return (
-		<main className="flex  min-h-screen w-full">
-			<div className="flex w-full flex-col p-10 ">
-				<div className="flex justify-between">
-					<h1 className="p-3 text-3xl font-bold">Dashboard</h1>
-				</div>
-				<Separator />
-				<div className="p-4"></div>
-				<div className="grid grid-cols-5 gap-4">
-					<Suspense fallback={<CountCardsLoading />}>
-						<CountCards waitlistID={params.waitlist} />
-					</Suspense>
-					<ActionsCard>
-						<ActionsCardContent>
-							<ActionsCardStats />
-						</ActionsCardContent>
-						<ActionsCardContent>
-							<InviteAction />
-						</ActionsCardContent>
-					</ActionsCard>
-				</div>
-				<div className="p-4"></div>
-				<div className="grid grid-cols-2 gap-4">
-					<Suspense fallback={<PastWeekChartLoading />}>
-						<PastWeekChart waitlistID={params.waitlist} />
-					</Suspense>
-					<Suspense fallback={<LatestSignupsCardLoading />}>
-						<LatestSignupsCard waitlistID={params.waitlist} />
-					</Suspense>
-				</div>
+		<MainLayout>
+			<PageHeading>Dashboard</PageHeading>
+			<div className="grid grid-cols-5 gap-4">
+				<Suspense fallback={<CountCardsLoading />}>
+					<CountCards waitlistID={params.waitlist} />
+				</Suspense>
+				<ActionsCard>
+					<ActionsCardContent>
+						<ActionsCardStats />
+					</ActionsCardContent>
+					<ActionsCardContent>
+						<InviteAction />
+					</ActionsCardContent>
+				</ActionsCard>
 			</div>
-		</main>
+			<div className="p-4"></div>
+			<div className="grid grid-cols-2 gap-4">
+				<Suspense fallback={<PastWeekChartLoading />}>
+					<PastWeekChart waitlistID={params.waitlist} />
+				</Suspense>
+				<Suspense fallback={<LatestSignupsCardLoading />}>
+					<LatestSignupsCard waitlistID={params.waitlist} />
+				</Suspense>
+			</div>
+		</MainLayout>
 	);
 }

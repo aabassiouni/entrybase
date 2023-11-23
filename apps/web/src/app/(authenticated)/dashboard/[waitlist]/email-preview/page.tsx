@@ -1,16 +1,15 @@
-import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import EmailPreview from "@/components/email-preview";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { getEmailTemplateForUser, setEmailTemplateForUser } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import SubmitEmailTemplateButton from "@/components/submit-email-template-button";
 import { currentUser } from "@clerk/nextjs";
+import { PageHeading } from "@/components/typography";
 
 async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 	const user = await currentUser();
@@ -33,10 +32,9 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 	}
 
 	return (
-		<div className="flex w-full px-4">
-			<div className="w-1/2 p-8">
-				<h1 className="text-3xl font-bold">Customize Email</h1>
-				<Separator className="my-4" />
+		<div className="flex w-full">
+			<div className="w-1/2 p-10">
+				<PageHeading>Email Preview</PageHeading>
 				<div className="space-y-5">
 					<form className="space-y-2" action={submitFormAction}>
 						<div>
@@ -69,7 +67,7 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 					</form>
 				</div>
 			</div>
-			<div className="w-1/2 py-8">
+			<div className="w-1/2 py-8 pr-10">
 				<Suspense fallback={<Skeleton className="h-full" />}>
 					<EmailPreview waitlistID={params.waitlist}/>
 				</Suspense>

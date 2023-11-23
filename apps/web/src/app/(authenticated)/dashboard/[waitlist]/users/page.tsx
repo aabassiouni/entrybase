@@ -1,9 +1,10 @@
 import React from "react";
 import { signupColumns } from "@/components/columns";
 import { DataTable } from "@/components/data-table";
-import { Separator } from "@/components/ui/separator";
 import { getSignupsList } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
+import { PageHeading } from "@/components/typography";
+import { MainLayout } from "@/components/layout";
 
 async function UsersPage({ params }: { params: { waitlist: string } }) {
 	const user = await currentUser();
@@ -11,11 +12,10 @@ async function UsersPage({ params }: { params: { waitlist: string } }) {
 	const signupList = await getSignupsList(params.waitlist, user.id);
 
 	return (
-		<main className="flex min-h-screen w-full flex-col overflow-y-scroll p-12 pt-8">
-			<h1 className="text-3xl font-bold">Signups</h1>
-			<Separator className="my-4" />
+		<MainLayout>
+			<PageHeading>Signups</PageHeading>
 			<DataTable columns={signupColumns} data={signupList} />
-		</main>
+		</MainLayout>
 	);
 }
 

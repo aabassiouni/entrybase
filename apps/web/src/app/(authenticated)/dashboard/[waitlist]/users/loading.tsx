@@ -1,7 +1,8 @@
-import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
+import { PageHeading } from "@/components/typography";
+import { MainLayout } from "@/components/layout";
 function DataTableViewOptionsLoading() {
     return (
         <Skeleton className="h-8 w-36" />
@@ -65,11 +66,10 @@ function DataTableLoading() {
 }
 function UsersPageLoading() {
 	return (
-		<main className="flex min-h-screen w-full flex-col overflow-y-scroll p-12 pt-8">
-			<h1 className="text-3xl">Signups</h1>
-			<Separator className="my-4" />
+		<MainLayout >
+			<PageHeading>Signups</PageHeading>
 			<DataTableLoading />
-		</main>
+		</MainLayout>
 	);
 }
 

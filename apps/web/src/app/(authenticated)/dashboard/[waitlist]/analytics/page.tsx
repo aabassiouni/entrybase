@@ -6,10 +6,14 @@ import { EntryResponse, SearchParams } from "@/types";
 import { getDayChartLabelsAndValues, getDayRangeChartLabelsAndValues } from "@/lib/db";
 import TimeframeSelect from "@/components/timeframe-select";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { currentUser } from "@clerk/nextjs";
+import { MainLayout } from "@/components/layout";
+import { PageHeading } from "@/components/typography";
 
 async function AnalyticsPage({ params, searchParams }: { params: { waitlist: string }; searchParams: SearchParams }) {
+
+	const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+	await sleep(3000);
 	const user = await currentUser();
 	if (!user) return null;
 
@@ -54,49 +58,45 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 	}
 
 	return (
-		<div className="min-h-screen grow overflow-y-scroll ">
-			<div className="p-12 pt-8">
-				<h1 className="scroll-m-20 py-2 text-3xl font-bold tracking-tight lg:text-4xl">Analytics</h1>
-				<Separator />
-				<div className="py-4">
-					<TimeframeSelect dayString={signups.dayString} />
-				</div>
-				<Card>
-					<CardHeader>
-						<CardTitle>{signups.dayString}</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<Chart
-							data={signups.entries}
-							margin={{
-								right: 30,
-							}}
-						/>
-					</CardContent>
-					<CardFooter />
-				</Card>
-				<div className="py-4">
-					<div className="rounded-md border border-gray-800">
-						<Table>
-							<TableHeader>
-								<TableRow>
-									<TableHead>Date</TableHead>
-									<TableHead>Signups</TableHead>
+		<MainLayout>
+			<PageHeading>Analytics</PageHeading>
+			<TimeframeSelect dayString={signups.dayString} />
+			<div className="p-2"></div>
+			<Card>
+				<CardHeader>
+					<CardTitle>{signups.dayString}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<Chart
+						data={signups.entries}
+						margin={{
+							right: 30,
+						}}
+					/>
+				</CardContent>
+				<CardFooter />
+			</Card>
+			<div className="py-4">
+				<div className="rounded-md border border-gray-800">
+					<Table>
+						<TableHeader>
+							<TableRow>
+								<TableHead>Date</TableHead>
+								<TableHead>Signups</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{signups.entries.map((row: any, i: number) => (
+								<TableRow className="even:bg-zinc-950/50" key={i}>
+									<TableCell className="w-fit border-r border-slate-700">{row.label}</TableCell>
+									<TableCell className="w-fit">{row.value}</TableCell>
 								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{signups.entries.map((row: any, i: number) => (
-									<TableRow className="even:bg-zinc-950/50" key={i}>
-										<TableCell className="w-fit border-r border-slate-700">{row.label}</TableCell>
-										<TableCell className="w-fit">{row.value}</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</div>
+							))}
+						</TableBody>
+					</Table>
 				</div>
 			</div>
-		</div>
+		</MainLayout>
 	);
 }
 
