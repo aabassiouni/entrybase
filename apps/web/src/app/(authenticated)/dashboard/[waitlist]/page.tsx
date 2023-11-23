@@ -108,7 +108,7 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 					</ScrollArea>
 				) : (
 					<div className="flex h-96 items-center justify-center">
-						<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-2 rounded-md bg-neutral-900 ">
+						<div className="border border-primary flex h-1/2 w-1/2 flex-col items-center justify-center gap-2 rounded-md bg-neutral-900 ">
 							<p className="text-lg font-medium">No signups yet</p>
 							<p className="text-sm text-neutral-500">Your latest signups will show up here</p>
 						</div>
