@@ -7,7 +7,6 @@ import DeleteButton from "./delete-button";
 
 type Signup = {
 	signupID: string;
-	userID: string;
 	email?: string;
 	firstName: string | null;
 	lastName: string | null;
