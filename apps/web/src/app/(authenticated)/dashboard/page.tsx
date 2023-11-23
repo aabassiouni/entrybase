@@ -94,8 +94,8 @@ async function HomePage() {
 							</CardHeader>
 						</Card>
 					</CreateWaitlistDialog>
-					{waitlists.map((waitlist) => (
-						<WaitlistCard waitlistID={waitlist.waitlistID} waitlistName={waitlist.waitlistName} />
+					{waitlists.map((waitlist, i) => (
+						<WaitlistCard key={i} waitlistID={waitlist.waitlistID} waitlistName={waitlist.waitlistName} />
 					))}
 				</div>
 			</div>

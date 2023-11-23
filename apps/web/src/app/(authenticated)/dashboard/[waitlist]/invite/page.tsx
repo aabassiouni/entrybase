@@ -35,7 +35,7 @@ function InvitePage() {
 					<div>
 						<h1>Iniviting:</h1>
 						<ScrollArea className="h-24">
-							{invites.length > 0 ? invites.map((invite) => <p>{invite}</p>) : <p>No invites</p>}
+							{invites.length > 0 ? invites.map((invite, i) => <p key={i}>{invite}</p>) : <p>No invites</p>}
 						</ScrollArea>
 					</div>
 				</CardContent>

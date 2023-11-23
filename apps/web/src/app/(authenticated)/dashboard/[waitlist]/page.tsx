@@ -58,8 +58,8 @@ function LatestSignupsCardLoading() {
 				<ScrollArea className="h-96">
 					<div>
 						{[...Array(6)].map((_, i) => (
-							<div>
-								<div key={i} className="p-3">
+							<div key={i}>
+								<div className="p-3">
 									<Skeleton className="h-8 w-1/2" />
 								</div>
 								<Separator />
@@ -99,8 +99,8 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 			<CardContent>
 				{emailsList.length > 0 ? (
 					<ScrollArea className="h-96">
-						{emailsList.map((email) => (
-							<div key={email.email}>
+						{emailsList.map((email, i) => (
+							<div key={i}>
 								<div className="p-3">{email.email}</div>
 								<Separator />
 							</div>

@@ -49,9 +49,9 @@ function DataTableLoading() {
 					</TableHeader>
 					<TableBody className="">
 						{[...Array(10)].map((_, i) => (
-							<TableRow>
+							<TableRow key={i}>
 								{[...Array(6)].map((_, i) => (
-									<TableCell className="h-20">
+									<TableCell key={i} className="h-20">
 										<Skeleton className="h-8 w-32" />
 									</TableCell>
 								))}

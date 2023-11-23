@@ -85,8 +85,8 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{signups.entries.map((row: any) => (
-									<TableRow className="even:bg-zinc-950/50" key={row.name}>
+								{signups.entries.map((row: any, i: number) => (
+									<TableRow className="even:bg-zinc-950/50" key={i}>
 										<TableCell className="w-fit border-r border-slate-700">{row.label}</TableCell>
 										<TableCell className="w-fit">{row.value}</TableCell>
 									</TableRow>
