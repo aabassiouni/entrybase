@@ -53,7 +53,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.PersistentFlags().StringVarP(&dotEnvPath, "env", "e", ".env", "Path to a .env file")
+	rootCmd.PersistentFlags().StringVarP(&dotEnvPath, "env", "e", "", "Path to a .env file")
 }
 
 

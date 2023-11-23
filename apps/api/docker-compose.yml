@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  waitlister_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - VERSION=dev
+    ports:
+      - 8080:8080
+
+    environment:
+      DB_CONN_STRING: "${DB_CONN_STRING}"
