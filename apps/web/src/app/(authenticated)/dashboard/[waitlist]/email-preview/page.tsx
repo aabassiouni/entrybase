@@ -7,7 +7,7 @@ import { getEmailTemplateForUser, setEmailTemplateForUser } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import SubmitEmailTemplateButton from "@/components/submit-email-template-button";
+import FormSubmitButton from "@/components/form-submit-button";
 import { currentUser } from "@clerk/nextjs";
 import { PageHeading } from "@/components/typography";
 
@@ -19,7 +19,7 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 	const values = await getEmailTemplateForUser(params.waitlist, user.id);
 	async function submitFormAction(formData: FormData) {
 		"use server";
-		console.log("submitting form")
+		console.log("submitting form");
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			userID: user!.id,
@@ -28,7 +28,7 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 			sectionColor: formData.get("sectionColor"),
 		});
 		revalidatePath("/email-preview");
-		console.log("submitted form")
+		console.log("submitted form");
 	}
 
 	return (
@@ -63,13 +63,13 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 								className="h-32 w-full"
 							/>
 						</div>
-						<SubmitEmailTemplateButton />
+						<FormSubmitButton />
 					</form>
 				</div>
 			</div>
 			<div className="w-1/2 py-8 pr-10">
 				<Suspense fallback={<Skeleton className="h-full" />}>
-					<EmailPreview waitlistID={params.waitlist}/>
+					<EmailPreview waitlistID={params.waitlist} />
 				</Suspense>
 			</div>
 		</div>
