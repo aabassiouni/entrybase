@@ -66,8 +66,8 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 			</Suspense>
 			<p className="p self-start px-3 text-sm text-neutral-400">General</p>
 			<div className="h-full w-full grow space-y-2 px-4">
-				{nav.map((item) => (
-					<SidebarItem icon={item.icon} href={item.href}>
+				{nav.map((item, i) => (
+					<SidebarItem key={i} icon={item.icon} href={item.href}>
 						{item.name}
 					</SidebarItem>
 				))}
