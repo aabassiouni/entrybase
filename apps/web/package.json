@@ -33,7 +33,6 @@
     "lucide-react": "^0.287.0",
     "next": "14.0.1",
     "next-themes": "^0.2.1",
-    "pg": "^8.11.3",
     "react": "^18",
     "react-dom": "^18",
     "react-email": "1.9.5",
@@ -43,6 +42,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "pg": "^8.11.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

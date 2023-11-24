@@ -1,13 +1,9 @@
-import { MainLayout } from '@/components/layout'
-import { PageHeading } from '@/components/typography'
-import React from 'react'
+import React from "react";
+import { redirect } from "next/navigation";
 
-function SettingsPage() {
-  return (
-    <MainLayout>
-        <PageHeading>Settings</PageHeading>
-    </MainLayout>
-  )
+function SettingsPage({ params}: { params: { waitlist: string }}) {
+	const { waitlist } = params;
+	return redirect(`/dashboard/${waitlist}/settings/waitlist`);
 }
 
-export default SettingsPage
+export default SettingsPage;

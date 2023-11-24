@@ -7,6 +7,7 @@ import { DBResult, Entry, EntryResponse } from "@/types";
 import { email_templates, signups, waitlists } from "./schema";
 import { newId } from "../id";
 import { notFound, redirect } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 
 neonConfig.fetchConnectionCache = true;
 
@@ -27,6 +28,7 @@ async function checkAuth(waitlistID: string, userID: string) {
 		.select()
 		.from(waitlists)
 		.where(and(eq(waitlists.userID, userID), eq(waitlists.waitlistID, waitlistID)));
+
 	if (authCheck.length === 0) {
 		return redirect("/dashboard");
 	}
@@ -47,6 +49,22 @@ export async function getWaitlistsForUser(userID: string) {
 		})
 		.from(waitlists)
 		.where(eq(waitlists.userID, userID));
+}
+
+export async function getWaitlistByID(waitlistID: string) {
+	return await db.query.waitlists.findFirst({
+		where: eq(waitlists.waitlistID, waitlistID),
+	});
+}
+
+export async function updateWaitlistByID(waitlistID: string, waitlistName: string) {
+	noStore();
+	return await db
+		.update(waitlists)
+		.set({
+			waitlistName: waitlistName,
+		})
+		.where(eq(waitlists.waitlistID, waitlistID));
 }
 
 export async function setEmailTemplateForUser(emailTemplate: any) {
