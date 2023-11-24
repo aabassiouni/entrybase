@@ -42,13 +42,14 @@ export async function createWaitlist(waitlist: string, userID: string) {
 }
 
 export async function getWaitlistsForUser(userID: string) {
+	
 	return await db
 		.select({
 			waitlistID: waitlists.waitlistID,
 			waitlistName: waitlists.waitlistName,
 		})
 		.from(waitlists)
-		.where(eq(waitlists.userID, userID));
+		.where(eq(waitlists.userID, userID)).orderBy(desc(waitlists.createdAt));
 }
 
 export async function getWaitlistByID(waitlistID: string) {

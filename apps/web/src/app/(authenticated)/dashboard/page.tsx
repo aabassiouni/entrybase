@@ -87,7 +87,7 @@ async function HomePage() {
 				<p className="py-10 text-3xl font-semibold">Waitlists</p>
 				<div className="grid grid-cols-3 gap-10">
 					<CreateWaitlistDialog userID={user.id}>
-						<Card className="flex h-60 w-[330px] flex-col items-center justify-center">
+						<Card className="cursor-pointer flex h-60 w-[330px] flex-col items-center justify-center">
 							<Plus className="h-10 w-10 text-primary" />
 							<CardHeader className="">
 								<CardTitle>Create a new waitlist</CardTitle>
