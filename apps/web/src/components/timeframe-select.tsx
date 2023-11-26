@@ -3,7 +3,7 @@ import React from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function TimeframeSelect({ dayString }: { dayString: string }) {
+function TimeframeSelect({waitlistID,  dayString }: {waitlistID: string,  dayString: string }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const timeframe = searchParams.get("timeframe") ?? "today";
@@ -27,7 +27,7 @@ function TimeframeSelect({ dayString }: { dayString: string }) {
 			name="timeframe"
 			defaultValue={timeframe}
 			onValueChange={(value) => {
-				router.push(`/analytics/?timeframe=${value}`);
+				router.push(`/dashboard/${waitlistID}/analytics/?timeframe=${value}`);
 			}}
 		>
 			<SelectTrigger className="w-40">
