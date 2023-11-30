@@ -60,7 +60,7 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 	return (
 		<MainLayout>
 			<PageHeading>Analytics</PageHeading>
-			<TimeframeSelect dayString={signups.dayString} />
+			<TimeframeSelect waitlistID={params.waitlist} dayString={signups.dayString} />
 			<div className="p-2"></div>
 			<Card>
 				<CardHeader>
