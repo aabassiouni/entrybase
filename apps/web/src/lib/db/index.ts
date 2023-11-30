@@ -42,14 +42,14 @@ export async function createWaitlist(waitlist: string, userID: string) {
 }
 
 export async function getWaitlistsForUser(userID: string) {
-	
 	return await db
 		.select({
 			waitlistID: waitlists.waitlistID,
 			waitlistName: waitlists.waitlistName,
 		})
 		.from(waitlists)
-		.where(eq(waitlists.userID, userID)).orderBy(desc(waitlists.createdAt));
+		.where(eq(waitlists.userID, userID))
+		.orderBy(desc(waitlists.createdAt));
 }
 
 export async function getWaitlistByID(waitlistID: string) {
@@ -68,27 +68,26 @@ export async function updateWaitlistByID(waitlistID: string, waitlistName: strin
 		.where(eq(waitlists.waitlistID, waitlistID));
 }
 
+export async function createEmailTemplate(waitlistID: string) {
+	return await db
+		.insert(email_templates)
+		.values({ waitlistID: waitlistID, templateID: newId("et") })
+		.returning({ templateID: email_templates.templateID });
+}
+
 export async function setEmailTemplateForUser(emailTemplate: any) {
 	return await db
 		.update(email_templates)
 		.set({
 			bodyText: emailTemplate.bodyText,
-			sectionColor: emailTemplate.sectionColor,
-			email: emailTemplate.email,
+			header: emailTemplate.header,
+			subject: emailTemplate.subject,
 		})
-		.where(
-			and(
-				eq(email_templates.userID, emailTemplate.userID),
-				eq(email_templates.waitlistID, emailTemplate.waitlistID),
-			),
-		);
+		.where(eq(email_templates.waitlistID, emailTemplate.waitlistID));
 }
 
 export async function getEmailTemplateForUser(waitlistID: string, userID: string) {
-	return db
-		.select()
-		.from(email_templates)
-		.where(and(eq(email_templates.userID, userID), eq(email_templates.waitlistID, waitlistID)));
+	return db.select().from(email_templates).where(eq(email_templates.waitlistID, waitlistID));
 }
 
 export async function getSignupsList(waitlistID: string, userID: string) {
@@ -245,7 +244,6 @@ export async function getCounts(waitlistID: string, userID: string) {
 		.then((result) => {
 			return result.rows as { total_count: number; invited_count: number; delta: number }[];
 		});
-	console.log(data);
 	return {
 		total: data[0].total_count,
 		invited: data[0].invited_count,
