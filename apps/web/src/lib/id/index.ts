@@ -2,6 +2,8 @@ import baseX from "base-x";
 
 const prefixes = {
     wt: "wt",
+    et: "et",
+    su: "su",
 } as const;
 
 export function newId(prefix: keyof typeof prefixes): string {
