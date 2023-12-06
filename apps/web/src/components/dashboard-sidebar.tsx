@@ -40,7 +40,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 		{
 			name: "Signups",
 			icon: <List {...iconProps} />,
-			href: `/dashboard/${wtSegment}/users`,
+			href: `/dashboard/${wtSegment}/signups`,
 		},
 		{
 			name: "Email Preview",
