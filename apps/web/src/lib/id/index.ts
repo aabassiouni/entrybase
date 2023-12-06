@@ -1,3 +1,5 @@
+// written by @chronark and @unkeydev
+
 import baseX from "base-x";
 
 const prefixes = {
