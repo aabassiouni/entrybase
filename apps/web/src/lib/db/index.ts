@@ -76,6 +76,7 @@ export async function createEmailTemplate(waitlistID: string) {
 }
 
 export async function setEmailTemplateForUser(emailTemplate: any) {
+	noStore();
 	return await db
 		.update(email_templates)
 		.set({

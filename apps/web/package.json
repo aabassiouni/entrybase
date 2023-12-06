@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate": "drizzle-kit generate:pg",
+    "db:push": "tsx src/lib/db/migrate.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.26.1",
@@ -42,12 +44,12 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "pg": "^8.11.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
     "drizzle-kit": "^0.19.13",
+    "pg": "^8.11.3",
     "postcss": "^8",
     "postgres": "^3.4.3",
     "prettier": "^3.0.3",

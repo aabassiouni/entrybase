@@ -49,7 +49,9 @@ async function WaitlistSettingsPage({ params }: { params: { waitlist: string } }
 			<CardContent >
 				<form className="inline-flex gap-4" action={updateWaitlistName}>
 					<Input className="w-80 dark:focus-visible:ring-primary" name="waitlistName" defaultValue={waitlist?.waitlistName} />
-                    <FormSubmitButton />
+                    <FormSubmitButton >
+						Update
+					</FormSubmitButton>
 				</form>
 			</CardContent>
 		</Card>

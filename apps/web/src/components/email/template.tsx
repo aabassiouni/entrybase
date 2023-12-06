@@ -1,40 +1,54 @@
 import * as React from "react";
 
-import { Button, Body, Container, Head, Hr, Html, Tailwind, Text, Section, Link } from "@react-email/components";
+import { Button, Body, Container, Head, Hr, Html, Tailwind, Text, Section, Link, Img } from "@react-email/components";
 import { EmailTemplateProps } from "@/types";
 
-export function EmailTemplate({bodyText, email, headerSectionColor }: EmailTemplateProps) {
+export function EmailTemplate({ bodyText, header, companyWebsite }: EmailTemplateProps) {
 	return (
-		<Tailwind
-			config={{
-				darkMode: "class",
-			}}
-		>
-			<Html lang="en" className="">
-				<Head>
-
-					{/* <meta */}
-					{/* <meta name="color-scheme" content="dark"></meta> */}
-				</Head>
-				<Body className="bg-transparent">
-					<Container className="font-sans">
-						<Section className={`h-36 ${headerSectionColor}`}>
-							<Text className="text-center font-sans text-3xl text-white">
-								{email ? email : "placeholder"}
-							</Text>
+		<Html lang="en" className="">
+			<Head>{/* <meta name="color-scheme" content="dark"></meta> */}</Head>
+			<Tailwind
+				config={{
+					darkMode: "class",
+				}}
+			>
+				<Body className="mx-auto bg-white">
+					<Container className="w-[465px] rounded border border-solid border-[#eaeaea] p-5 font-sans">
+						<Section className={`h-fit pb-5 pt-10`}>
+							<Img src="/sideprojectAI.png"></Img>
 						</Section>
-						<Section>
-							<Text className="font-sans text-xl">Hello!</Text>
-							<Text className="font-sans">
+						<Section className="">
+							{/* <Text className="font-sans">
 								{bodyText ? bodyText : "You're in! Head over to waitlister.com to setup your account."}
+							</Text> */}
+							<Text className="font-sans text-3xl font-bold">
+								{header ? header : "You're Signed Up!"}
 							</Text>
-							<Button href="https://localhost:3000" className="inline-flex h-4 items-center justify-center rounded-md  bg-neutral-900 px-4 py-2 text-sm font-medium text-neutral-50 ring-offset-white transition-colors   hover:bg-neutral-900/90  dark:bg-neutral-50 dark:text-neutral-900 dark:ring-offset-neutral-950">
-								Sign Up
-							</Button>
-							<Text className="font-sans">
-								If you have any issues or concerns, please contact our support team at
-								aabassiouni@gmail.com!
-							</Text>
+							<Text className="font-sans">Hello [User's Name],</Text>
+							{bodyText ? (
+								<Text className="w-32 font-sans">{bodyText}</Text>
+							) : (
+								<>
+									<Text className="font-sans">
+										Thank you for signing up for [Product Name]! You're now on our waitlist.
+									</Text>
+									<Text className="font-sans ">
+										What's next?
+										<Text>
+											<ul className="font-sans text-sm">
+												<li>
+													We'll keep you updated on our progress and let you know as soon as
+													[Product Name] is ready.
+												</li>
+												<li>Look out for an email from us with early access details.</li>
+											</ul>
+										</Text>
+										<Text className="font-sans">
+											Questions or feedback? Reach out to [Support Email].
+										</Text>
+									</Text>
+								</>
+							)}
 						</Section>
 						<Section>
 							<Text className="font-sans">Thanks!</Text>
@@ -43,13 +57,17 @@ export function EmailTemplate({bodyText, email, headerSectionColor }: EmailTempl
 						<Section className="h-24">
 							<Hr />
 							<Text className="text-center font-sans text-sm text-slate-400">
-								Sent by <Link className="text-current underline">Waitlister</Link> on behalf of Waitlister.com
+								Sent by&nbsp;
+								<Link href="" className="text-current underline">
+									Waitlister
+								</Link>
+								&nbsp;on behalf of {companyWebsite ? companyWebsite : "[Company Website]"}
 							</Text>
 						</Section>
 					</Container>
 				</Body>
-			</Html>
-		</Tailwind>
+			</Tailwind>
+		</Html>
 	);
 }
 

@@ -17,53 +17,72 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 	if (!user) return;
 
 	const values = await getEmailTemplateForUser(params.waitlist, user.id);
-	async function submitFormAction(formData: FormData) {
+
+	async function submitEmailTemplate(formData: FormData) {
 		"use server";
-		console.log("submitting form");
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			userID: user!.id,
-			email: formData.get("email"),
+			subject: formData.get("subject"),
 			bodyText: formData.get("body"),
-			sectionColor: formData.get("sectionColor"),
+			header: formData.get("header"),
 		});
 		revalidatePath("/email-preview");
-		console.log("submitted form");
+	}
+
+	async function clearEmailTemplate() {
+		"use server";
+		console.log("cleaering email template")
+		await setEmailTemplateForUser({
+			waitlistID: params.waitlist,
+			userID: user!.id,
+			subject: "",
+			bodyText: "",
+			header: "",
+		});
+		revalidatePath("/email-preview");
+		console.log("cleared email template")
 	}
 
 	return (
 		<div className="flex w-full">
 			<div className="w-1/2 p-10">
 				<PageHeading>Email Preview</PageHeading>
-				<div className="space-y-5">
-					<form className="space-y-2" action={submitFormAction}>
+				<div className="space-y-2">
+					<form className="space-y-2" action={submitEmailTemplate}>
 						<div>
-							<Label htmlFor="email">Subject</Label>
-							<Input defaultValue={values[0]?.email} name="email" id="email" className="my-1 w-1/4" />
+							<Label htmlFor="email">Email Subject</Label>
+							<Input
+								defaultValue={values[0]?.subject ?? ""}
+								name="subject"
+								id="subject"
+								className="my-1 w-1/4"
+							/>
 						</div>
 						<div>
-							<Label htmlFor="headerSelect">Header Color</Label>
-							<Select defaultValue={values[0]?.sectionColor} name="sectionColor">
-								<SelectTrigger id="headerSelect" className="w-1/4">
-									<SelectValue placeholder="Header Section Color" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value="bg-blue-800">blue</SelectItem>
-									<SelectItem value="bg-red-800">red</SelectItem>
-									<SelectItem value="bg-green-800">green</SelectItem>
-								</SelectContent>
-							</Select>
+							<Label htmlFor="email">Header</Label>
+							<Input
+								defaultValue={values[0]?.header ?? ""}
+								name="header"
+								id="header"
+								className="my-1 w-1/4"
+							/>
 						</div>
 						<div>
 							<Label htmlFor="bodyText">Body</Label>
 							<Textarea
-								defaultValue={values[0]?.bodyText}
+								defaultValue={values[0]?.bodyText ?? ""}
 								name="body"
 								id="bodyText"
 								className="h-32 w-full"
 							/>
 						</div>
-						<FormSubmitButton />
+						<FormSubmitButton className="w-20 dark:bg-primary dark:hover:bg-primary/80">
+							Submit
+						</FormSubmitButton>
+					</form>
+					<form action={clearEmailTemplate}>
+						<FormSubmitButton className="w-fit ">Reset to default</FormSubmitButton>
 					</form>
 				</div>
 			</div>

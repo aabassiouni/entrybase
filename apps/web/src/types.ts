@@ -21,9 +21,9 @@ export type Entry = {
 };
 
 export type EmailTemplateProps = {
-	email: string;
-	bodyText: string;
-	headerSectionColor: string;
+	header: string | null;
+	bodyText: string | null;
+	companyWebsite: string | null;
 };
 
 export type EntryResponse = {entries: Entry[], dayString: string};
