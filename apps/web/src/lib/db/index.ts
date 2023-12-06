@@ -88,7 +88,7 @@ export async function setEmailTemplateForUser(emailTemplate: any) {
 }
 
 export async function getEmailTemplateForUser(waitlistID: string, userID: string) {
-	return db.select().from(email_templates).where(eq(email_templates.waitlistID, waitlistID));
+	return await db.select().from(email_templates).where(eq(email_templates.waitlistID, waitlistID));
 }
 
 export async function getSignupsList(waitlistID: string, userID: string) {
