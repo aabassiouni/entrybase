@@ -103,7 +103,7 @@ export async function getSignupsList(waitlistID: string, userID: string) {
 }
 
 export async function deleteSignupById(id: string) {
-	return db.delete(signups).where(eq(signups.signupID, id));
+	return await db.delete(signups).where(eq(signups.signupID, id));
 }
 
 export async function getSignupsEmailListforUser(waitlistID: string, userID: string) {
