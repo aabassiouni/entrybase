@@ -1,10 +1,11 @@
-import { pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const waitlists = pgTable("waitlists", {
 	waitlistID: varchar("waitlist_id", { length: 256 }).primaryKey().notNull(),
 	userID: varchar("user_id", { length: 50 }).notNull(),
 	waitlistName: varchar("waitlist_name", { length: 255 }).notNull(),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
+	colorString: varchar("color_string", { length: 255 }).notNull(),
 });
 
 export const statusEnum = pgEnum("status", ["waiting", "invited"]);

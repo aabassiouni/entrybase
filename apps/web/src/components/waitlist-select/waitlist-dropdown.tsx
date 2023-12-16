@@ -5,12 +5,14 @@ import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { Separator } from "../ui/separator";
 import { useParams, useRouter } from "next/navigation";
 import CreateWaitlistDialog from "../create-waitlist-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { cn } from "@/lib/utils";
 
 function WaitlistDropdown({
 	waitlists,
 	userID,
 }: {
-	waitlists: { waitlistID: string; waitlistName: string }[];
+	waitlists: { waitlistID: string; waitlistName: string; colorString: string }[];
 	userID: string;
 }) {
 	const router = useRouter();
@@ -31,7 +33,12 @@ function WaitlistDropdown({
 				<SelectContent>
 					{waitlists.map((waitlist) => (
 						<SelectItem key={waitlist.waitlistID} value={waitlist.waitlistID}>
-							{waitlist.waitlistName}
+							<div className="flex items-center justify-center gap-4">
+								<Avatar className="ring-2 ring-neutral-800 h-6 w-6">
+									<div className={cn("h-full w-full bg-gradient-to-br ", waitlist.colorString)}></div>
+								</Avatar>
+								<p>{waitlist.waitlistName}</p>
+							</div>
 						</SelectItem>
 					))}
 					<Separator className="my-0.5" />

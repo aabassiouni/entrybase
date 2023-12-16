@@ -8,6 +8,7 @@ import { email_templates, signups, waitlists } from "./schema";
 import { newId } from "../id";
 import { notFound, redirect } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
+import { selectRandomTwColor } from "../utils";
 
 neonConfig.fetchConnectionCache = true;
 
@@ -35,9 +36,10 @@ async function checkAuth(waitlistID: string, userID: string) {
 }
 
 export async function createWaitlist(waitlist: string, userID: string) {
+	const color = selectRandomTwColor();
 	return await db
 		.insert(waitlists)
-		.values({ waitlistName: waitlist, userID: userID, waitlistID: newId("wt") })
+		.values({ waitlistName: waitlist, userID: userID, waitlistID: newId("wt"), colorString: color })
 		.returning({ waitlistID: waitlists.waitlistID });
 }
 
@@ -46,6 +48,7 @@ export async function getWaitlistsForUser(userID: string) {
 		.select({
 			waitlistID: waitlists.waitlistID,
 			waitlistName: waitlists.waitlistName,
+			colorString: waitlists.colorString
 		})
 		.from(waitlists)
 		.where(eq(waitlists.userID, userID))
