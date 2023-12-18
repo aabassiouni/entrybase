@@ -36,9 +36,9 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			userID: user!.id,
-			subject: "",
-			bodyText: "",
-			header: "",
+			subject: null,
+			bodyText: null,
+			header: null,
 		});
 		revalidatePath("/email-preview");
 		console.log("cleared email template")

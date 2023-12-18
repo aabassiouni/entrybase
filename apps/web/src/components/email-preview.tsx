@@ -45,7 +45,7 @@ async function EmailPreview({ waitlistID }: { waitlistID: string }) {
 							Subject:
 						</p>
 						<span className="w-full rounded-r-md border-y border-r border-[#002417] bg-black p-1 px-2">
-							{values[0]?.subject !== "" ? values[0]?.subject : `You're on the waitlist for ${"Company"}! `}
+							{values[0]?.subject !== null ? values[0]?.subject : `You're on the waitlist for ${"Company"}! `}
 						</span>
 					</div>
 				</div>
