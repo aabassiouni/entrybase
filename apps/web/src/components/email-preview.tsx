@@ -1,25 +1,23 @@
 // "use client";
 import { Card } from "@/components/ui/card";
-import EmailTemplate from "./email/template";
+import InviteTemplate from "./email/invite-template";
 import { renderAsync } from "@react-email/components";
 import { getEmailTemplateForUser } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
+import SignupTemplate from "./email/signup-template";
 
-async function EmailPreview({ waitlistID }: { waitlistID: string }) {
+async function EmailPreview({ waitlistID, template }: { waitlistID: string; template: "invite" | "signup" }) {
 	// const [html, setHtml] = useState("");
 	const user = await currentUser();
 	if (!user) return;
 
-	const values = await getEmailTemplateForUser(waitlistID, user.id);
+	const values = await getEmailTemplateForUser(waitlistID, user.id, template);
 	console.log("values in email template preview", values[0]);
+	const Template = template === "invite" ? <InviteTemplate bodyText={values[0]?.bodyText} header={values[0]?.header} companyWebsite={null}  /> : <SignupTemplate />;
 	const html = await renderAsync(
-		<EmailTemplate
-			bodyText={values[0]?.bodyText}
-			header={values[0]?.header}
-			companyWebsite={null}
-		/>,
+		Template,
 	);
-	
+
 	return (
 		<Card className="flex h-full flex-col">
 			<div className="flex h-40 max-h-40 items-center justify-between space-y-1 rounded-t-lg bg-gradient-to-b from-primary/40 to-black p-8 ">
@@ -45,7 +43,9 @@ async function EmailPreview({ waitlistID }: { waitlistID: string }) {
 							Subject:
 						</p>
 						<span className="w-full rounded-r-md border-y border-r border-[#002417] bg-black p-1 px-2">
-							{values[0]?.subject !== null ? values[0]?.subject : `You're on the waitlist for ${"Company"}! `}
+							{values[0]?.subject !== null
+								? values[0]?.subject
+								: `You're on the waitlist for ${"Company"}! `}
 						</span>
 					</div>
 				</div>

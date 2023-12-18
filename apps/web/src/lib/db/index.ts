@@ -100,10 +100,13 @@ export async function updateWaitlistByID(waitlistID: string, waitlistName: strin
 		.where(eq(waitlists.waitlistID, waitlistID));
 }
 
-export async function createEmailTemplate(waitlistID: string) {
+export async function initEmailTemplates(waitlistID: string) {
 	return await db
 		.insert(email_templates)
-		.values({ waitlistID: waitlistID, templateID: newId("et") })
+		.values([
+			{ waitlistID: waitlistID, templateID: newId("et"), template: "invite" },
+			{ waitlistID: waitlistID, templateID: newId("et"), template: "signup" },
+		])
 		.returning({ templateID: email_templates.templateID });
 }
 
@@ -119,8 +122,8 @@ export async function setEmailTemplateForUser(emailTemplate: any) {
 		.where(eq(email_templates.waitlistID, emailTemplate.waitlistID));
 }
 
-export async function getEmailTemplateForUser(waitlistID: string, userID: string) {
-	return await db.select().from(email_templates).where(eq(email_templates.waitlistID, waitlistID));
+export async function getEmailTemplateForUser(waitlistID: string, userID: string, template: "invite" | "signup") {
+	return await db.select().from(email_templates).where(and(eq(email_templates.waitlistID, waitlistID), eq(email_templates.template, template)));
 }
 
 export async function getSignupsList(waitlistID: string, userID: string) {

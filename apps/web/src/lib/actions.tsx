@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { deleteSignupById, createWaitlist, createEmailTemplate } from "./db";
+import { deleteSignupById, createWaitlist, initEmailTemplates } from "./db";
 import { redirect } from "next/navigation";
 
 export async function handleDelete(formData: FormData) {
@@ -19,7 +19,7 @@ export async function createWaitlistAction(userID: string, formData: FormData) {
 	console.log("userID", userID);
 
 	const [{ waitlistID }] = await createWaitlist(waitlistName, userID);
-	await createEmailTemplate(waitlistID);
+	await initEmailTemplates(waitlistID);
 
-	redirect(`/dashboard/${waitlistID}`)
+	redirect(`/dashboard/${waitlistID}`);
 }

@@ -10,18 +10,29 @@ import { Skeleton } from "@/components/ui/skeleton";
 import FormSubmitButton from "@/components/form-submit-button";
 import { currentUser } from "@clerk/nextjs";
 import { PageHeading } from "@/components/typography";
+import TemplateSelect from "@/components/template-select";
+import { SearchParams } from "@/types";
 
-async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
+async function EmailPreviewPage({
+	params,
+	searchParams,
+}: {
+	params: { waitlist: string };
+	searchParams: { template: "invite" | "signup" };
+}) {
 	const user = await currentUser();
 
 	if (!user) return;
 
-	const values = await getEmailTemplateForUser(params.waitlist, user.id);
+	const template = searchParams?.template ?? "invite";
+
+	const values = await getEmailTemplateForUser(params.waitlist, user.id, template);
 
 	async function submitEmailTemplate(formData: FormData) {
 		"use server";
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
+			template: template,
 			userID: user!.id,
 			subject: formData.get("subject"),
 			bodyText: formData.get("body"),
@@ -32,22 +43,24 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 
 	async function clearEmailTemplate() {
 		"use server";
-		console.log("cleaering email template")
+		console.log("cleaering email template");
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
+			template: template,
 			userID: user!.id,
 			subject: null,
 			bodyText: null,
 			header: null,
 		});
 		revalidatePath("/email-preview");
-		console.log("cleared email template")
+		console.log("cleared email template");
 	}
 
 	return (
 		<div className="flex w-full">
 			<div className="w-1/2 p-10">
 				<PageHeading>Email Preview</PageHeading>
+				<TemplateSelect waitlistID={params.waitlist} />
 				<div className="space-y-2">
 					<form className="space-y-2" action={submitEmailTemplate}>
 						<div>
@@ -88,7 +101,7 @@ async function EmailPreviewPage({ params }: { params: { waitlist: string } }) {
 			</div>
 			<div className="w-1/2 py-8 pr-10">
 				<Suspense fallback={<Skeleton className="h-full" />}>
-					<EmailPreview waitlistID={params.waitlist} />
+					<EmailPreview template={template} waitlistID={params.waitlist} />
 				</Suspense>
 			</div>
 		</div>

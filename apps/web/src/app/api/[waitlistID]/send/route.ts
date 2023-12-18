@@ -1,4 +1,4 @@
-import { EmailTemplate } from "@/components/email/template";
+import { InviteTemplate } from "@/components/email/invite-template";
 import { findWaitlistForUser, getEmailTemplateForUser, getInvitesListByCount } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 		return NextResponse.redirect("/dashboard");
 	}
 
-	const emailTemplate = await getEmailTemplateForUser(userId, waitlistID).then((res) => res[0]);
+	const emailTemplate = await getEmailTemplateForUser(userId, waitlistID, "invite").then((res) => res[0]);
 
 	switch (type) {
 		case "count":

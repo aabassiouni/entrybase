@@ -1,26 +1,21 @@
-import * as React from "react";
-
 import { Button, Body, Container, Head, Hr, Html, Tailwind, Text, Section, Link, Img } from "@react-email/components";
 import { EmailTemplateProps } from "@/types";
 
-export function EmailTemplate({ bodyText, header, companyWebsite }: EmailTemplateProps) {
+export function InviteTemplate({ bodyText, header, companyWebsite }: EmailTemplateProps) {
 	return (
 		<Html lang="en" className="">
-			<Head>{/* <meta name="color-scheme" content="dark"></meta> */}</Head>
 			<Tailwind
 				config={{
 					darkMode: "class",
 				}}
 			>
-				<Body className="mx-auto bg-white">
-					<Container className="w-[465px] rounded border border-solid border-[#eaeaea] p-5 font-sans">
+				{/* <Head><meta name="color-scheme" content="dark"/></Head> */}
+				<Body className="mx-auto">
+					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] p-5 font-sans dark:bg-black">
 						<Section className={`h-fit pb-5 pt-10`}>
 							<Img src="/sideprojectAI.png"></Img>
 						</Section>
-						<Section className="">
-							{/* <Text className="font-sans">
-								{bodyText ? bodyText : "You're in! Head over to waitlister.com to setup your account."}
-							</Text> */}
+						<Section>
 							<Text className="font-sans text-3xl font-bold">
 								{header ? header : "You're Signed Up!"}
 							</Text>
@@ -71,4 +66,4 @@ export function EmailTemplate({ bodyText, header, companyWebsite }: EmailTemplat
 	);
 }
 
-export default EmailTemplate;
+export default InviteTemplate;
