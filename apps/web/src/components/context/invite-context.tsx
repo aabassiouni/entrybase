@@ -2,8 +2,8 @@
 import React, { createContext, useContext, useState } from "react";
 
 type InviteContextType = {
-	invites: string[];
-	setInvites: React.Dispatch<React.SetStateAction<string[]>>;
+	invites: {email:string, id:string}[];
+	setInvites: React.Dispatch<React.SetStateAction<{email:string, id:string}[]>>;
 };
 
 const InviteContext = createContext<InviteContextType>({
@@ -12,7 +12,7 @@ const InviteContext = createContext<InviteContextType>({
 });
 
 export function InviteProvider({ children }: { children: React.ReactNode }) {
-	const [invites, setInvites] = useState<string[]>([]);
+	const [invites, setInvites] = useState<{email:string, id:string}[]>([]);
 
 	return <InviteContext.Provider value={{ invites, setInvites }}>{children}</InviteContext.Provider>;
 }

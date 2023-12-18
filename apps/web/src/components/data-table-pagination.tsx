@@ -36,10 +36,10 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 							setInvites(
 								table.getFilteredSelectedRowModel().rows.map((row) => {
 									//@ts-ignore
-									return row.original?.email;
+									return {email: row.original?.email, id:row.original?.signupID};
 								}),
 							);
-							router.push(`/invite`);
+							router.push(`invite`);
 						}}
 						className="h-8 px-3 py-2"
 					>

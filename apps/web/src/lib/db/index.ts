@@ -1,7 +1,7 @@
 import "server-only";
 
 import { neon, neonConfig } from "@neondatabase/serverless";
-import { sql, desc, eq, and } from "drizzle-orm";
+import { sql, desc, eq, and, asc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 import { DBResult, Entry, EntryResponse } from "@/types";
 import { email_templates, signups, waitlists } from "./schema";
@@ -24,15 +24,44 @@ const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
 
 const db = drizzle(neonDB, { schema: { signups, waitlists, email_templates } });
 
+export async function getInvitesListByCount(selectionMethod: string, count: number, waitlistID: string) {
+	const orderBy =
+		selectionMethod == "random"
+			? sql`RANDOM()`
+			: selectionMethod == "latest"
+			? desc(signups.createdAt)
+			: selectionMethod == "oldest"
+			? asc(signups.createdAt)
+			: null;
+
+	if (!orderBy) {
+		throw new Error("invalid selection method");
+	}
+
+	const signupsList = await db
+		.select()
+		.from(signups)
+		.where(and(eq(signups.status, "waiting"), eq(signups.waitlistID, waitlistID)))
+		.orderBy(orderBy)
+		.limit(count);
+	console.log(signupsList);
+
+	return signupsList;
+}
+
 async function checkAuth(waitlistID: string, userID: string) {
-	const authCheck = await db
+	const waitlist = await findWaitlistForUser(userID, waitlistID);
+
+	if (waitlist.length === 0) {
+		return redirect("/dashboard");
+	}
+}
+
+export async function findWaitlistForUser(userID: string, waitlistID: string) {
+	return await db
 		.select()
 		.from(waitlists)
 		.where(and(eq(waitlists.userID, userID), eq(waitlists.waitlistID, waitlistID)));
-
-	if (authCheck.length === 0) {
-		return redirect("/dashboard");
-	}
 }
 
 export async function createWaitlist(waitlist: string, userID: string) {
@@ -48,7 +77,7 @@ export async function getWaitlistsForUser(userID: string) {
 		.select({
 			waitlistID: waitlists.waitlistID,
 			waitlistName: waitlists.waitlistName,
-			colorString: waitlists.colorString
+			colorString: waitlists.colorString,
 		})
 		.from(waitlists)
 		.where(eq(waitlists.userID, userID))
