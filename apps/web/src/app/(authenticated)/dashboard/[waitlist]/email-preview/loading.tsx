@@ -25,7 +25,7 @@ function EmailPreviewPageLoading() {
 					</div>
 				</div>
 			</div>
-			<div className="w-1/2 py-8">
+			<div className="w-1/2 py-8 pr-10">
 				<Skeleton className="h-full" />
 			</div>
 		</div>
