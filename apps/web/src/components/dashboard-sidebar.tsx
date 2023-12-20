@@ -2,7 +2,7 @@ import React, { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import UserButton from "./user-button";
+import SidebarUserButton from "./sidebar-user-button";
 import { Home, LineChart, List, SendHorizonal, Mail, Settings } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 import WaitlistSelect from "./waitlist-select";
@@ -29,7 +29,6 @@ function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children
 }
 
 export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
-	
 	const iconProps = { className: "text-secondary", width: "1.125rem", height: "1.125rem" };
 
 	const generalLinks = [
@@ -115,7 +114,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 			<div className="w-full">
 				<Separator />
 				<div className=" p-4">
-					<UserButton />
+					<SidebarUserButton />
 				</div>
 			</div>
 		</div>

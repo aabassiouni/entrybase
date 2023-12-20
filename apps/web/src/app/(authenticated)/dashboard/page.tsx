@@ -1,22 +1,11 @@
-import React, { Suspense } from "react";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import React from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogOut, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { SignOutButton, currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs";
 import { getWaitlistsForUser } from "@/lib/db";
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Skeleton } from "@/components/ui/skeleton";
 import CreateWaitlistDialog from "@/components/create-waitlist-dialog";
+import UserButton from "@/components/user-button";
 
 function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitlistName: string }) {
 	return (
@@ -33,42 +22,7 @@ function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitli
 	);
 }
 
-async function UserButton() {
-	const user = await currentUser();
 
-	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger asChild>
-				<Button variant="ghost" className="relative h-8 w-8 rounded-full">
-					<Suspense fallback={<Skeleton className="h-10 w-10 rounded-full" />}>
-						<Avatar>
-							<AvatarImage src={user?.imageUrl} />
-						</Avatar>
-					</Suspense>
-				</Button>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent className="mt-2 w-56" align="center" forceMount>
-				<DropdownMenuLabel className="font-normal">
-					<div className="flex flex-col space-y-1">
-						<p className="text-sm font-medium leading-none">{user?.username}</p>
-						<p className="text-muted-foreground text-xs leading-none">
-							{user?.emailAddresses[0].emailAddress}
-						</p>
-					</div>
-				</DropdownMenuLabel>
-				<DropdownMenuSeparator />
-				<DropdownMenuGroup>
-					<SignOutButton>
-						<DropdownMenuItem>
-							<LogOut className="mr-2 h-4 w-4" />
-							<span>Log out</span>
-						</DropdownMenuItem>
-					</SignOutButton>
-				</DropdownMenuGroup>
-			</DropdownMenuContent>
-		</DropdownMenu>
-	);
-}
 
 async function HomePage() {
 	const user = await currentUser();
