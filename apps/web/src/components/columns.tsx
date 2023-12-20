@@ -41,18 +41,18 @@ export const signupColumns: ColumnDef<Signup>[] = [
 		header: "Email",
 	},
 	{
-		accessorKey: "first_name",
+		accessorKey: "firstName",
 		header: "First Name",
 	},
 	{
-		accessorKey: "last_name",
+		accessorKey: "lastName",
 		header: "Last Name",
 	},
 	{
-		accessorKey: "date_signed_up",
+		accessorKey: "createdAt",
 		header: "Signed Up On",
 		cell: ({ row }) => {
-			const date = new Date(row.getValue("date_signed_up"));
+			const date = new Date(row.getValue("createdAt"));
 			const formattedDate = date.toDateString();
 			return (
 				<div>
