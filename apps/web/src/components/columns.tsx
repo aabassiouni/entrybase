@@ -7,7 +7,7 @@ import DeleteButton from "./delete-button";
 
 type Signup = {
 	signupID: string;
-	email?: string;
+	email: string;
 	firstName: string | null;
 	lastName: string | null;
 	createdAt: Date | null;
@@ -68,7 +68,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 	{
 		id: "invite",
 		cell: ({ row }) => {
-			return <InviteButton />;
+			return <InviteButton email={row.original.email} id={row.original.signupID}/>;
 		},
 	},
 	{
