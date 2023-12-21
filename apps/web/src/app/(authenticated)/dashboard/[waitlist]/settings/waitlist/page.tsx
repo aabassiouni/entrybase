@@ -6,6 +6,7 @@ import { getWaitlistByID, updateWaitlistByID } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import FormSubmitButton from "@/components/form-submit-button";
 import { Separator } from "@/components/ui/separator";
+import { auth } from "@clerk/nextjs";
 
 async function WaitlistSettingsPage({ params }: { params: { waitlist: string } }) {
 	// const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -15,7 +16,10 @@ async function WaitlistSettingsPage({ params }: { params: { waitlist: string } }
 
 	async function updateWaitlistName(formData: FormData) {
 		"use server";
-        console.log("updateWaitlistName")
+
+		const { userId } = auth();
+		if (!userId) return;
+
         const waitlistName = formData.get("waitlistName") as string;
 
         if (!waitlistName) {

@@ -30,6 +30,9 @@ async function EmailPreviewPage({
 
 	async function submitEmailTemplate(formData: FormData) {
 		"use server";
+
+		if (!user!.id) return;
+
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			template: template,
@@ -43,7 +46,10 @@ async function EmailPreviewPage({
 
 	async function clearEmailTemplate() {
 		"use server";
-		console.log("cleaering email template");
+		console.log("clearing email template");
+
+		if (!user!.id) return;
+
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			template: template,

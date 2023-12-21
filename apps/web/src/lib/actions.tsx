@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { deleteSignupById, createWaitlist, initEmailTemplates } from "./db";
 import { redirect } from "next/navigation";
+import { auth } from "@clerk/nextjs";
 
 export async function handleDelete(formData: FormData) {
 	const id = formData.get("id") as string;
@@ -13,12 +14,13 @@ export async function handleDelete(formData: FormData) {
 	revalidatePath("/users");
 }
 
-export async function createWaitlistAction(userID: string, formData: FormData) {
-	const waitlistName = formData.get("waitlistName") as string;
-	console.log("waitlistName", waitlistName);
-	console.log("userID", userID);
+export async function createWaitlistAction(formData: FormData) {
+	const { userId } = auth();
+	if (!userId) return;
 
-	const [{ waitlistID }] = await createWaitlist(waitlistName, userID);
+	const waitlistName = formData.get("waitlistName") as string;
+
+	const [{ waitlistID }] = await createWaitlist(waitlistName, userId);
 	await initEmailTemplates(waitlistID);
 
 	redirect(`/dashboard/${waitlistID}`);
