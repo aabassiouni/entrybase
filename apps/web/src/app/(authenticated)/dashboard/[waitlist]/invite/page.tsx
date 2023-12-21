@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import React, { useState } from "react";
-import { Mail } from "lucide-react";
+import { Mail, X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
@@ -27,7 +27,7 @@ const formSchema = z.object({
 });
 function InvitePage() {
 	const [isLoading, setIsLoading] = useState(false);
-	const { invites } = useInvites();
+	const { invites, setInvites } = useInvites();
 	const { toast } = useToast();
 
 	const { waitlist } = useParams();
@@ -224,8 +224,8 @@ function InvitePage() {
 													<FormItem>
 														<FormControl>
 															<Input
-																placeholder="Enter Num"
-																className="w-24"
+																placeholder="Enter Number"
+																className="w-32"
 																type="number"
 																{...field}
 															/>
@@ -254,23 +254,32 @@ function InvitePage() {
 					<CardContent>
 						{invites.length > 0 ? (
 							<div className="flex flex-col items-center">
-								<ScrollArea className="h-52 w-1/2 rounded-lg border border-neutral-800 bg-neutral-900 p-2">
+								<ScrollArea className="h-48 w-2/3 rounded-lg border border-neutral-800 bg-neutral-900  p-2">
 									<ul className="list-disc">
-										{invites.length > 0 ? (
-											invites.map((invite, i) => (
-												<li className="text-sm" key={i}>
-													{invite.email}
-												</li>
-											))
-										) : (
-											<p>No invites</p>
-										)}
+										{invites.map((invite, i) => (
+											<li
+												className="mt-1 flex items-center justify-between rounded-md border border-neutral-600 bg-black p-2 text-sm"
+												key={i}
+											>
+												{invite.email}
+												<button
+													onClick={() => {
+														const newInvites = invites.filter(
+															(item) => item.id !== invite.id,
+														);
+														setInvites(newInvites);
+													}}
+												>
+													<X className="h-[1.25rem]" />
+												</button>
+											</li>
+										))}
 									</ul>
 								</ScrollArea>
 							</div>
 						) : (
 							<div className="flex flex-1 grow  items-center justify-center">
-								<div className="flex w-1/2 flex-col items-center justify-center gap-2 rounded-md border border-primary bg-neutral-900 p-6 ">
+								<div className="flex h-48 w-2/3 flex-col items-center justify-center gap-2 rounded-md border border-primary bg-neutral-900 p-6 ">
 									<p className="text-lg font-medium">No signups selected</p>
 									<p className="text-sm text-neutral-500">
 										Go to the signups page to select some signups to invite
