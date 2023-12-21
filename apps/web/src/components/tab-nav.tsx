@@ -31,13 +31,17 @@ function NavItem({
 function TabNav() {
 	const selectedLayoutSegment = useSelectedLayoutSegment();
 	const params = useParams();
-	console.log(selectedLayoutSegment);
 
 	const settingsNavItems = [
 		{
 			label: "Waitlist",
 			segment: "waitlist",
 			href: `/dashboard/${params.waitlist}/settings/waitlist`,
+		},
+		{
+			label: "Email",
+			segment: "email",
+			href: `/dashboard/${params.waitlist}/settings/email`,
 		},
 		// {
 		// 	label: "Account",

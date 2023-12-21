@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { json, pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const waitlists = pgTable("waitlists", {
 	waitlistID: varchar("waitlist_id", { length: 256 }).primaryKey().notNull(),
@@ -6,6 +6,10 @@ export const waitlists = pgTable("waitlists", {
 	waitlistName: varchar("waitlist_name", { length: 255 }).notNull(),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
 	colorString: varchar("color_string", { length: 255 }).notNull(),
+	emailSettings: json("email_settings")
+		.$type<{ signup: boolean; invite: boolean }>()
+		.notNull()
+		.default({ signup: false, invite: false }),
 });
 
 export const statusEnum = pgEnum("status", ["waiting", "invited"]);
@@ -22,7 +26,7 @@ export const signups = pgTable("signups", {
 	status: statusEnum("status").notNull().default("waiting"),
 });
 
-export const templateEnum = pgEnum("template", ["invite", "signup"])
+export const templateEnum = pgEnum("template", ["invite", "signup"]);
 
 export const email_templates = pgTable("email_templates", {
 	templateID: varchar("template_id", { length: 256 }).primaryKey().notNull(),

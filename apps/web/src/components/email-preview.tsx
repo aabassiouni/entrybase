@@ -51,7 +51,7 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 				</div>
 			</div>
 			<div className="h-full w-full p-4 ">
-				<iframe className="h-full w-full rounded-lg" srcDoc={html} />
+				<iframe loading="eager" className="h-full w-full rounded-lg" srcDoc={html} />
 				{/* <div className="h-full w-full" dangerouslySetInnerHTML={{
 					__html: html
 				}}></div> */}

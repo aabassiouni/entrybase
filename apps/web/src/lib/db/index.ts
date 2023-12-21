@@ -123,7 +123,32 @@ export async function setEmailTemplateForUser(emailTemplate: any) {
 }
 
 export async function getEmailTemplateForUser(waitlistID: string, userID: string, template: "invite" | "signup") {
-	return await db.select().from(email_templates).where(and(eq(email_templates.waitlistID, waitlistID), eq(email_templates.template, template)));
+	return await db
+		.select()
+		.from(email_templates)
+		.where(and(eq(email_templates.waitlistID, waitlistID), eq(email_templates.template, template)));
+}
+
+export async function getWaitlistEmailSettings(waitlistID: string, userID: string) {
+	await checkAuth(waitlistID, userID);
+
+	return await db
+		.select({
+			emailSettings: waitlists.emailSettings,
+		})
+		.from(waitlists)
+		.where(eq(waitlists.waitlistID, waitlistID));
+}
+
+export async function updateWaitlistEmailSettings(waitlistID: string, userID: string, emailSettings: any) {
+	await checkAuth(waitlistID, userID);
+
+	return await db
+		.update(waitlists)
+		.set({
+			emailSettings: emailSettings,
+		})
+		.where(eq(waitlists.waitlistID, waitlistID));
 }
 
 export async function getSignupsList(waitlistID: string, userID: string) {
