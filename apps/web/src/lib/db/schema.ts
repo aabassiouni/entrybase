@@ -5,6 +5,7 @@ export const waitlists = pgTable("waitlists", {
 	userID: varchar("user_id", { length: 50 }).notNull(),
 	waitlistName: varchar("waitlist_name", { length: 255 }).notNull(),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
+	deletedAt: timestamp("deleted_at"),
 	colorString: varchar("color_string", { length: 255 }).notNull(),
 	emailSettings: json("email_settings")
 		.$type<{ signup: boolean; invite: boolean }>()

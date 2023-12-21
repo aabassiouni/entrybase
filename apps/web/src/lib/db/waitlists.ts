@@ -1,4 +1,4 @@
-import { desc, eq, and } from "drizzle-orm";
+import { desc, eq, and, isNotNull, isNull } from "drizzle-orm";
 import { waitlists } from "./schema";
 import { newId } from "../id";
 import { unstable_noStore as noStore } from "next/cache";
@@ -9,7 +9,7 @@ export async function findWaitlistForUser(userID: string, waitlistID: string) {
 	return await db
 		.select()
 		.from(waitlists)
-		.where(and(eq(waitlists.userID, userID), eq(waitlists.waitlistID, waitlistID)));
+		.where(and(eq(waitlists.userID, userID), eq(waitlists.waitlistID, waitlistID), isNull(waitlists.deletedAt)));
 }
 
 export async function createWaitlist(waitlist: string, userID: string) {
@@ -28,13 +28,13 @@ export async function getWaitlistsForUser(userID: string) {
 			colorString: waitlists.colorString,
 		})
 		.from(waitlists)
-		.where(eq(waitlists.userID, userID))
+		.where(and(eq(waitlists.userID, userID), isNull(waitlists.deletedAt)))
 		.orderBy(desc(waitlists.createdAt));
 }
 
 export async function getWaitlistByID(waitlistID: string) {
 	return await db.query.waitlists.findFirst({
-		where: eq(waitlists.waitlistID, waitlistID),
+		where: and(eq(waitlists.waitlistID, waitlistID), isNull(waitlists.deletedAt)),
 	});
 }
 
@@ -68,4 +68,10 @@ export async function getWaitlistEmailSettings(waitlistID: string, userID: strin
 		})
 		.from(waitlists)
 		.where(eq(waitlists.waitlistID, waitlistID));
+}
+
+export async function deleteWaitlistByID(waitlistID: string, userID: string) {
+	await checkAuth(waitlistID, userID);
+
+	return await db.update(waitlists).set({ deletedAt: new Date() }).where(eq(waitlists.waitlistID, waitlistID));
 }
