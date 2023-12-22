@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function LandingLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<body className={inter.className + " flex h-screen"}>{children}</body>
+			<body className={inter.className + " flex h-screen bg-black"}>{children}</body>
 		</html>
 	);
 }
