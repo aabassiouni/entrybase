@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 
 function InviteAction() {
 	return (
-		<div className="flex flex-col h-full items-center justify-center">
+		<div className="flex h-full flex-col items-center justify-center">
 			<p className="inline-flex items-center gap-2 text-lg">
 				Invite
 				<Select defaultValue={"10"}>

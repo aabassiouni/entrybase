@@ -1,76 +1,46 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Card } from "./ui/card";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import InviteAction from "@/components/invite-action";
 
-function ActionsCard({ children }: { children: React.ReactNode }) {
-	const containerRef = useRef<HTMLDivElement>(null);
-
-	const [leftBtnDisabled, setLeftBtnDisabled] = useState(false);
-	const [rightBtnDisabled, setRightBtnDisabled] = useState(false);
-	const [isScrolling, setIsScrolling] = useState(false);
-
-	useEffect(() => {
-		const checkScroll = () => {
-			if (containerRef.current) {
-				setLeftBtnDisabled(containerRef.current.scrollLeft < 390);
-				setRightBtnDisabled(
-					containerRef.current.scrollWidth -
-						(containerRef.current.scrollLeft + containerRef.current.clientWidth) <=
-						390,
-				);
-			}
-		};
-
-		checkScroll();
-		containerRef.current?.addEventListener("scroll", checkScroll);
-
-		return () => {
-			containerRef.current?.removeEventListener("scroll", checkScroll);
-		};
-	}, [containerRef.current]);
-
-	function handleScrollLeft() {
-		if (isScrolling) return;
-		if (containerRef.current) {
-			const currElement = Math.round(containerRef.current.scrollLeft / 454);
-			const elementToScrollTo = currElement - 1;
-			const scrollPos = elementToScrollTo * 454;
-			containerRef.current.scrollTo(scrollPos, 0);
-		}
-	}
-	function handleScrollRight() {
-		if (containerRef.current) {
-			const currElement = Math.round(containerRef.current.scrollLeft / 454);
-			const elementToScrollTo = currElement + 1;
-			const scrollPos = elementToScrollTo * 454;
-			containerRef.current.scrollTo(scrollPos, 0);
-		}
-	}
-
+function ActionsCardStats() {
 	return (
-		<Card id="container" className="col-span-2  flex h-full w-full items-center p-0 px-2 ">
-			<button
-				disabled={leftBtnDisabled}
-				onClick={handleScrollLeft}
-				className="flex w-8 justify-center disabled:opacity-50 "
-			>
-				<ChevronLeft className="h-6 w-6 " />
-			</button>
-			<div
-				ref={containerRef}
-				className="hide-scrollbar flex h-full w-full snap-x flex-nowrap gap-9 overflow-x-scroll scroll-smooth  px-8 md:px-14  "
-			>
-				{children}
+		<div className="flex h-full w-full items-center justify-between">
+			<div className="">
+				<h1 className="text-center text-xl font-bold">Past Week</h1>
+				<p className="text-center text-xl font-bold text-primary">647</p>
 			</div>
-			<button
-				disabled={rightBtnDisabled}
-				onClick={handleScrollRight}
-				className="flex w-8 justify-center disabled:opacity-50"
-			>
-				<ChevronRight className="h-6 w-6" />
-			</button>
-		</Card>
+			<div className="">
+				<h1 className="text-center text-xl font-bold">Past Month</h1>
+				<p className="text-center text-xl font-bold text-primary">872</p>
+			</div>
+			<div className="">
+				<h1 className="text-center text-xl font-bold">Open Rate</h1>
+				<p className="text-center text-xl font-bold text-primary">33%</p>
+			</div>
+		</div>
+	);
+}
+
+function ActionsCard() {
+	return (
+		<div className="col-span-2 h-full">
+			<Carousel className="h-full">
+				<Card className="flex h-full w-full items-center px-4">
+					<CarouselPrevious className="relative" />
+					<CarouselContent className="h-full w-full">
+						<CarouselItem className="ml-2">
+							<ActionsCardStats />
+						</CarouselItem>
+						<CarouselItem className="ml-2">
+							<InviteAction />
+						</CarouselItem>
+					</CarouselContent>
+					<CarouselNext className="relative" />
+				</Card>
+			</Carousel>
+		</div>
 	);
 }
 

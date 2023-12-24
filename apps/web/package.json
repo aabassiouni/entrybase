@@ -36,6 +36,7 @@
     "clsx": "^2.0.0",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
+    "embla-carousel-react": "8.0.0-rc17",
     "lucide-react": "^0.287.0",
     "next": "14.0.1",
     "next-themes": "^0.2.1",

@@ -198,28 +198,7 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 	);
 }
 
-function ActionsCardContent({ children, className }: { children: React.ReactNode; className?: string }) {
-	return <div className={clsx("w-[250px] flex-none snap-center  sm:w-[390px] ", className)}>{children}</div>;
-}
 
-function ActionsCardStats() {
-	return (
-		<div className="flex h-full w-full items-center justify-between">
-			<div className="">
-				<h1 className="text-center text-xl font-bold">Past Week</h1>
-				<p className="text-center text-xl font-bold">647</p>
-			</div>
-			<div className="">
-				<h1 className="text-center text-xl font-bold">Past Month</h1>
-				<p className="text-center text-xl font-bold">872</p>
-			</div>
-			<div className="">
-				<h1 className="text-center text-xl font-bold">Open Rate</h1>
-				<p className="text-center text-xl font-bold">33%</p>
-			</div>
-		</div>
-	);
-}
 
 export default async function Home({ params }: { params: { waitlist: string } }) {
 	return (
@@ -229,14 +208,7 @@ export default async function Home({ params }: { params: { waitlist: string } })
 				<Suspense fallback={<CountCardsLoading />}>
 					<CountCards waitlistID={params.waitlist} />
 				</Suspense>
-				<ActionsCard>
-					<ActionsCardContent>
-						<ActionsCardStats />
-					</ActionsCardContent>
-					<ActionsCardContent>
-						<InviteAction />
-					</ActionsCardContent>
-				</ActionsCard>
+				<ActionsCard />
 			</div>
 			<div className="p-4"></div>
 			<div className="grid grid-cols-2 gap-4">
