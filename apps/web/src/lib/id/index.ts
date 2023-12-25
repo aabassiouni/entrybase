@@ -6,6 +6,7 @@ const prefixes = {
     wt: "wt",
     et: "et",
     su: "su",
+    inv: "inv",
 } as const;
 
 export function newId(prefix: keyof typeof prefixes): string {

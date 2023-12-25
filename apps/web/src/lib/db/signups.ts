@@ -20,7 +20,9 @@ export async function getInvitesListByCount(selectionMethod: string, count: numb
 	}
 
 	const signupsList = await db
-		.select()
+		.select({
+			email: signups.email,
+		})
 		.from(signups)
 		.where(and(eq(signups.status, "waiting"), eq(signups.waitlistID, waitlistID)))
 		.orderBy(orderBy)

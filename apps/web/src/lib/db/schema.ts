@@ -1,4 +1,4 @@
-import { json, pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { PgArray, json, pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const waitlists = pgTable("waitlists", {
 	waitlistID: varchar("waitlist_id", { length: 256 }).primaryKey().notNull(),
@@ -36,4 +36,12 @@ export const email_templates = pgTable("email_templates", {
 	subject: varchar("subject", { length: 255 }),
 	header: text("header"),
 	bodyText: text("body_text"),
+});
+
+export const invites = pgTable("invites", {
+	inviteID: varchar("invite_id", { length: 256 }).primaryKey().notNull(),
+	waitlistID: varchar("waitlist_id", { length: 256 })
+		.notNull()
+		.references(() => waitlists.waitlistID),
+	email_id: varchar("email_id", { length: 256 }).array().notNull(),
 });
