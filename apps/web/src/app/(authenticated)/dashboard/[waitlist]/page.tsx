@@ -208,7 +208,7 @@ export default async function Home({ params }: { params: { waitlist: string } })
 				<Suspense fallback={<CountCardsLoading />}>
 					<CountCards waitlistID={params.waitlist} />
 				</Suspense>
-				<ActionsCard />
+				<ActionsCard waitlistID={params.waitlist} />
 			</div>
 			<div className="p-4"></div>
 			<div className="grid grid-cols-2 gap-4">

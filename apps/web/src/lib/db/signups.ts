@@ -191,3 +191,31 @@ export async function getCounts(waitlistID: string, userID: string) {
 		delta: data[0].delta,
 	};
 }
+
+export async function getSignupsCountForWeek(waitlistID: string, userID: string) {
+	await checkAuth(waitlistID, userID);
+
+	return (await db
+		.select({
+			count: sql`COUNT(*)`,
+		})
+		.from(signups)
+		.where(and(eq(signups.waitlistID, waitlistID), sql`created_at >= CURRENT_DATE - INTERVAL '7 days'`))
+		.then((result) => {
+			return result[0].count;
+		})) as number;
+}
+
+export async function getSignupsCountForMonth(waitlistID: string, userID: string) {
+	await checkAuth(waitlistID, userID);
+
+	return (await db
+		.select({
+			count: sql`COUNT(*)`,
+		})
+		.from(signups)
+		.where(and(eq(signups.waitlistID, waitlistID), sql`created_at >= CURRENT_DATE - INTERVAL '30 days'`))
+		.then((result) => {
+			return result[0].count;
+		})) as number;
+}

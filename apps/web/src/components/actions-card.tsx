@@ -1,19 +1,26 @@
-"use client";
 import React from "react";
 import { Card } from "./ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import InviteAction from "@/components/invite-action";
+import { getSignupsCountForMonth, getSignupsCountForWeek } from "@/lib/db";
+import { currentUser } from "@clerk/nextjs";
 
-function ActionsCardStats() {
+async function ActionsCardStats({ waitlistID }: { waitlistID: string }) {
+	const user = await currentUser();
+	if (!user) return null;
+	
+	const weekCount = await getSignupsCountForWeek(waitlistID, user.id);
+	const monthCount = await getSignupsCountForMonth(waitlistID, user.id);
+	
 	return (
 		<div className="flex h-full w-full items-center justify-between">
 			<div className="">
 				<h1 className="text-center text-xl font-bold">Past Week</h1>
-				<p className="text-center text-xl font-bold text-primary">647</p>
+				<p className="text-center text-xl font-bold text-primary">{weekCount}</p>
 			</div>
 			<div className="">
 				<h1 className="text-center text-xl font-bold">Past Month</h1>
-				<p className="text-center text-xl font-bold text-primary">872</p>
+				<p className="text-center text-xl font-bold text-primary">{monthCount}</p>
 			</div>
 			<div className="">
 				<h1 className="text-center text-xl font-bold">Open Rate</h1>
@@ -23,7 +30,7 @@ function ActionsCardStats() {
 	);
 }
 
-function ActionsCard() {
+function ActionsCard({ waitlistID }: { waitlistID: string }) {
 	return (
 		<div className="col-span-2 h-full">
 			<Carousel className="h-full">
@@ -31,7 +38,7 @@ function ActionsCard() {
 					<CarouselPrevious className="relative" />
 					<CarouselContent className="h-full w-full">
 						<CarouselItem className="ml-2">
-							<ActionsCardStats />
+							<ActionsCardStats waitlistID={waitlistID} />
 						</CarouselItem>
 						<CarouselItem className="ml-2">
 							<InviteAction />
