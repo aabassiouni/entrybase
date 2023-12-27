@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import SidebarUserButton from "./sidebar-user-button";
-import { Home, LineChart, List, SendHorizonal, Mail, Settings } from "lucide-react";
+import { Home, LineChart, List, SendHorizonal, Mail, Settings, Archive } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 import WaitlistSelect from "./waitlist-select";
 
@@ -53,6 +53,11 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 			name: "Invite",
 			icon: <SendHorizonal {...iconProps} />,
 			href: `/dashboard/${wtSegment}/invite`,
+		},
+		{
+			name: "Sent Invites",
+			icon: <Archive {...iconProps} />,
+			href: `/dashboard/${wtSegment}/sent-invites`,
 		},
 		{
 			name: "Email Preview",

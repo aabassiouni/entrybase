@@ -43,5 +43,7 @@ export const invites = pgTable("invites", {
 	waitlistID: varchar("waitlist_id", { length: 256 })
 		.notNull()
 		.references(() => waitlists.waitlistID),
-	email_id: varchar("email_id", { length: 256 }).array().notNull(),
+	email_ids: varchar("email_ids", { length: 256 }).array().notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	invited_emails: varchar("invited_emails", { length: 256 }).array().notNull(),
 });

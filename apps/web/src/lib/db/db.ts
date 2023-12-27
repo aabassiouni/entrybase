@@ -4,7 +4,7 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { sql, desc, eq, and, asc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/neon-http";
 import { DBResult, Entry, EntryResponse } from "@/types";
-import { email_templates, signups, waitlists } from "./schema";
+import { email_templates, signups, waitlists, invites } from "./schema";
 import { newId } from "../id";
 import { notFound, redirect } from "next/navigation";
 import { unstable_noStore as noStore } from "next/cache";
@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === "development") {
 
 const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
 
-export const db = drizzle(neonDB, { schema: { signups, waitlists, email_templates } });
+export const db = drizzle(neonDB, { schema: { signups, waitlists, email_templates, invites } });
 
 export async function checkAuth(waitlistID: string, userID: string) {
 	const waitlist = await findWaitlistForUser(userID, waitlistID);

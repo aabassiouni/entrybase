@@ -1,6 +1,5 @@
 import { InviteTemplate } from "@/components/email/invite-template";
 import { createInvite, findWaitlistForUser, getEmailTemplateForUser, getInvitesListByCount } from "@/lib/db";
-import { newId } from "@/lib/id";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -47,12 +46,12 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	}
 
 	async function handleCount() {
-		const emailsList = await getInvitesListByCount(selectionMethod, inviteCount, waitlistID);
-		for (const email of emailsList) {
-			console.log("sending email to", email.email);
-		}
+		// const emailsList = await getInvitesListByCount(selectionMethod, inviteCount, waitlistID);
+		// for (const email of emailsList) {
+		// 	console.log("sending email to", email.email);
+		// }
 
-		// const emailsList = ["aabassiouni@hotmail.com", "aabassiouni@hotmail.com"];
+		const emailsList = [{ email: "aabassiouni@hotmail.com" }, { email: "aabassiouni@hotmail.com" }];
 		const resendResponse = await resend.batch.send(
 			emailsList.map((email) => {
 				return {
@@ -67,12 +66,16 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 				};
 			}),
 		);
-		
+
 		if (!resendResponse.error) {
 			if (resendResponse.data) {
 				console.log("Resend response", resendResponse.data);
 				const emailIDs = resendResponse.data.data.map((email) => email.id);
-				await createInvite(waitlistID, emailIDs);
+				await createInvite(
+					waitlistID,
+					emailIDs,
+					emailsList.map((email) => email.email),
+				);
 			}
 		} else {
 			console.log("Error sending emails:", resendResponse.error);
@@ -83,14 +86,16 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	}
 
 	async function handleList() {
-		const emailsList = invitesList;
-		for (const email of emailsList) {
-			console.log("sending email to", email.email);
-		}
+		// const emailsList = invitesList;
 
-		// const emailsList = ["aabassiouni@hotmail.com", "aabassiouni@hotmail.com"];
+		const emailsList = [
+			{ email: "aabassiouni@hotmail.com", id: "1" },
+			{ email: "aabassiouni@hotmail.com", id: "2" },
+		];
 		const resendResponse = await resend.batch.send(
 			emailsList.map((email: { email: string; id: string }) => {
+				console.log("sending email to", email.email);
+
 				return {
 					from: "Ali B <onboarding@resend.dev>",
 					to: email.email,
@@ -108,7 +113,11 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 			if (resendResponse.data) {
 				console.log("Resend response", resendResponse.data);
 				const emailIDs = resendResponse.data.data.map((email) => email.id);
-				await createInvite(waitlistID, emailIDs);
+				await createInvite(
+					waitlistID,
+					emailIDs,
+					emailsList.map((email) => email.email),
+				);
 			}
 		} else {
 			console.log("Error sending emails:", resendResponse.error);
