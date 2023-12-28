@@ -46,36 +46,32 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	}
 
 	async function handleCount() {
-		// const emailsList = await getInvitesListByCount(selectionMethod, inviteCount, waitlistID);
-		// for (const email of emailsList) {
-		// 	console.log("sending email to", email.email);
-		// }
+		const emailsList = await getInvitesListByCount(selectionMethod, inviteCount, waitlistID);
+		for (const email of emailsList) {
+			console.log("sending email to", email.email);
+		}
 
-		const emailsList = [{ email: "aabassiouni@hotmail.com" }, { email: "aabassiouni@hotmail.com" }];
-		const resendResponse = await resend.batch.send(
-			emailsList.map((email) => {
-				return {
-					from: "Ali B <onboarding@resend.dev>",
-					to: email.email,
-					subject: emailTemplate?.subject ?? "",
-					react: InviteTemplate({
-						bodyText: emailTemplate?.bodyText,
-						header: emailTemplate?.header,
-						companyWebsite: "https://usesideprojectai.com",
-					}),
-				};
-			}),
-		);
+		const resendResponse = { data: { data: [{ id: "1" }, { id: "2" }] }, error: null };
+		// const resendResponse = await resend.batch.send(
+		// 	emailsList.map((email) => {
+		// 		return {
+		// 			from: "Ali B <onboarding@resend.dev>",
+		// 			to: email.email,
+		// 			subject: emailTemplate?.subject ?? "",
+		// 			react: InviteTemplate({
+		// 				bodyText: emailTemplate?.bodyText,
+		// 				header: emailTemplate?.header,
+		// 				companyWebsite: "https://usesideprojectai.com",
+		// 			}),
+		// 		};
+		// 	}),
+		// );
 
 		if (!resendResponse.error) {
 			if (resendResponse.data) {
 				console.log("Resend response", resendResponse.data);
 				const emailIDs = resendResponse.data.data.map((email) => email.id);
-				await createInvite(
-					waitlistID,
-					emailIDs,
-					emailsList.map((email) => email.email),
-				);
+				await createInvite(waitlistID, emailIDs, emailsList);
 			}
 		} else {
 			console.log("Error sending emails:", resendResponse.error);
@@ -86,28 +82,26 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	}
 
 	async function handleList() {
-		// const emailsList = invitesList;
+		const emailsList = invitesList;
 
-		const emailsList = [
-			{ email: "aabassiouni@hotmail.com", id: "1" },
-			{ email: "aabassiouni@hotmail.com", id: "2" },
-		];
-		const resendResponse = await resend.batch.send(
-			emailsList.map((email: { email: string; id: string }) => {
-				console.log("sending email to", email.email);
+		const resendResponse = { data: { data: [{ id: "1" }, { id: "2" }] }, error: null };
 
-				return {
-					from: "Ali B <onboarding@resend.dev>",
-					to: email.email,
-					subject: emailTemplate?.subject ?? "",
-					react: InviteTemplate({
-						bodyText: emailTemplate?.bodyText,
-						header: emailTemplate?.header,
-						companyWebsite: "https://usesideprojectai.com",
-					}),
-				};
-			}),
-		);
+		// const resendResponse = await resend.batch.send(
+		// 	emailsList.map((email: { email: string; id: string }) => {
+		// 		console.log("sending email to", email.email);
+
+		// 		return {
+		// 			from: "Ali B <onboarding@resend.dev>",
+		// 			to: email.email,
+		// 			subject: emailTemplate?.subject ?? "",
+		// 			react: InviteTemplate({
+		// 				bodyText: emailTemplate?.bodyText,
+		// 				header: emailTemplate?.header,
+		// 				companyWebsite: "https://usesideprojectai.com",
+		// 			}),
+		// 		};
+		// 	}),
+		// );
 
 		if (!resendResponse.error) {
 			if (resendResponse.data) {
@@ -116,7 +110,7 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 				await createInvite(
 					waitlistID,
 					emailIDs,
-					emailsList.map((email) => email.email),
+					emailsList,
 				);
 			}
 		} else {

@@ -21,6 +21,7 @@ export async function getInvitesListByCount(selectionMethod: string, count: numb
 
 	const signupsList = await db
 		.select({
+			id: signups.signupID,
 			email: signups.email,
 		})
 		.from(signups)

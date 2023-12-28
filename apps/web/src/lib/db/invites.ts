@@ -1,16 +1,28 @@
 import { newId } from "@/lib/id";
 import { db, checkAuth } from "./db";
-import { invites } from "./schema";
-import { eq, sql, desc, and } from "drizzle-orm";
+import { signups, invites } from "./schema";
+import { eq, sql, desc, and, inArray } from "drizzle-orm";
 
-export async function createInvite(waitlistID: string, emailIDs: string[], invitedEmails: string[]) {
+export async function createInvite(
+	waitlistID: string,
+	emailIDs: string[],
+	invitedEmails: { email: string; id: string }[],
+) {
 	// await checkAuth(waitlistID, userID);
 
-	await db.insert(invites).values({
+	//mark signups as invited
+	await db
+		.update(signups)
+		.set({
+			status: "invited",
+		})
+		.where(inArray(signups.signupID, invitedEmails.map((email) => email.id)));
+
+	return await db.insert(invites).values({
 		inviteID: newId("inv"),
 		waitlistID,
 		email_ids: emailIDs,
-		invited_emails: invitedEmails,
+		invited_emails: invitedEmails.map((email) => email.email),
 	});
 }
 

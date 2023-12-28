@@ -1,7 +1,7 @@
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { migrate } from "drizzle-orm/neon-http/migrator";
-import { email_templates, signups, waitlists } from "./schema";
+import { email_templates, signups, waitlists ,invites } from "./schema";
 import * as dotenv from "dotenv";
 
 dotenv.config({ path: ".env.local" });
@@ -14,7 +14,7 @@ const runMigration = async () => {
 		throw new Error("No database URL");
 	}
 
-	neonConfig.fetchConnectionCache = true;
+	// neonConfig.fetchConnectionCache = true;
 
 	neonConfig.fetchEndpoint = (host) => {
 		const protocol = host === "db.localtest.me" ? "http" : "https";
@@ -24,7 +24,7 @@ const runMigration = async () => {
 
 	const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
 
-	const db = drizzle(neonDB, { schema: { signups, waitlists, email_templates } });
+	const db = drizzle(neonDB, { schema: { signups, waitlists, email_templates, invites } });
 
 	await migrate(db, { migrationsFolder: "./drizzle/migrations" });
 
