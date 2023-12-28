@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
 	AlertDialog,
+	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -18,26 +19,38 @@ function DeleteDialogButton() {
 	const { pending } = useFormStatus();
 
 	return (
-		<Button type="submit" variant={"destructive"}>
+		<Button
+			onClick={(event) => {
+				event.stopPropagation();
+			}}
+			type="submit"
+			variant={"destructive"}
+		>
 			{pending ? "Deleting..." : "Delete"}
 		</Button>
 	);
 }
 
-function DeleteButton({ id }: { id: string }) {
-	const [open, setOpen] = useState(false);
-
+function DeleteButton({ id, open, setOpen }: { id: string; open: boolean; setOpen: (open: boolean) => void }) {
 	async function handleSubmit(formData: FormData) {
 		await handleDelete(formData);
 		setOpen(false);
 	}
 
 	return (
-		<AlertDialog open={open} onOpenChange={setOpen}>
-			<AlertDialogTrigger asChild>
-				<Button size={"icon"} variant={"destructive"} className="text-red-500">
-					<Trash className="h-5 w-5" />
-				</Button>
+		// <AlertDialog open={open} onOpenChange={setOpen}>
+		<>
+			<AlertDialogTrigger
+				className="dark:hover:bg-none"
+				onClick={(event) => {
+					event.stopPropagation();
+				}}
+				// asChild
+			>
+				<div className="inline-flex items-center justify-center">
+					<Trash className="mr-2 h-4 w-4" />
+					<p>Delete</p>
+				</div>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<form action={handleSubmit}>
@@ -49,12 +62,21 @@ function DeleteButton({ id }: { id: string }) {
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
-						<AlertDialogCancel>Cancel</AlertDialogCancel>
-						<DeleteDialogButton />
+						<AlertDialogCancel
+							onClick={(event) => {
+								event.stopPropagation();
+							}}
+						>
+							Cancel
+						</AlertDialogCancel>
+						<AlertDialogAction asChild>
+							<DeleteDialogButton />
+						</AlertDialogAction>
 					</AlertDialogFooter>
 				</form>
 			</AlertDialogContent>
-		</AlertDialog>
+		</>
+		// </AlertDialog>
 	);
 }
 

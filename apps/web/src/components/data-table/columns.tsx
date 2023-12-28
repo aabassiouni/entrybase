@@ -98,15 +98,9 @@ export const signupColumns: ColumnDef<Signup>[] = [
 		},
 	},
 	{
-		id: "invite",
+		id: "actions",
 		cell: ({ row }) => {
-			return <InviteButton email={row.original.email} id={row.original.signupID} />;
-		},
-	},
-	{
-		id: "delete",
-		cell: ({ row }) => {
-			return <DeleteButton id={row.original.signupID} />;
+			return <TableActions id={row.original.signupID} email={row.original.email} />;
 		},
 	},
 ];
