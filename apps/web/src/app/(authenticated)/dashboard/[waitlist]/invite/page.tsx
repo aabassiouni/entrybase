@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Mail, X } from "lucide-react";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,7 +60,7 @@ function InvitePage() {
 		console.log(res);
 		if (res.message === "success") {
 			console.log("success");
-			router.push(`/dashboard/${waitlist}`);
+			router.push(`/dashboard/${waitlist}/invite/success`);
 		}
 		if (res.message === "error") {
 			console.log("error");
@@ -83,7 +83,7 @@ function InvitePage() {
 		const res = await data.json();
 		if (res.message === "success") {
 			console.log("success");
-			router.push(`/dashboard/${waitlist}`);
+			router.push(`/dashboard/${waitlist}/invite/success`);
 		}
 		if (res.message === "error") {
 			console.log("error");
