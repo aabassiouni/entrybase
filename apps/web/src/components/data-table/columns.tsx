@@ -1,11 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Checkbox } from "./ui/checkbox";
-import InviteButton from "./invite-button";
-import DeleteButton from "./delete-button";
-import { Button } from "./ui/button";
+import { Checkbox } from "../ui/checkbox";
+import InviteButton from "../invite-button";
+import DeleteButton from "../delete-button";
+import { Button } from "../ui/button";
 import { ArrowUpDown } from "lucide-react";
+import TableActions from "./table-actions";
 
 type Signup = {
 	signupID: string;
@@ -68,7 +69,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 			const formattedDate = date.toDateString();
 			return (
 				<div>
-					<span className="w-fit px-4 truncate">{formattedDate}</span>
+					<span className="w-fit truncate px-4">{formattedDate}</span>
 				</div>
 			);
 		},
@@ -93,15 +94,13 @@ export const signupColumns: ColumnDef<Signup>[] = [
 			const value = row.getValue("status") as string;
 			const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
 
-			return (
-				<span className="inline-flex px-4">{capitalizedValue}</span>
-			);
+			return <span className="inline-flex px-4">{capitalizedValue}</span>;
 		},
 	},
 	{
 		id: "invite",
 		cell: ({ row }) => {
-			return <InviteButton email={row.original.email} id={row.original.signupID}/>;
+			return <InviteButton email={row.original.email} id={row.original.signupID} />;
 		},
 	},
 	{

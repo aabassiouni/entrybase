@@ -3,9 +3,9 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DataTableViewOptions } from "./data-table-view-options";
-import { useInvites } from "./context/invite-context";
+import { useInvites } from "../context/invite-context";
 import { useRouter } from "next/navigation";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;
 }
@@ -36,7 +36,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 							setInvites(
 								table.getFilteredSelectedRowModel().rows.map((row) => {
 									//@ts-ignore
-									return {email: row.original?.email, id:row.original?.signupID};
+									return { email: row.original?.email, id: row.original?.signupID };
 								}),
 							);
 							router.push(`invite`);

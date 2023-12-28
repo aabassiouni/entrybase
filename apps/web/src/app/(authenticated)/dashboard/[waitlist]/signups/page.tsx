@@ -1,6 +1,6 @@
 import React from "react";
-import { signupColumns } from "@/components/columns";
-import { DataTable } from "@/components/data-table";
+import { signupColumns } from "@/components/data-table/columns";
+import { DataTable } from "@/components/data-table/data-table";
 import { getSignupsList } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import { PageHeading } from "@/components/typography";
