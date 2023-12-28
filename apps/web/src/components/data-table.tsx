@@ -63,7 +63,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
 					<TableBody className="">
 						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
-								<TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+								<TableRow onClick={(value: any) => row.toggleSelected(!row.getIsSelected())} key={row.id} data-state={row.getIsSelected() && "selected"}>
 									{row.getVisibleCells().map((cell) => (
 										<TableCell className="h-18" key={cell.id}>
 											{flexRender(cell.column.columnDef.cell, cell.getContext())}
