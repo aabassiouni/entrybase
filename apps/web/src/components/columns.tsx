@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "./ui/checkbox";
 import InviteButton from "./invite-button";
 import DeleteButton from "./delete-button";
+import { Button } from "./ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 type Signup = {
 	signupID: string;
@@ -39,31 +41,62 @@ export const signupColumns: ColumnDef<Signup>[] = [
 	{
 		accessorKey: "email",
 		header: "Email",
+		enableSorting: false,
 	},
 	{
 		accessorKey: "firstName",
 		header: "First Name",
+		enableSorting: false,
 	},
 	{
 		accessorKey: "lastName",
 		header: "Last Name",
+		enableSorting: false,
 	},
 	{
 		accessorKey: "createdAt",
-		header: "Signed Up On",
+		header: ({ column }) => {
+			return (
+				<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+					Signed Up On
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			);
+		},
 		cell: ({ row }) => {
 			const date = new Date(row.getValue("createdAt"));
 			const formattedDate = date.toDateString();
 			return (
 				<div>
-					<span className="w-fit truncate">{formattedDate}</span>
+					<span className="w-fit px-4 truncate">{formattedDate}</span>
 				</div>
 			);
 		},
 	},
 	{
 		accessorKey: "status",
-		header: "Status",
+		enableHiding: false,
+		sortingFn: (a, b) => {
+			if (a.getValue("status") === "waiting" && b.getValue("status") === "invited") return -1;
+			if (a.getValue("status") === "invited" && b.getValue("status") === "waiting") return 1;
+			return 0;
+		},
+		header: ({ column }) => {
+			return (
+				<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+					Status
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			);
+		},
+		cell: ({ row }) => {
+			const value = row.getValue("status") as string;
+			const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+
+			return (
+				<span className="inline-flex px-4">{capitalizedValue}</span>
+			);
+		},
 	},
 	{
 		id: "invite",
