@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Mail, X } from "lucide-react";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,7 +25,9 @@ const formSchema = z.object({
 	inviteCount: z.coerce.number(),
 	selectionMethod: z.enum(["latest", "oldest", "random"]),
 });
+
 function InvitePage() {
+	const searchParams = useSearchParams();
 	const [isLoading, setIsLoading] = useState(false);
 	const { invites, setInvites } = useInvites();
 	const { toast } = useToast();
@@ -48,6 +50,7 @@ function InvitePage() {
 		},
 	});
 
+	const defaultCount = searchParams.get("count");
 	async function handleFormSubmit(values: z.infer<typeof formSchema>) {
 		console.log("send invites");
 		console.log(values);
@@ -162,7 +165,7 @@ function InvitePage() {
 														<FormControl>
 															<Select
 																onValueChange={field.onChange}
-																defaultValue={String(field.value)}
+																defaultValue={defaultCount ?? String(field.value)}
 															>
 																<SelectTrigger className="w-12 px-1 py-1">
 																	<SelectValue />

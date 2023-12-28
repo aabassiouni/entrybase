@@ -1,13 +1,19 @@
+"use client";
 import React from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Button } from "./ui/button";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 function InviteAction() {
+	const params = useParams();
+	const [count, setCount] = React.useState("10");
+	
 	return (
 		<div className="flex h-full flex-col items-center justify-center">
 			<p className="inline-flex items-center gap-2 text-lg">
 				Invite
-				<Select defaultValue={"10"}>
+				<Select value={count} onValueChange={setCount} defaultValue={"10"}>
 					<SelectTrigger className="w-12 px-1 py-1">
 						<SelectValue />
 					</SelectTrigger>
@@ -19,9 +25,11 @@ function InviteAction() {
 				</Select>
 				signups off your waitlist
 			</p>
-			<Button size={"sm"} className=" font-medium dark:bg-primary">
-				Invite
-			</Button>
+			<Link href={`/dashboard/${params.waitlist}/invite?count=${count}`}>
+				<Button size={"sm"} className=" font-medium dark:bg-primary">
+					Invite
+				</Button>
+			</Link>
 		</div>
 	);
 }
