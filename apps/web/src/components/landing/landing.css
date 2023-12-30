@@ -1,0 +1,12 @@
+path {
+    transition: stroke-dashoffset 2s ease;
+}
+svg:hover path {
+    stroke-dashoffset: 0;
+}
+.animated-area {
+    transition: fill-opacity 2s ease;
+}
+svg:hover .animated-area {
+    fill-opacity: 0.8;
+}
