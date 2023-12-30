@@ -46,8 +46,6 @@ async function EmailPreviewPage({
 
 	async function clearEmailTemplate() {
 		"use server";
-		console.log("clearing email template");
-
 		if (!user!.id) return;
 
 		await setEmailTemplateForUser({
@@ -59,7 +57,6 @@ async function EmailPreviewPage({
 			header: null,
 		});
 		revalidatePath("/email-preview");
-		console.log("cleared email template");
 	}
 
 	return (

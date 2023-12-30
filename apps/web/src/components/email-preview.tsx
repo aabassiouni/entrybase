@@ -12,7 +12,6 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 	if (!user) return;
 
 	const values = await getEmailTemplateForUser(waitlistID, user.id, template);
-	console.log("values in email template preview", values[0]);
 	const Template = template === "invite" ? <InviteTemplate bodyText={values[0]?.bodyText} header={values[0]?.header} companyWebsite={null}  /> : <SignupTemplate />;
 	const html = await renderAsync(
 		Template,

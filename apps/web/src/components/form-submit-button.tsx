@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils";
 
 function FormSubmitButton({loading, children, className }: {loading?:boolean, children: React.ReactNode; className?: string }) {
 	const { pending, action,data,method } = useFormStatus();
-	// console.log({pending, action,data,method})
 	return (
 		<Button className={cn( className)} type="submit">
 			{pending || loading ? <Loader2 className="animate-spin" /> : children}

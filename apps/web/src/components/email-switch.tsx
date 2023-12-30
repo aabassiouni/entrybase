@@ -15,7 +15,6 @@ function EmailSwitch({
 				<Switch
 					defaultChecked={settings.signup}
 					onCheckedChange={async (value) => {
-						console.log("switching signup");
 						action(value, "signup");
 					}}
 				/>
@@ -24,7 +23,6 @@ function EmailSwitch({
 			<div className="flex">
 				<Switch
 					onCheckedChange={async (value) => {
-						console.log("switching invite");
 						action(value, "invite");
 					}}
 					defaultChecked={settings.invite}

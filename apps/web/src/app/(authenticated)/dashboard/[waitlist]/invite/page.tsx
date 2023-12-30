@@ -52,21 +52,16 @@ function InvitePage() {
 
 	const defaultCount = searchParams.get("count");
 	async function handleFormSubmit(values: z.infer<typeof formSchema>) {
-		console.log("send invites");
-		console.log(values);
 		setIsLoading(true);
 		const data = await fetch(`/api/${waitlist}/send?type=count`, {
 			method: "POST",
 			body: JSON.stringify({ inviteCount: values.inviteCount, selectionMethod: values.selectionMethod }),
 		});
 		const res = await data.json();
-		console.log(res);
 		if (res.message === "success") {
-			console.log("success");
 			router.push(`/dashboard/${waitlist}/invite/success`);
 		}
 		if (res.message === "error") {
-			console.log("error");
 			toast({
 				title: "Error",
 				description: "Something went wrong, please try again",
@@ -85,11 +80,9 @@ function InvitePage() {
 		});
 		const res = await data.json();
 		if (res.message === "success") {
-			console.log("success");
 			router.push(`/dashboard/${waitlist}/invite/success`);
 		}
 		if (res.message === "error") {
-			console.log("error");
 			toast({
 				title: "Error",
 				description: "Something went wrong, please try again",

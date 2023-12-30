@@ -28,7 +28,6 @@ export async function getInvitesListByCount(selectionMethod: string, count: numb
 		.where(and(eq(signups.status, "waiting"), eq(signups.waitlistID, waitlistID)))
 		.orderBy(orderBy)
 		.limit(count);
-	console.log(signupsList);
 
 	return signupsList;
 }
@@ -62,7 +61,6 @@ export async function getSignupsEmailListforUser(waitlistID: string, userID: str
 }
 
 export async function getSignupsCountForDay(waitlistID: string, userID: string, day: string) {
-	console.log(day);
 	const fromTimestamp = day + " 00:00:00";
 	const toTimestamp = day + " 23:59:59";
 	return await db
@@ -139,7 +137,6 @@ export async function getDayChartLabelsAndValues(
 		return { label, value, tooltipLabel };
 	});
 	const dayString = new Date(day).toDateString().split(" ").slice(1, 3).join(" ");
-	console.log(entries);
 	return { entries, dayString };
 }
 
