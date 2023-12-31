@@ -2,20 +2,31 @@
 import { Card } from "@/components/ui/card";
 import InviteTemplate from "./email/invite-template";
 import { renderAsync } from "@react-email/components";
-import { getEmailTemplateForUser } from "@/lib/db";
+import { getEmailTemplateForUser, getWaitlistLogoURL } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import SignupTemplate from "./email/signup-template";
 
 async function EmailPreview({ waitlistID, template }: { waitlistID: string; template: "invite" | "signup" }) {
-	// const [html, setHtml] = useState("");
+	
 	const user = await currentUser();
 	if (!user) return;
 
 	const values = await getEmailTemplateForUser(waitlistID, user.id, template);
-	const Template = template === "invite" ? <InviteTemplate bodyText={values[0]?.bodyText} header={values[0]?.header} companyWebsite={null}  /> : <SignupTemplate />;
-	const html = await renderAsync(
-		Template,
-	);
+	const logoURL = await getWaitlistLogoURL(waitlistID);
+
+	const Template =
+		template === "invite" ? (
+			<InviteTemplate
+				bodyText={values[0]?.bodyText}
+				logoURL={logoURL}
+				header={values[0]?.header}
+				companyWebsite={null}
+			/>
+		) : (
+			<SignupTemplate />
+		);
+
+	const html = await renderAsync(Template);
 
 	return (
 		<Card className="flex h-full flex-col">

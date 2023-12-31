@@ -24,6 +24,7 @@ export type EmailTemplateProps = {
 	header: string | null;
 	bodyText: string | null;
 	companyWebsite: string | null;
+	logoURL: string | null;
 };
 
 export type EntryResponse = {entries: Entry[], dayString: string};

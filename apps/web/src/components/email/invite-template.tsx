@@ -1,7 +1,7 @@
 import { Button, Body, Container, Head, Hr, Html, Tailwind, Text, Section, Link, Img } from "@react-email/components";
 import { EmailTemplateProps } from "@/types";
 
-export function InviteTemplate({ bodyText, header, companyWebsite }: EmailTemplateProps) {
+export function InviteTemplate({ bodyText, header, companyWebsite, logoURL }: EmailTemplateProps) {
 	return (
 		<Html lang="en" className="">
 			<Tailwind
@@ -12,8 +12,10 @@ export function InviteTemplate({ bodyText, header, companyWebsite }: EmailTempla
 				{/* <Head><meta name="color-scheme" content="dark"/></Head> */}
 				<Body className="mx-auto">
 					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] p-5 font-sans dark:bg-black">
-						<Section className={`h-fit pb-5 pt-10`}>
-							<Img src="/sideprojectAI.png"></Img>
+						<Section className={`py-1`}>
+							{logoURL && (
+								<Img className=" max-h-[150px] max-w-[150px] object-contain" src={logoURL}></Img>
+							)}
 						</Section>
 						<Section>
 							<Text className="font-sans text-3xl font-bold">
