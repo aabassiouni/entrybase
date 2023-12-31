@@ -2,8 +2,6 @@
 const nextConfig = {
     experimental: {
         optimizePackageImports: ['@radix-ui/react-icons'],
-        // serverActions: true,
-    }
     },
     images: {
         remotePatterns: [
