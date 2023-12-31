@@ -27,19 +27,24 @@ async function EmailPreviewPage({
 	const template = searchParams?.template ?? "invite";
 
 	const values = await getEmailTemplateForUser(params.waitlist, user.id, template);
-
+	
 	async function submitEmailTemplate(formData: FormData) {
 		"use server";
 
 		if (!user!.id) return;
 
+		const subject = formData.get("subject") === "" ? null : formData.get("subject");
+		const bodyText = formData.get("body") === "" ? null : formData.get("body");
+		const header = formData.get("header") === "" ? null : formData.get("header");
+
+
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			template: template,
 			userID: user!.id,
-			subject: formData.get("subject"),
-			bodyText: formData.get("body"),
-			header: formData.get("header"),
+			subject: subject,
+			bodyText: bodyText,
+			header: header,
 		});
 		revalidatePath("/email-preview");
 	}
