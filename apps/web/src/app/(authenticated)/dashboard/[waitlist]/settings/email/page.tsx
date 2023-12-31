@@ -27,7 +27,7 @@ async function EmailSettings({ params }: { params: { waitlist: string } }) {
 		await updateWaitlistEmailSettings(params.waitlist, userId, currSettings.emailSettings);
 	}
 
-	const logoURL = await getWaitlistLogoURL(params.waitlist);
+	const logoFileURL = await getWaitlistLogoURL(params.waitlist);
 
 	return (
 		<Card className="h-full">
@@ -51,14 +51,16 @@ async function EmailSettings({ params }: { params: { waitlist: string } }) {
 				<div className="flex basis-1/2 flex-col items-center gap-4">
 					<div>
 						<p className="text-center text-2xl font-bold text-[#D3FDEE] ">Upload your logo</p>
-						<p className=" text-sm text-neutral-500 ">Logos will be displayed at a max size of 150px x 150px</p>
+						<p className=" text-sm text-neutral-500 ">
+							Logos will be displayed at a max size of 150px x 150px
+						</p>
 					</div>
 					<div className="relative flex h-72 w-full items-center justify-center rounded border border-neutral-900 ">
-						{logoURL ? (
-							<div className="bg-white h-[170px] rounded-lg w-[170px] flex items-center justify-center ">
+						{logoFileURL ? (
+							<div className="flex h-[170px] w-[170px] items-center justify-center rounded-lg bg-white ">
 								<Image
 									unoptimized
-									src={logoURL}
+									src={logoFileURL}
 									className="max-h-[150px] max-w-[150px]  object-contain "
 									width={150}
 									height={150}

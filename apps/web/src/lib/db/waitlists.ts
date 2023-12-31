@@ -4,6 +4,7 @@ import { newId } from "../id";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { selectRandomTwColor } from "../utils";
 import { db, checkAuth } from "./db";
+import { utapi } from "../uploadthing/server";
 
 export async function findWaitlistForUser(userID: string, waitlistID: string) {
 	return await db
@@ -76,26 +77,41 @@ export async function deleteWaitlistByID(waitlistID: string, userID: string) {
 	return await db.update(waitlists).set({ deletedAt: new Date() }).where(eq(waitlists.waitlistID, waitlistID));
 }
 
-export async function insertWaitlistLogoURL(waitlistID: string, logoURL: string) {
-
+export async function insertWaitlistLogoURL(waitlistID: string, logoURL: string, logoKey: string) {
 	// revalidatePath(`/dashboard/${waitlistID}/settings/email`, "page");
 
-	return await db
-		.update(waitlists)
-		.set({
-			logoURL: logoURL,
-		})
-		.where(eq(waitlists.waitlistID, waitlistID));
+	const oldLogoKey = await db
+		.select({ logoFileKey: waitlists.logoFileKey })
+		.from(waitlists)
+		.where(eq(waitlists.waitlistID, waitlistID))
+		.then((result) => {
+			return result[0].logoFileKey;
+		});
+
+	const [newLogoURL, deleteFileRes] = await Promise.all([
+		db
+			.update(waitlists)
+			.set({
+				logoFileURL: logoURL,
+				logoFileKey: logoKey,
+			})
+			.where(eq(waitlists.waitlistID, waitlistID)),
+		oldLogoKey ? utapi.deleteFiles(oldLogoKey) : Promise.resolve(),
+	]);
+
+	console.log("deleteFileRes", deleteFileRes);
+
+	return newLogoURL;
 }
 
 export async function getWaitlistLogoURL(waitlistID: string) {
 	return await db
 		.select({
-			logoURL: waitlists.logoURL,
+			logoFileURL: waitlists.logoFileURL,
 		})
 		.from(waitlists)
 		.where(eq(waitlists.waitlistID, waitlistID))
 		.then((result) => {
-			return result[0].logoURL;
+			return result[0].logoFileURL;
 		});
 }
