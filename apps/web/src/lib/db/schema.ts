@@ -11,6 +11,11 @@ export const waitlists = pgTable("waitlists", {
 		.$type<{ signup: boolean; invite: boolean }>()
 		.notNull()
 		.default({ signup: false, invite: false }),
+	logoURL: varchar("logo_url"),
+	// domain: varchar("domain", { length: 255 }),
+	// websiteName: varchar("website_name", { length: 255 }),
+	// supportEmail: varchar("support_email", { length: 255 }),
+	// websiteLink: varchar("website_link", { length: 255 }),
 });
 
 export const statusEnum = pgEnum("status", ["waiting", "invited"]);
