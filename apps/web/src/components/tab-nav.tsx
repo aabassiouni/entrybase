@@ -48,11 +48,11 @@ function TabNav() {
 		// 	segment: "account",
 		// 	href: `/dashboard/${params.waitlist}/settings/account`,
 		// },
-		// {
-		// 	label: "Billing",
-		// 	segment: "billing",
-		// 	href: `/dashboard/${params.waitlist}/settings/billing`,
-		// },
+		{
+			label: "Billing",
+			segment: "billing",
+			href: `/dashboard/${params.waitlist}/settings/billing`,
+		},
 	];
 	return (
 		<div className="inline-flex h-10 w-fit items-center justify-center rounded-md bg-neutral-100 p-1 text-neutral-500 dark:bg-neutral-800 dark:text-neutral-400">
