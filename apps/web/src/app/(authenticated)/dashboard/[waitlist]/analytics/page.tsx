@@ -11,7 +11,6 @@ import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
 
 async function AnalyticsPage({ params, searchParams }: { params: { waitlist: string }; searchParams: SearchParams }) {
-
 	const user = await currentUser();
 	if (!user) return null;
 
@@ -50,9 +49,9 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 	}
 
 	if (timeframe === "today" || timeframe === "yesterday") {
-		signups = await getDayChartLabelsAndValues(params.waitlist, user.id, formatDate(from));
+		signups = await getDayChartLabelsAndValues(params.waitlist, formatDate(from));
 	} else {
-		signups = await getDayRangeChartLabelsAndValues(params.waitlist, user.id, formatDate(from), formatDate(to));
+		signups = await getDayRangeChartLabelsAndValues(params.waitlist, formatDate(from), formatDate(to));
 	}
 
 	return (
