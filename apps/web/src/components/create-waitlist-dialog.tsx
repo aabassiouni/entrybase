@@ -13,7 +13,7 @@ function CreateWaitlistDialog({ children, userID }: { children: React.ReactNode;
 					<DialogDescription>Enter the name of your waitlist below.</DialogDescription>
 				</DialogHeader>
 				<form action={createWaitlistAction} className="flex flex-col space-y-4">
-					<Input name="waitlistName" />
+					<Input required name="waitlistName" />
 					<FormSubmitButton>Create</FormSubmitButton>
 				</form>
 			</DialogContent>
