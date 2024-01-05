@@ -1,20 +1,12 @@
-import Chart from "@/components/Chart";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { getCounts, getDayRangeChartLabelsAndValues, getSignupsEmailListforUser } from "@/lib/db";
-import { formatDate } from "@/lib/utils";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import ActionsCard from "@/components/actions-card";
-import { currentUser } from "@clerk/nextjs";
 import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import { checkWorkspace } from "@/lib/auth";
+import { getSignupsEmailListforUser } from "@/lib/db";
 import { notFound } from "next/navigation";
-
-// export const revalidate = 20;
 
 function CountCardsLoading() {
 	return (
@@ -122,107 +114,20 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 		</Card>
 	);
 }
-
-async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
-	
-	const workspace = await checkWorkspace();
-	if (!workspace) {
-		return notFound();
-	}
-
-	const today = new Date();
-	const sevenDaysAgo = new Date();
-	sevenDaysAgo.setDate(today.getDate() - 7);
-
-	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(
-		waitlistID,
-		formatDate(sevenDaysAgo),
-		formatDate(today),
-	);
-
-	return (
-		<Card className="">
-			<CardHeader>
-				<CardTitle>Past Week</CardTitle>
-			</CardHeader>
-			<CardContent className="">
-				<Chart
-					data={pastWeekSignupsData.entries}
-					margin={{
-						top: 5,
-						right: 20,
-						left: -5,
-						bottom: 0,
-					}}
-				/>
-			</CardContent>
-		</Card>
-	);
-}
-
-async function CountCards({ waitlistID }: { waitlistID: string }) {
-	const user = await currentUser();
-	if (!user) return;
-
-	const counts = await getCounts(waitlistID);
-
-	return (
-		<>
-			<Card className="h-40 w-full">
-				<CardHeader>
-					<CardTitle>Signups</CardTitle>
-				</CardHeader>
-				<CardContent className="flex items-center justify-between gap-4">
-					<p className="text-3xl font-bold">{counts.total}</p>
-					{counts.delta > 0 ? (
-						<Badge className=" relative z-30 inline-flex items-center justify-center bg-green-500 text-sm text-black dark:bg-primary">
-							<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur"></div>
-							<p className="z-5">{"+" + counts.delta}</p>
-						</Badge>
-					) : null}
-				</CardContent>
-			</Card>
-			<Card className="h-40 w-full ">
-				<CardHeader>
-					<CardTitle>Invites</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<p className="text-3xl font-bold">{counts.invited}</p>
-				</CardContent>
-			</Card>
-			<Card className="h-40 w-full ">
-				<CardHeader>
-					<CardTitle>Waiting</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<p className="text-3xl font-bold">{counts.waiting}</p>
-				</CardContent>
-			</Card>
-		</>
-	);
-}
-
-
-
-export default async function Home({ params }: { params: { waitlist: string } }) {
+function DashboardLoadingPage() {
 	return (
 		<MainLayout>
 			<PageHeading>Dashboard</PageHeading>
 			<div className="grid grid-cols-5 gap-4">
-				<Suspense fallback={<CountCardsLoading />}>
-					<CountCards waitlistID={params.waitlist} />
-				</Suspense>
-				<ActionsCard waitlistID={params.waitlist} />
+				<CountCardsLoading />
 			</div>
 			<div className="p-4"></div>
 			<div className="grid grid-cols-2 gap-4">
-				<Suspense fallback={<PastWeekChartLoading />}>
-					<PastWeekChart waitlistID={params.waitlist} />
-				</Suspense>
-				<Suspense fallback={<LatestSignupsCardLoading />}>
-					<LatestSignupsCard waitlistID={params.waitlist} />
-				</Suspense>
+				<PastWeekChartLoading />
+				<LatestSignupsCardLoading />
 			</div>
 		</MainLayout>
 	);
 }
+
+export default DashboardLoadingPage;

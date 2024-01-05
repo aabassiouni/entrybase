@@ -2,7 +2,6 @@ import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
 import React from "react";
 import { Card } from "@/components/ui/card";
-import { currentUser } from "@clerk/nextjs";
 import { getInvitesForWaitlist } from "@/lib/db";
 import InviteDetailsModal from "@/components/invite-details-modal";
 import { Separator } from "@/components/ui/separator";

@@ -1,13 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import { currentUser } from "@clerk/nextjs";
 import { getWaitlistsForUser } from "@/lib/db";
 import CreateWaitlistDialog from "@/components/create-waitlist-dialog";
 import UserButton from "@/components/user-button";
 import { checkWorkspace, getTenantID } from "@/lib/auth";
 import { notFound } from "next/navigation";
+import TeamSelect from "@/components/team-select";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitlistName: string }) {
 	return (
@@ -26,32 +27,55 @@ function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitli
 
 async function HomePage() {
 	const workspace = await checkWorkspace();
-	
+
 	if (!workspace) {
 		notFound();
-	};
+	}
 
 	const waitlists = await getWaitlistsForUser(workspace?.workspaceID);
+
 	return (
 		<div className="w-screen">
 			<div className="flex justify-between p-8 px-24 shadow-md">
 				<h1 className="text-4xl font-bold">waitlister</h1>
-				<UserButton />
+				<div className="flex items-center justify-center">
+					<Suspense fallback={<Skeleton className="h-10 w-64" />}>
+						<TeamSelect className="w-48 py-0" />
+						<UserButton />
+					</Suspense>
+				</div>
 			</div>
 			<div className="mx-auto flex w-4/6  flex-col justify-center ">
 				<p className="py-10 text-3xl font-semibold">Waitlists</p>
 				<div className="grid grid-cols-3 gap-10">
-					<CreateWaitlistDialog>
-						<Card className="flex h-60 w-[330px] cursor-pointer flex-col items-center justify-center">
-							<Plus className="h-10 w-10 text-primary" />
-							<CardHeader className="">
-								<CardTitle>Create a new waitlist</CardTitle>
-							</CardHeader>
-						</Card>
-					</CreateWaitlistDialog>
-					{waitlists.map((waitlist, i) => (
-						<WaitlistCard key={i} waitlistID={waitlist.waitlistID} waitlistName={waitlist.waitlistName} />
-					))}
+					<Suspense
+						fallback={
+							<>
+								{[...Array(3)].map((_, i) => (
+									<Skeleton
+										key={i}
+										className="h-60 w-[330px]  flex-col items-center justify-center"
+									/>
+								))}
+							</>
+						}
+					>
+						<CreateWaitlistDialog>
+							<Card className="flex h-60 w-[330px] cursor-pointer flex-col items-center justify-center">
+								<Plus className="h-10 w-10 text-primary" />
+								<CardHeader className="">
+									<CardTitle>Create a new waitlist</CardTitle>
+								</CardHeader>
+							</Card>
+						</CreateWaitlistDialog>
+						{waitlists.map((waitlist, i) => (
+							<WaitlistCard
+								key={i}
+								waitlistID={waitlist.waitlistID}
+								waitlistName={waitlist.waitlistName}
+							/>
+						))}
+					</Suspense>
 				</div>
 			</div>
 		</div>

@@ -6,6 +6,7 @@ import SidebarUserButton from "./sidebar-user-button";
 import { Home, LineChart, List, SendHorizonal, Mail, Settings, Archive } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 import WaitlistSelect from "./waitlist-select";
+import TeamSelect from "./team-select";
 
 function WaitlistSelectLoading() {
 	return (
@@ -81,10 +82,20 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 						<h1 className=" text-center text-4xl font-black">waitlister</h1>
 					</Link>
 				</div>
-				<Separator />
-				<Suspense fallback={<WaitlistSelectLoading />}>
-					<WaitlistSelect />
-				</Suspense>
+				<Separator className="mb-2" />
+				<div>
+					<p className="p self-start px-3 text-sm text-neutral-400">Team</p>
+					{/* <OrganizationSwitcher /> */}
+					<Suspense fallback={<WaitlistSelectLoading />}>
+						<TeamSelect />
+					</Suspense>
+				</div>
+				<div>
+					<p className="p self-start px-3 text-sm text-neutral-400">Waitlist</p>
+					<Suspense fallback={<WaitlistSelectLoading />}>
+						<WaitlistSelect />
+					</Suspense>
+				</div>
 				<div>
 					<p className="p self-start px-3 text-sm text-neutral-400">General</p>
 					<div className="h-full w-full grow space-y-2 px-4">

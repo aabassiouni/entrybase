@@ -18,7 +18,7 @@ function WaitlistDropdown({
 	const defaultWaitlist = params.waitlist as string;
 
 	return (
-		<div className="w-full p-4 ">
+		<div className="w-full px-4 py-2 ">
 			<Select
 				defaultValue={defaultWaitlist}
 				onValueChange={(value) => {
@@ -32,7 +32,7 @@ function WaitlistDropdown({
 					{waitlists.map((waitlist) => (
 						<SelectItem key={waitlist.waitlistID} value={waitlist.waitlistID}>
 							<div className="flex items-center justify-center gap-4">
-								<Avatar className="ring-2 ring-neutral-800 h-6 w-6">
+								<Avatar className="h-6 w-6 ring-2 ring-neutral-800">
 									<div className={cn("h-full w-full bg-gradient-to-br ", waitlist.colorString)}></div>
 								</Avatar>
 								<p>{waitlist.waitlistName}</p>
