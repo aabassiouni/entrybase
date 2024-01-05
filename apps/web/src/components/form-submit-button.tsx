@@ -5,10 +5,15 @@ import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function FormSubmitButton({loading, children, className }: {loading?:boolean, children: React.ReactNode; className?: string }) {
-	const { pending, action,data,method } = useFormStatus();
+function FormSubmitButton({
+	loading,
+	children,
+	className,
+	...props
+}: { loading?: boolean; children: React.ReactNode; className?: string } & React.ComponentPropsWithoutRef<"button">) {
+	const { pending, action, data, method } = useFormStatus();
 	return (
-		<Button className={cn( className)} type="submit">
+		<Button {...props} className={cn(className)} type="submit">
 			{pending || loading ? <Loader2 className="animate-spin" /> : children}
 		</Button>
 	);
