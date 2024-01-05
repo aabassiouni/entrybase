@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "./ui/input";
 import FormSubmitButton from "./form-submit-button";
 
-function CreateWaitlistDialog({ children, userID }: { children: React.ReactNode; userID: string }) {
+function CreateWaitlistDialog({ children }: { children: React.ReactNode }) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>{children}</DialogTrigger>

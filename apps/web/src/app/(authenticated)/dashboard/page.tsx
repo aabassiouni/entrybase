@@ -6,6 +6,8 @@ import { currentUser } from "@clerk/nextjs";
 import { getWaitlistsForUser } from "@/lib/db";
 import CreateWaitlistDialog from "@/components/create-waitlist-dialog";
 import UserButton from "@/components/user-button";
+import { checkWorkspace, getTenantID } from "@/lib/auth";
+import { notFound } from "next/navigation";
 
 function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitlistName: string }) {
 	return (
@@ -22,15 +24,14 @@ function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitli
 	);
 }
 
-
-
 async function HomePage() {
-	const user = await currentUser();
-	if (!user) {
-		return null;
-	}
+	const workspace = await checkWorkspace();
+	
+	if (!workspace) {
+		notFound();
+	};
 
-	const waitlists = await getWaitlistsForUser(user.id);
+	const waitlists = await getWaitlistsForUser(workspace?.workspaceID);
 	return (
 		<div className="w-screen">
 			<div className="flex justify-between p-8 px-24 shadow-md">
@@ -40,8 +41,8 @@ async function HomePage() {
 			<div className="mx-auto flex w-4/6  flex-col justify-center ">
 				<p className="py-10 text-3xl font-semibold">Waitlists</p>
 				<div className="grid grid-cols-3 gap-10">
-					<CreateWaitlistDialog userID={user.id}>
-						<Card className="cursor-pointer flex h-60 w-[330px] flex-col items-center justify-center">
+					<CreateWaitlistDialog>
+						<Card className="flex h-60 w-[330px] cursor-pointer flex-col items-center justify-center">
 							<Plus className="h-10 w-10 text-primary" />
 							<CardHeader className="">
 								<CardTitle>Create a new waitlist</CardTitle>

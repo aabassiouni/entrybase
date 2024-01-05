@@ -1,4 +1,5 @@
 import { InviteTemplate } from "@/components/email/invite-template";
+import { checkWorkspace } from "@/lib/auth";
 import { createInvite, findWaitlistForUser, getEmailTemplateForUser, getInvitesListByCount } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
@@ -29,7 +30,13 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	const waitlistID = context.params.waitlistID;
 
 	// check if user has waitlist
-	const waitlist = await findWaitlistForUser(userId, waitlistID);
+	const workspace = await checkWorkspace();
+	if (!workspace) {
+		return NextResponse.redirect("/dashboard/setup");
+	}
+
+	const waitlist = await findWaitlistForUser(workspace.workspaceID, waitlistID);
+
 	if (waitlist.length === 0) {
 		return NextResponse.redirect("/dashboard");
 	}
@@ -107,11 +114,7 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 			if (resendResponse.data) {
 				console.log("Resend response", resendResponse.data);
 				const emailIDs = resendResponse.data.data.map((email) => email.id);
-				await createInvite(
-					waitlistID,
-					emailIDs,
-					emailsList,
-				);
+				await createInvite(waitlistID, emailIDs, emailsList);
 			}
 		} else {
 			console.log("Error sending emails:", resendResponse.error);

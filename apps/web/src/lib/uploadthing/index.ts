@@ -1,8 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { headers } from "next/headers";
-import { checkAuth } from "../db/db";
 import { findWaitlistForUser, insertWaitlistLogoURL } from "../db";
-import { auth } from "@clerk/nextjs";
+import { checkWorkspace } from "../auth";
 const f = createUploadthing();
 
 // const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
@@ -16,31 +15,32 @@ export const ourFileRouter = {
 			console.log("running middleware");
 			// This code runs on your server before upload
 			const headersList = headers();
-			const user = await auth();
 
 			const referer = headersList.get("referer");
 			const waitlistID = referer?.split("/")[4];
 
 			if (!waitlistID) throw new Error("Unauthorized");
 			// If you throw, the user will not be able to upload
-			if (!user.userId) throw new Error("Unauthorized");
 
-			const waitlist = await findWaitlistForUser(user.userId, waitlistID);
+			const workspace = await checkWorkspace();
+			if (!workspace) throw new Error("Unauthorized");
+
+			const waitlist = await findWaitlistForUser(workspace.workspaceID, waitlistID);
 
 			if (waitlist.length == 0) throw new Error("Unauthorized");
 			// Whatever is returned here is accessible in onUploadComplete as `metadata`
-			return { userId: user.userId, waitlistId: waitlistID };
+			return { workspaceID: workspace.workspaceID, waitlistId: waitlistID };
 		})
 		.onUploadComplete(async ({ metadata, file }) => {
 			// This code RUNS ON YOUR SERVER after upload
-			
-			console.log("Upload complete for userId:", metadata.userId);
+
+			console.log("Upload complete for workspaceID:", metadata.workspaceID);
 			console.log("file url", file.url);
 
 			await insertWaitlistLogoURL(metadata.waitlistId, file.url, file.key);
-			
+
 			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-			return { uploadedBy: metadata.userId };
+			return { uploadedBy: metadata.workspaceID };
 		}),
 } satisfies FileRouter;
 

@@ -1,14 +1,13 @@
 import { newId } from "@/lib/id";
-import { db, checkAuth } from "./db";
+import { db,  } from "./db";
 import { signups, invites } from "./schema";
-import { eq, sql, desc, and, inArray } from "drizzle-orm";
+import { eq, desc, and, inArray } from "drizzle-orm";
 
 export async function createInvite(
 	waitlistID: string,
 	emailIDs: string[],
 	invitedEmails: { email: string; id: string }[],
 ) {
-	// await checkAuth(waitlistID, userID);
 
 	//mark signups as invited
 	await db
@@ -26,8 +25,7 @@ export async function createInvite(
 	});
 }
 
-export async function getInvitesForWaitlist(waitlistID: string, userID: string) {
-	await checkAuth(waitlistID, userID);
+export async function getInvitesForWaitlist(waitlistID: string) {
 	const result = await db
 		.select({
 			inviteID: invites.inviteID,
@@ -41,8 +39,7 @@ export async function getInvitesForWaitlist(waitlistID: string, userID: string) 
 	return result;
 }
 
-export async function fetchInviteForWaitlist(waitlistID: string, inviteID: string, userID: string) {
-	await checkAuth(waitlistID, userID);
+export async function fetchInviteForWaitlist(waitlistID: string, inviteID: string) {
 
 	const result = await db
 		.select({

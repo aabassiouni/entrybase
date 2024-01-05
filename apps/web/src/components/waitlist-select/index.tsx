@@ -1,14 +1,16 @@
-import { currentUser } from "@clerk/nextjs";
-import { getWaitlistsForUser } from "@/lib/db";
+import { getWaitlistsForUser} from "@/lib/db";
 import WaitlistDropdown from "./waitlist-dropdown";
+import { checkWorkspace, getTenantID } from "@/lib/auth";
+import { notFound } from "next/navigation";
 
 export default async function WaitlistSelect() {
+	const workspace = await checkWorkspace();
 
-	const user = await currentUser();
-	if (!user) {
-		return null;
+	if (!workspace) {
+		return notFound();
 	}
-	const waitlists = await getWaitlistsForUser(user.id);
 
-	return <WaitlistDropdown waitlists={waitlists} userID={user.id} />;
+	const waitlists = await getWaitlistsForUser(workspace.workspaceID);
+
+	return <WaitlistDropdown waitlists={waitlists} />;
 }

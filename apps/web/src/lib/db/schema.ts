@@ -1,8 +1,22 @@
-import { PgArray, json, pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import {json, pgEnum, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
+
+export const planEnum = pgEnum("plan", ["free", "pro"]);
+
+export const workspaces = pgTable("workspaces", {
+	workspaceID: varchar("workspace_id", { length: 256 }).primaryKey().notNull(),
+	workspaceName: varchar("workspace_name", { length: 256 }),
+	tenantID: varchar("tenant_id", { length: 256 }).notNull(),
+	plan: planEnum("plan").notNull().default("free"),
+	stripeCustomerID: varchar("stripe_customer_id", { length: 256 }),
+	stripeSubscriptionID: varchar("stripe_subscription_id", { length: 256 }),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	deletedAt: timestamp("deleted_at"),
+});
 
 export const waitlists = pgTable("waitlists", {
 	waitlistID: varchar("waitlist_id", { length: 256 }).primaryKey().notNull(),
-	userID: varchar("user_id", { length: 50 }).notNull(),
+	// userID: varchar("user_id", { length: 50 }).notNull(),
+	workspaceID: varchar("workspace_id", { length: 256 }).notNull().references(() => workspaces.workspaceID),
 	waitlistName: varchar("waitlist_name", { length: 255 }).notNull(),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
 	deletedAt: timestamp("deleted_at"),

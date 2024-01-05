@@ -1,12 +1,31 @@
-import { authMiddleware } from "@clerk/nextjs";
+import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
+import { createWorkspaceForTenant, getWorkspaceForTenant } from "./lib/db";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 
-// This example protects all routes including api/trpc routes
-// Please edit this to allow other routes to be public as needed.
-// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware
-export default authMiddleware({
-	publicRoutes: ["/", "/api/uploadthing"],
-});
+export default async function middleware(request: NextRequest, evt: NextFetchEvent) {
+	const res = await authMiddleware({
+		publicRoutes: ["/api/uploadthing"],
+		afterAuth: async (auth, req) => {
+			// if the user is not logged in and is trying to access a dashboard route, redirect to signin
+			if (!auth.userId && "^/dashboard/".match(request.nextUrl.pathname)) {
+				console.log("redirecting to signin");
+				return redirectToSignIn({ returnBackUrl: req.url });
+			}
+			// const userId = auth.userId ?? undefined;
+			// const tenantId = auth.orgId ?? auth.userId ?? undefined;
+			const workspace = await getWorkspaceForTenant(auth.userId!);
+
+			// create a workspace if there isn't one
+			if (!workspace && auth.userId && request.nextUrl.pathname !== "/dashboard/setup") {
+				// await createWorkspaceForUser(auth.userId);
+				return NextResponse.redirect(new URL("/dashboard/setup", req.url));
+			}
+		},
+	})(request, evt);
+
+	return res;
+}
 
 export const config = {
-	matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+	matcher: ["/dashboard", "/dashboard/(.*)", "/(api|trpc)(.*)"],
 };

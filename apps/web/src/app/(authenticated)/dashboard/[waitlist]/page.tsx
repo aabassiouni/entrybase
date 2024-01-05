@@ -8,8 +8,6 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import ActionsCard from "@/components/actions-card";
-import clsx from "clsx";
-import InviteAction from "@/components/invite-action";
 import { currentUser } from "@clerk/nextjs";
 import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
@@ -91,7 +89,7 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 	const user = await currentUser();
 	if (!user) return;
 
-	const emailsList = await getSignupsEmailListforUser(waitlistID, user.id);
+	const emailsList = await getSignupsEmailListforUser(waitlistID);
 
 	return (
 		<Card className="">
@@ -131,7 +129,6 @@ async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
 
 	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(
 		waitlistID,
-		user.id,
 		formatDate(sevenDaysAgo),
 		formatDate(today),
 	);
@@ -160,7 +157,7 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 	const user = await currentUser();
 	if (!user) return;
 
-	const counts = await getCounts(waitlistID, user?.id);
+	const counts = await getCounts(waitlistID);
 
 	return (
 		<>

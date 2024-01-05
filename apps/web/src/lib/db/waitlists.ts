@@ -3,25 +3,25 @@ import { waitlists } from "./schema";
 import { newId } from "../id";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { selectRandomTwColor } from "../utils";
-import { db, checkAuth } from "./db";
+import { db } from "./db";
 import { utapi } from "../uploadthing/server";
 
-export async function findWaitlistForUser(userID: string, waitlistID: string) {
+export async function findWaitlistForUser(waitlistID: string, workspaceID: string) {
 	return await db
 		.select()
 		.from(waitlists)
-		.where(and(eq(waitlists.userID, userID), eq(waitlists.waitlistID, waitlistID), isNull(waitlists.deletedAt)));
+		.where(and(eq(waitlists.workspaceID, workspaceID), eq(waitlists.waitlistID, waitlistID), isNull(waitlists.deletedAt)));
 }
 
-export async function createWaitlist(waitlist: string, userID: string) {
+export async function createWaitlist(waitlist: string, workspaceID: string) {
 	const color = selectRandomTwColor();
 	return await db
 		.insert(waitlists)
-		.values({ waitlistName: waitlist, userID: userID, waitlistID: newId("wt"), colorString: color })
+		.values({ waitlistName: waitlist, workspaceID: workspaceID, waitlistID: newId("wt"), colorString: color })
 		.returning({ waitlistID: waitlists.waitlistID });
 }
 
-export async function getWaitlistsForUser(userID: string) {
+export async function getWaitlistsForUser(workspaceID: string) {
 	return await db
 		.select({
 			waitlistID: waitlists.waitlistID,
@@ -29,7 +29,7 @@ export async function getWaitlistsForUser(userID: string) {
 			colorString: waitlists.colorString,
 		})
 		.from(waitlists)
-		.where(and(eq(waitlists.userID, userID), isNull(waitlists.deletedAt)))
+		.where(and(eq(waitlists.workspaceID, workspaceID), isNull(waitlists.deletedAt)))
 		.orderBy(desc(waitlists.createdAt));
 }
 
@@ -49,8 +49,8 @@ export async function updateWaitlistByID(waitlistID: string, waitlistName: strin
 		.where(eq(waitlists.waitlistID, waitlistID));
 }
 
-export async function updateWaitlistEmailSettings(waitlistID: string, userID: string, emailSettings: any) {
-	await checkAuth(waitlistID, userID);
+export async function updateWaitlistEmailSettings(waitlistID: string, workspaceID: string, emailSettings: any) {
+	// await checkAuth(waitlistID, userID);
 
 	return await db
 		.update(waitlists)
@@ -60,8 +60,7 @@ export async function updateWaitlistEmailSettings(waitlistID: string, userID: st
 		.where(eq(waitlists.waitlistID, waitlistID));
 }
 
-export async function getWaitlistEmailSettings(waitlistID: string, userID: string) {
-	await checkAuth(waitlistID, userID);
+export async function getWaitlistEmailSettings(waitlistID: string) {
 
 	return await db
 		.select({
@@ -71,8 +70,7 @@ export async function getWaitlistEmailSettings(waitlistID: string, userID: strin
 		.where(eq(waitlists.waitlistID, waitlistID));
 }
 
-export async function deleteWaitlistByID(waitlistID: string, userID: string) {
-	await checkAuth(waitlistID, userID);
+export async function deleteWaitlistByID(waitlistID: string) {
 
 	return await db.update(waitlists).set({ deletedAt: new Date() }).where(eq(waitlists.waitlistID, waitlistID));
 }

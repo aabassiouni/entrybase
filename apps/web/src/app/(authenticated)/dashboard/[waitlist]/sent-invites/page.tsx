@@ -6,12 +6,18 @@ import { currentUser } from "@clerk/nextjs";
 import { getInvitesForWaitlist } from "@/lib/db";
 import InviteDetailsModal from "@/components/invite-details-modal";
 import { Separator } from "@/components/ui/separator";
+import { checkWorkspace } from "@/lib/auth";
+import { notFound } from "next/navigation";
 
 async function SentInvitesPage({ params }: { params: { waitlist: string } }) {
-	const user = await currentUser();
-	if (!user) return null;
+	
+	const workspace = await checkWorkspace();
+	if (!workspace) {
+		return notFound();
+	}
+	
 
-	const invites = await getInvitesForWaitlist(params.waitlist, user.id);
+	const invites = await getInvitesForWaitlist(params.waitlist);
 
 	return (
 		<MainLayout>

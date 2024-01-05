@@ -1,7 +1,5 @@
-import { createWaitlistAction } from "@/lib/actions";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
 import { deleteWaitlistByID, getWaitlistByID } from "@/lib/db";
@@ -20,7 +18,7 @@ async function DeleteWaitlistDialog({ waitlistID }: { waitlistID: string }) {
 		const { userId } = auth();
 		if (!userId) return;
 
-		await deleteWaitlistByID(waitlistID, userId);
+		await deleteWaitlistByID(waitlistID);
 
 		redirect(`/dashboard`);
 	}

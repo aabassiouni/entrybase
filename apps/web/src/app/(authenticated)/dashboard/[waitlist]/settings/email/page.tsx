@@ -4,16 +4,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import UploadButtonContent from "@/components/upload-button";
+import { checkWorkspace } from "@/lib/auth";
 import { getWaitlistEmailSettings, getWaitlistLogoURL, updateWaitlistEmailSettings } from "@/lib/db";
 import { auth, currentUser } from "@clerk/nextjs";
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import React from "react";
 
 async function EmailSettings({ params }: { params: { waitlist: string } }) {
-	const user = await currentUser();
-	if (!user) return null;
+	const workspace = await checkWorkspace();
+	if (!workspace) {
+		return notFound();
+	}
 
-	const settings = await getWaitlistEmailSettings(params.waitlist, user.id).then((res) => res[0]);
+	const settings = await getWaitlistEmailSettings(params.waitlist).then((res) => res[0]);
 
 	async function updateEmailSettingsAction(value: boolean, type: "signup" | "invite") {
 		"use server";
@@ -21,7 +25,7 @@ async function EmailSettings({ params }: { params: { waitlist: string } }) {
 		const { userId } = auth();
 		if (!userId) return;
 
-		const currSettings = await getWaitlistEmailSettings(params.waitlist, userId).then((res) => res[0]);
+		const currSettings = await getWaitlistEmailSettings(params.waitlist).then((res) => res[0]);
 		currSettings.emailSettings[type] = value;
 
 		await updateWaitlistEmailSettings(params.waitlist, userId, currSettings.emailSettings);
