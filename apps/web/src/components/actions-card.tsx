@@ -9,8 +9,8 @@ async function ActionsCardStats({ waitlistID }: { waitlistID: string }) {
 	const user = await currentUser();
 	if (!user) return null;
 
-	const weekCount = await getSignupsCountForWeek(waitlistID, user.id);
-	const monthCount = await getSignupsCountForMonth(waitlistID, user.id);
+	const weekCount = await getSignupsCountForWeek(waitlistID);
+	const monthCount = await getSignupsCountForMonth(waitlistID);
 
 	return (
 		<div className="flex h-full w-full items-center justify-around">

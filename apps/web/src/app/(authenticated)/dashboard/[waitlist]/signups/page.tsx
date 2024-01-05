@@ -9,7 +9,7 @@ import { MainLayout } from "@/components/layout";
 async function UsersPage({ params }: { params: { waitlist: string } }) {
 	const user = await currentUser();
 	if (!user) return null;
-	const signupList = await getSignupsList(params.waitlist, user.id);
+	const signupList = await getSignupsList(params.waitlist);
 
 	return (
 		<MainLayout>
