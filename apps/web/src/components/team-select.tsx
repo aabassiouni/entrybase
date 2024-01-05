@@ -7,9 +7,14 @@ import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "./ui/skeleton";
 
-function TeamSelectLoading() {
-	return <Skeleton className="h-10 py-2" />;
+function TeamSelectLoading({ className }: { className?: string }) {
+	return (
+		<div className={cn("px-4 py-2", className)}>
+			<Skeleton className="h-10" />
+		</div>
+	);
 }
+
 function TeamSelect({ className }: { className?: string }) {
 	const {
 		isLoaded: listIsLoaded,
@@ -21,11 +26,10 @@ function TeamSelect({ className }: { className?: string }) {
 		},
 	});
 	const { isLoaded: orgIsLoaded, organization } = useOrganization();
-	const { user } = useUser();
 	const router = useRouter();
 
 	if (!listIsLoaded || !orgIsLoaded) {
-		return <TeamSelectLoading />;
+		return <TeamSelectLoading className={className} />;
 	}
 
 	async function changeOrg(orgId: string | null) {

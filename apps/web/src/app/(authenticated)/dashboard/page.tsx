@@ -39,10 +39,8 @@ async function HomePage() {
 			<div className="flex justify-between p-8 px-24 shadow-md">
 				<h1 className="text-4xl font-bold">waitlister</h1>
 				<div className="flex items-center justify-center">
-					<Suspense fallback={<Skeleton className="h-10 w-64" />}>
-						<TeamSelect className="w-48 py-0" />
-						<UserButton />
-					</Suspense>
+					<TeamSelect className="w-48 py-0" />
+					<UserButton />
 				</div>
 			</div>
 			<div className="mx-auto flex w-4/6  flex-col justify-center ">

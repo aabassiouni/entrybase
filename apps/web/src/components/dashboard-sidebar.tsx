@@ -85,10 +85,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 				<Separator className="mb-2" />
 				<div>
 					<p className="p self-start px-3 text-sm text-neutral-400">Team</p>
-					{/* <OrganizationSwitcher /> */}
-					<Suspense fallback={<WaitlistSelectLoading />}>
 						<TeamSelect />
-					</Suspense>
 				</div>
 				<div>
 					<p className="p self-start px-3 text-sm text-neutral-400">Waitlist</p>

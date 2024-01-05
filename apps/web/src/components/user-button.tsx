@@ -11,7 +11,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "./ui/button";
 import { Suspense } from "react";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { LogOut } from "lucide-react";
 
 export default async function UserButton() {
@@ -24,6 +24,7 @@ export default async function UserButton() {
 					<Suspense fallback={<Skeleton className="h-10 w-10 rounded-full" />}>
 						<Avatar>
 							<AvatarImage src={user?.imageUrl} />
+							<AvatarFallback><Skeleton className="rounded-full"/></AvatarFallback>
 						</Avatar>
 					</Suspense>
 				</Button>
