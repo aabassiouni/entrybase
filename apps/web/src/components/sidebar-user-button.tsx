@@ -13,10 +13,16 @@ import Link from "next/link";
 import { LogOut, User } from "lucide-react";
 import { SignOutButton, currentUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
+import { checkWorkspace } from "@/lib/auth";
 
 async function SidebarUserButton() {
 	const user = await currentUser();
 
+	const workspace = await checkWorkspace();
+	if (!workspace) {
+		return null;
+	}
+	console.log("workspace in user button", workspace);
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -31,7 +37,12 @@ async function SidebarUserButton() {
 							</Avatar>
 							<p>Ali Bassiouni</p>
 						</div>
-						<div className="h-fit w-fit rounded-md bg-primary px-2 text-sm text-neutral-900">Free</div>
+						{workspace.plan === "free" ? (
+							<div className="h-fit w-fit rounded-md bg-neutral-700 text-white px-2 text-sm">Free</div>
+						) : (
+							<div className="h-fit w-fit rounded-md bg-primary px-2 text-sm text-neutral-900">Pro</div>
+						)}
+						{/* <div className="h-fit w-fit rounded-md bg-primary px-2 text-sm text-neutral-900">Free</div> */}
 					</Button>
 				</div>
 			</DropdownMenuTrigger>
