@@ -205,6 +205,7 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 
 
 export default async function Home({ params }: { params: { waitlist: string } }) {
+	console.log("params in dashboard", params);
 	return (
 		<MainLayout>
 			<PageHeading>Dashboard</PageHeading>

@@ -9,6 +9,10 @@ import { checkWorkspace, getTenantID } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import TeamSelect from "@/components/team-select";
 import { Skeleton } from "@/components/ui/skeleton";
+import DashboardSidebar from "@/components/dashboard-sidebar";
+import HomeSidebar from "@/components/home-sidebar";
+import { MainLayout } from "@/components/layout";
+import { PageHeading } from "@/components/typography";
 
 function WaitlistCard({ waitlistID, waitlistName }: { waitlistID: string; waitlistName: string }) {
 	return (
@@ -35,16 +39,9 @@ async function HomePage() {
 	const waitlists = await getWaitlistsForUser(workspace?.workspaceID);
 
 	return (
-		<div className="w-screen">
-			<div className="flex justify-between p-8 px-24 shadow-md">
-				<h1 className="text-4xl font-bold">waitlister</h1>
-				<div className="flex items-center justify-center">
-					<TeamSelect className="w-48 py-0" />
-					<UserButton />
-				</div>
-			</div>
-			<div className="mx-auto flex w-4/6  flex-col justify-center ">
-				<p className="py-10 text-3xl font-semibold">Waitlists</p>
+		<>
+			{/* <MainLayout> */}
+				<PageHeading>Waitlists</PageHeading>
 				<div className="grid grid-cols-3 gap-10">
 					<Suspense
 						fallback={
@@ -75,8 +72,8 @@ async function HomePage() {
 						))}
 					</Suspense>
 				</div>
-			</div>
-		</div>
+			{/* </MainLayout> */}
+		</>
 	);
 }
 

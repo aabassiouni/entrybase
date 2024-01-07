@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import SidebarUserButton from "./sidebar-user-button";
-import { Home, LineChart, List, SendHorizonal, Mail, Settings, Archive } from "lucide-react";
+import { Home, LineChart, List, SendHorizonal, Mail, Settings, Archive, ArrowLeftCircle } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
 import WaitlistSelect from "./waitlist-select";
 import TeamSelect from "./team-select";
@@ -68,7 +68,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 	];
 	const settingsLinks = [
 		{
-			name: "Settings",
+			name: "Waitlist Settings",
 			icon: <Settings {...iconProps} />,
 			href: `/dashboard/${wtSegment}/settings`,
 		},
@@ -83,28 +83,34 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 					</Link>
 				</div>
 				<Separator className="mb-2" />
+				<Link href="/dashboard">
+					<div className="flex items-center gap-2 px-3 py-2">
+						<ArrowLeftCircle className=" text-neutral-400" />
+						<p className="text-sm font-medium">Waitlist Select</p>
+					</div>
+				</Link>
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">Team</p>
-						<TeamSelect />
+					<p className="p self-start px-3 text-sm font-medium text-neutral-400">Team</p>
+					<TeamSelect />
 				</div>
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">Waitlist</p>
+					<p className="p self-start px-3 text-sm font-medium text-neutral-400">Waitlist</p>
 					<Suspense fallback={<WaitlistSelectLoading />}>
 						<WaitlistSelect />
 					</Suspense>
 				</div>
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">General</p>
+					<p className="p self-start px-3 text-sm font-medium text-neutral-400">General</p>
 					<div className="h-full w-full grow space-y-2 px-4">
 						{generalLinks.map((item, i) => (
 							<SidebarItem key={i} icon={item.icon} href={item.href}>
-								{item.name}
+								<span className="">{item.name}</span>
 							</SidebarItem>
 						))}
 					</div>
 				</div>
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">Invite</p>
+					<p className="p self-start px-3 text-sm font-medium text-neutral-400">Invite</p>
 					<div className="h-full w-full grow space-y-2 px-4">
 						{inviteLinks.map((item, i) => (
 							<SidebarItem key={i} icon={item.icon} href={item.href}>
@@ -114,7 +120,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 					</div>
 				</div>
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">Settings</p>
+					<p className="p self-start px-3 text-sm font-medium text-neutral-400">Settings</p>
 					<div className="h-full w-full grow space-y-2 px-4">
 						{settingsLinks.map((item, i) => (
 							<SidebarItem key={i} icon={item.icon} href={item.href}>

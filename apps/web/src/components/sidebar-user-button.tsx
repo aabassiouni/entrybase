@@ -23,7 +23,6 @@ async function SidebarUserButton() {
 	if (!workspace) {
 		return null;
 	}
-	console.log("workspace in user button", workspace);
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -68,13 +67,13 @@ async function SidebarUserButton() {
 						</DropdownMenuItem>
 					</Link>
 				</DropdownMenuGroup>
-				<DropdownMenuSeparator />
-				<DropdownMenuGroup>
+				{/* <DropdownMenuSeparator /> */}
+				{/* <DropdownMenuGroup>
 					<DropdownMenuLabel>Workspace</DropdownMenuLabel>
 					<DropdownMenuItem className="px-0 py-0">
 						<TeamSelect className="w-full px-2" />
 					</DropdownMenuItem>
-				</DropdownMenuGroup>
+				</DropdownMenuGroup> */}
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<SignOutButton>
