@@ -2,7 +2,7 @@ import EmailSwitch from "@/components/email-switch";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import React from "react";
+import React, { Suspense } from "react";
 import { stripe } from "@/lib/stripe";
 import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
@@ -12,32 +12,17 @@ import type { Workspace } from "@/lib/db";
 import Stripe from "stripe";
 import { PageHeading } from "@/components/typography";
 import { ArrowLeftCircle } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 	let paymentMethod: Stripe.PaymentMethod | undefined = undefined;
-	let invoices: Stripe.Invoice[] = [];
-	let coupon: Stripe.Coupon | undefined = undefined;
 
 	if (workspace.stripeCustomerID) {
-		const [customer, paymentMethods, paid, open] = await Promise.all([
+		const [customer, paymentMethods] = await Promise.all([
 			stripe.customers.retrieve(workspace.stripeCustomerID),
 			stripe.customers.listPaymentMethods(workspace.stripeCustomerID),
-			stripe.invoices.list({
-				customer: workspace.stripeCustomerID,
-				limit: 3,
-				status: "paid",
-			}),
-			stripe.invoices.list({
-				customer: workspace.stripeCustomerID,
-				limit: 3,
-				status: "open",
-			}),
 		]);
 
-		invoices = [...open.data, ...paid.data].sort((a, b) => a.created - b.created);
-		if (!customer.deleted) {
-			coupon = customer.discount?.coupon;
-		}
 		if (paymentMethods && paymentMethods.data.length > 0) {
 			paymentMethod = paymentMethods.data.at(0);
 		}
@@ -49,18 +34,19 @@ async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 				<CardTitle>Payment Method</CardTitle>
 			</CardHeader>
 			<CardContent className="flex items-center gap-8">
-				{paymentMethod ? (
-					<div className="flex items-center gap-4">
-						{paymentMethod.card?.brand}
-						<p className="text-neutral-500 text-center">•••• •••• •••• {paymentMethod.card?.last4}</p>
-					</div>
-				) : (
-					<p className="text-neutral-500">No payment method added</p>
-				)}
-
-				<Button>
-					<Link href={"billing/stripe"}>Add Payment Method</Link>
-				</Button>
+				<Suspense fallback={<Skeleton className="h-10 w-96" />}>
+					{paymentMethod ? (
+						<div className="flex items-center gap-4">
+							{paymentMethod.card?.brand}
+							<p className="text-center text-neutral-500">•••• •••• •••• {paymentMethod.card?.last4}</p>
+						</div>
+					) : (
+						<p className="text-neutral-500">No payment method added</p>
+					)}
+					<Link href={"billing/stripe"}>
+						{paymentMethod ? <Button>Change Payment Method</Button> : <Button>Add Payment Method</Button>}
+					</Link>
+				</Suspense>
 			</CardContent>
 		</>
 	);
@@ -71,13 +57,13 @@ async function BillingSettingsPage() {
 	if (!workspace) {
 		return redirect("/dashboard");
 	}
-	const products = await stripe.products.list({ expand: ["data.default_price"] }).then((res) => {
+	const products = (await stripe.products.list({ expand: ["data.default_price"] }).then((res) => {
 		return res.data.sort((a, b) => {
 			//weird stripe ts things
 			// @ts-ignore
-			return a?.default_price?.unit_amount - b?.default_price?.unit_amount;
+			return a.default_price?.unit_amount - b?.default_price?.unit_amount;
 		});
-	});
+	})) as Stripe.Product[];
 
 	return (
 		<>
@@ -113,36 +99,56 @@ async function BillingSettingsPage() {
 				</CardHeader>
 				<CardContent className="flex justify-center gap-10">
 					{products.map((product) => {
-						return (
-							<Card className="flex h-80 w-60 flex-col items-center">
-								<CardHeader className="text-center">
-									<CardTitle>{product.name}</CardTitle>
-									<CardDescription>Card Description</CardDescription>
-									<div className="text-center text-4xl text-white">
-										{/*@ts-ignore*/}
-										<span>${product.default_price.unit_amount / 100}</span>
-										<span className="text-base">/m</span>
-									</div>
-								</CardHeader>
-								<Separator />
-								<CardContent className="flex-1">
-									<div className=" pt-4">
-										<p className="text-base text-white">1000 signups</p>
-										<p className="text-base text-white">100 invites</p>
-										<p className="text-base text-white">1 waitlist</p>
-									</div>
-								</CardContent>
-								<CardFooter>
-									<Link href="/billing/stripe">
-										<Button className="w-full">Change Plan</Button>
-									</Link>
-								</CardFooter>
-							</Card>
-						);
+						return <PricingCard key={product.id} plan={workspace.plan} product={product} />;
 					})}
 				</CardContent>
 			</Card>
 		</>
+	);
+}
+
+function PricingCard({ plan, product }: { plan: string; product: Stripe.Product }) {
+	return (
+		<Card className="flex flex-col ">
+			<CardHeader className="w-full text-left">
+				<CardTitle className="">{product.name}</CardTitle>
+				<CardDescription className="pb-2">Perfect for indie builders and starters</CardDescription>
+				<div className="space-x-2 text-white">
+					{/* @ts-ignore */}
+					<span className="text-5xl text-primary">${product.default_price.unit_amount / 100}</span>
+					<span className="text-base font-extralight text-neutral-400">/mo</span>
+				</div>
+			</CardHeader>
+			<Separator />
+			<CardContent className="flex-1">
+				<ul className="pt-4">
+					<li className="inline-flex w-full gap-2">
+						<span>•</span>
+						<p className="text-base font-light text-white">1000 signups</p>
+					</li>
+					<li className="inline-flex w-full gap-2">
+						<span>•</span>
+
+						<p className="text-base font-light text-white">100 invites</p>
+					</li>
+					<li className="inline-flex w-full gap-2">
+						<span>•</span>
+						<p className="text-base font-light text-white">1 waitlist</p>
+					</li>
+				</ul>
+			</CardContent>
+			<CardFooter>
+				{plan !== product.metadata.plan ? (
+					<Link className="w-full" href="/billing/stripe">
+						<Button className="w-full">Change Plan</Button>
+					</Link>
+				) : (
+					<Button disabled className="w-full">
+						You are on this plan
+					</Button>
+				)}
+			</CardFooter>
+		</Card>
 	);
 }
 
