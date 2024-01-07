@@ -2,30 +2,36 @@ import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
+import { getWorkspaceForTenant } from "@/lib/db";
+import { checkWorkspace } from "@/lib/auth";
 
-export default async function StripeRedirect() {
+export default async function StripeRedirect({ params }: { params: { waitlist: string }}) {
 
     const user = await currentUser();
   
-    
-    
-  
+    console.log("params in StripeRedirect: ", params);
+    const ws = await checkWorkspace();
+
+    if (!ws) {
+      return redirect("/new");
+    }
+
     // If they have a subscription already, we display the portal
-    // if (ws.stripeCustomerId) {
-    //   const session = await stripe.billingPortal.sessions.create({
-    //     customer: ws.stripeCustomerId,
-    //     return_url: headers().get("referer") ?? "https://unkey.dev/app",
-    //   });
+    if (ws.stripeCustomerID) {
+      const session = await stripe.billingPortal.sessions.create({
+        customer: ws.stripeCustomerID,
+        return_url: headers().get("referer") ?? "https://unkey.dev/app",
+      });
   
-    //   return redirect(session.url);
-    // }
+      return redirect(session.url);
+    }
   
     // If they don't have a subscription, we send them to the checkout
     // and the checkout will redirect them to the success page, which will add the subscription to the user table
     const baseUrl = "http://localhost:3000";
   
     // do not use `new URL(...).searchParams` here, because it will escape the curly braces and stripe will not replace them with the session id
-    const successUrl = `${baseUrl}/app/settings/billing/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
+    const successUrl = `${baseUrl}/dashboard/${params.waitlist}/settings/billing/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
   
     const cancelUrl = headers().get("referer") ?? `${baseUrl}/app`;
     

@@ -14,6 +14,7 @@ import { LogOut, User } from "lucide-react";
 import { SignOutButton, currentUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
 import { checkWorkspace } from "@/lib/auth";
+import TeamSelect from "./team-select";
 
 async function SidebarUserButton() {
 	const user = await currentUser();
@@ -38,7 +39,7 @@ async function SidebarUserButton() {
 							<p>Ali Bassiouni</p>
 						</div>
 						{workspace.plan === "free" ? (
-							<div className="h-fit w-fit rounded-md bg-neutral-700 text-white px-2 text-sm">Free</div>
+							<div className="h-fit w-fit rounded-md bg-neutral-700 px-2 text-sm text-white">Free</div>
 						) : (
 							<div className="h-fit w-fit rounded-md bg-primary px-2 text-sm text-neutral-900">Pro</div>
 						)}
@@ -66,6 +67,13 @@ async function SidebarUserButton() {
 							Account
 						</DropdownMenuItem>
 					</Link>
+				</DropdownMenuGroup>
+				<DropdownMenuSeparator />
+				<DropdownMenuGroup>
+					<DropdownMenuLabel>Workspace</DropdownMenuLabel>
+					<DropdownMenuItem className="px-0 py-0">
+						<TeamSelect className="w-full px-2" />
+					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>

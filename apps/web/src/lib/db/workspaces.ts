@@ -21,3 +21,17 @@ export async function createWorkspaceForTenant(tenantID: string) {
 
 	return workspace;
 }
+
+export async function updateStripeDetailsForWorkspace(
+	workspaceID: string,
+	stripeCustomerID: string,
+	stripeSubscriptionID: string,
+) {
+	return await db
+		.update(workspaces)
+		.set({
+			stripeCustomerID: stripeCustomerID,
+			stripeSubscriptionID: stripeSubscriptionID as string,
+		})
+		.where(eq(workspaces.workspaceID, workspaceID));
+}
