@@ -12,7 +12,7 @@ export default async function StripeSuccessPage({ searchParams }: { searchParams
 	const ws = await checkWorkspace();
 
 	if (!ws) {
-		return redirect("/dashboard");
+		return redirect("/dashboard/billing");
 	}
 
 	const session = await stripe.checkout.sessions.retrieve(searchParams.session_id);
@@ -35,5 +35,5 @@ export default async function StripeSuccessPage({ searchParams }: { searchParams
 
 	await updateStripeDetailsForWorkspace(ws.workspaceID, customer.id, session.subscription as string);
 
-	return redirect("/dashboard");
+	return redirect("/dashboard/billing");
 }
