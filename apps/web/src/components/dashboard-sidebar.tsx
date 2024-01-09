@@ -90,7 +90,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 					</div>
 				</Link>
 				<div>
-					<p className="p self-start px-3 text-sm font-medium text-neutral-400">Team</p>
+					<p className="p self-start px-3 text-sm font-medium text-neutral-400">Workspace</p>
 					<TeamSelect />
 				</div>
 				<div>
