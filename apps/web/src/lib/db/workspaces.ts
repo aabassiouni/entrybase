@@ -35,3 +35,26 @@ export async function updateStripeDetailsForWorkspace(
 		})
 		.where(eq(workspaces.workspaceID, workspaceID));
 }
+
+export async function updateWorkspacePlan(workspaceID: string, plan: string) {
+	switch (plan) {
+		case "free":
+			await db
+				.update(workspaces)
+				.set({
+					plan: "free",
+				})
+				.where(eq(workspaces.workspaceID, workspaceID));
+			break;
+		case "pro":
+			await db
+				.update(workspaces)
+				.set({
+					plan: "pro",
+				})
+				.where(eq(workspaces.workspaceID, workspaceID));
+			break;
+	}
+
+	return;
+}

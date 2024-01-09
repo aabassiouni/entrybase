@@ -13,6 +13,7 @@ import Stripe from "stripe";
 import { PageHeading } from "@/components/typography";
 import { ArrowLeftCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import ChangePlanButton from "@/components/change-plan-button";
 
 async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 	let paymentMethod: Stripe.PaymentMethod | undefined = undefined;
@@ -99,7 +100,14 @@ async function BillingSettingsPage() {
 				</CardHeader>
 				<CardContent className="flex justify-center gap-10">
 					{products.map((product) => {
-						return <PricingCard key={product.id} plan={workspace.plan} product={product} />;
+						return (
+							<PricingCard
+								workspaceID={workspace.workspaceID}
+								key={product.id}
+								plan={workspace.plan}
+								product={product}
+							/>
+						);
 					})}
 				</CardContent>
 			</Card>
@@ -107,7 +115,7 @@ async function BillingSettingsPage() {
 	);
 }
 
-function PricingCard({ plan, product }: { plan: string; product: Stripe.Product }) {
+function PricingCard({ plan, product, workspaceID }: { plan: string; product: Stripe.Product; workspaceID: string }) {
 	return (
 		<Card className="flex flex-col ">
 			<CardHeader className="w-full text-left">
@@ -139,9 +147,7 @@ function PricingCard({ plan, product }: { plan: string; product: Stripe.Product 
 			</CardContent>
 			<CardFooter>
 				{plan !== product.metadata.plan ? (
-					<Link className="w-full" href="/billing/stripe">
-						<Button className="w-full">Change Plan</Button>
-					</Link>
+					<ChangePlanButton plan={product.metadata.plan} workspaceID={workspaceID} />
 				) : (
 					<Button disabled className="w-full">
 						You are on this plan
