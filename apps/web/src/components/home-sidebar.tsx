@@ -48,7 +48,7 @@ function HomeSidebar() {
 				</div>
 				<Separator className="mb-2" />
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">Team</p>
+					<p className="p self-start px-3 text-sm text-neutral-400">Workspace</p>
 					<TeamSelect />
 				</div>
 				<div>
