@@ -17,8 +17,8 @@ import { CursorArrowIcon, GitHubLogoIcon, PaperPlaneIcon } from "@radix-ui/react
 
 function LandingPage() {
 	return (
-		<div className=" flex-1 ">
-			<div className="bg- flex justify-around p-4">
+		<div className="sm:flex-1 ">
+			<div className="bg- flex items-center justify-around p-4">
 				<p className="text-center text-4xl font-black text-white">waitlister</p>
 				<Link href={"/dashboard"}>
 					<button className="w- relative inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 font-medium text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
@@ -27,15 +27,17 @@ function LandingPage() {
 					</button>
 				</Link>
 			</div>
-			<div className="relative pb-10">
+			<div className="relative px-4 pb-10">
 				<div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#4BE7AE_100%)]"></div>
 				<div className="flex h-[350px] flex-col items-center justify-center ">
 					<div className="flex flex-col items-center justify-center gap-4">
 						<div className="absolute -z-10 h-full w-full bg-[radial-gradient(#1c1917_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
-						<h1 className="h-[2.1em] w-2/3 text-balance bg-gradient-to-t from-white to-primary bg-clip-text  text-center text-6xl font-bold text-transparent ">
-							Open source waitlist managemanent and analytics platform
+						<h1 className="text-balance bg-gradient-to-t from-white to-primary bg-clip-text text-center text-4xl  font-bold text-transparent sm:h-[2.1em] sm:w-2/3 sm:text-6xl ">
+							Open source waitlist management and analytics platform
 						</h1>
-						<p className="text-xl text-white">Validate your ideas and ship as fast as you can install</p>
+						<p className="text-center text-lg text-white sm:text-xl">
+							Validate your ideas and ship as fast as you can install
+						</p>
 						{/* <Link href={"/dashboard"}>
 							<button className="w- relative inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 font-medium text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
 								<div className="absolute -inset-1 -z-10 rounded-lg bg-gradient-to-b from-primary to-[#4BE7AE] opacity-75 blur" />
@@ -54,7 +56,7 @@ function LandingPage() {
 					</div>
 				</div>
 				<div className=" flex items-center justify-center">
-					<div className="hidden sm:block sm:w-3/4">
+					<div className=" sm:block sm:w-3/4">
 						<Image
 							className="mx-auto rounded-3xl border-4  border-neutral-700 shadow-md "
 							src={homepageImg}
@@ -65,7 +67,7 @@ function LandingPage() {
 					</div>
 				</div>
 			</div>
-			<div className="h- relative flex flex-col  items-center py-16 ">
+			<div className="h- relative flex flex-col  items-center sm:py-16 ">
 				<div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_90%,#000_40%,#4BE7AE_100%)]"></div>
 			</div>
 			{/* <div className="mx-auto max-w-screen-lg py-24">
@@ -80,25 +82,24 @@ function LandingPage() {
 					<div className="h-96  bg-gray-800">asdf</div>
 				</div>
 			</div> */}
-			<div className="mx-auto max-w-screen-lg space-y-8 py-16">
+			<div className="mx-auto max-w-screen-lg space-y-8 px-4 py-16">
 				<div className="space-y-2">
 					<h1 className="text-balance text-center text-5xl font-bold text-white">How it works</h1>
-					<p className="text-balance text-center text-xl text-neutral-400 ">
+					<p className="text-balance text-center text-lg text-neutral-400 sm:text-xl ">
 						Waitlister lets you take control of your waitlist and choose who you want to invite and when.
 						Launch on your terms.
 					</p>
 				</div>
-				<ul className="grid w-full grid-cols-1 gap-0 sm:grid-cols-3">
-					<li className="group relative  flex sm:flex-col sm:items-center sm:text-center">
+				<ul className="grid w-full grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-0">
+					<li className="group relative flex sm:flex-col sm:items-center sm:text-center">
 						<span
-							className="absolute left-[calc(50%+38px)] top-[32px] h-px w-[calc(100%-76px)] bg-neutral-700"
+							className="absolute left-[32px] top-[68px] h-[calc(100%-40px)] w-px bg-neutral-700 sm:left-[calc(50%+38px)] sm:top-[32px] sm:h-px sm:w-[calc(100%-76px)]"
 							aria-hidden="true"
 						></span>
-						<div className="relative h-16 w-16 overflow-hidden rounded-xl p-[1px] shadow-primary backdrop-blur-3xl">
-							<span className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)]" />
-							<div className="flex h-full w-full flex-col justify-end gap-4 rounded-xl bg-neutral-900 p-4 backdrop-blur-3xl">
+						<div className=" relative flex h-16 w-16 rounded-xl p-[1px] shadow-primary backdrop-blur-3xl sm:overflow-hidden">
+							<span className="absolute inset-[-1000%] aspect-square h-16 w-16 bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)] sm:h-auto sm:w-auto" />
+							<div className="flex aspect-square h-full w-full flex-col justify-end gap-4 rounded-xl bg-neutral-900 p-4 backdrop-blur-3xl">
 								<svg
-									// dataSlot="icon"
 									fill="none"
 									strokeWidth={1.5}
 									stroke="#4BE7AE"
@@ -114,7 +115,7 @@ function LandingPage() {
 								</svg>
 							</div>
 						</div>
-						<div className="space-y-2 pt-6">
+						<div className=" ml-6 flex flex-col gap-2 sm:pt-6">
 							<p className="text-lg font-medium text-zinc-200">Create Waitlist</p>
 							<p className="text-neutral-500 sm:max-w-xs">
 								Just paste or type the URL of the website you want to save, and your bookmark will be
@@ -124,14 +125,13 @@ function LandingPage() {
 					</li>
 					<li className="group relative flex sm:flex-col sm:items-center sm:text-center">
 						<span
-							className="absolute left-[calc(50%+38px)] top-[32px] h-px w-[calc(100%-76px)] bg-neutral-700"
+							className="absolute left-[32px] top-[68px] h-[calc(100%-40px)] w-px bg-neutral-700 sm:left-[calc(50%+38px)] sm:top-[32px] sm:h-px sm:w-[calc(100%-76px)]"
 							aria-hidden="true"
 						></span>
-						<div className=" relative h-16 w-16 overflow-hidden rounded-xl p-[1px] shadow-primary backdrop-blur-3xl">
-							<span className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)]" />
-							<div className="flex h-full w-full flex-col justify-end gap-4 rounded-xl bg-neutral-900 p-4 backdrop-blur-3xl">
+						<div className=" relative flex h-16 w-16 rounded-xl p-[1px] shadow-primary backdrop-blur-3xl sm:overflow-hidden">
+							<span className="absolute inset-[-1000%] aspect-square h-16 w-16 bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)] sm:h-auto sm:w-auto" />
+							<div className="flex aspect-square h-full w-full flex-col justify-end gap-4 rounded-xl bg-neutral-900 p-4 backdrop-blur-3xl">
 								<svg
-									// dataSlot="icon"
 									fill="none"
 									strokeWidth={1.5}
 									stroke="#4BE7AE"
@@ -147,7 +147,7 @@ function LandingPage() {
 								</svg>
 							</div>
 						</div>
-						<div className="space-y-2 pt-6">
+						<div className="ml-6 space-y-2 sm:ml-0 sm:pt-6">
 							<p className="text-lg font-medium text-zinc-200">Integrate API</p>
 							<p className="text-neutral-500 sm:max-w-xs">
 								Add custom tags to each bookmark, making it a breeze to find and access your most
@@ -156,13 +156,13 @@ function LandingPage() {
 						</div>
 					</li>
 					<li className="group relative flex sm:flex-col sm:items-center sm:text-center">
-						<div className=" relative h-16 w-16 overflow-hidden rounded-xl p-[1px] shadow-primary backdrop-blur-3xl">
-							<span className="absolute inset-[-1000%] bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)]" />
-							<div className="flex h-full w-full flex-col justify-end gap-4 rounded-xl bg-neutral-900 p-4 backdrop-blur-3xl">
+						<div className=" relative flex h-16 w-16 rounded-xl  shadow-primary backdrop-blur-3xl sm:overflow-hidden sm:p-[1px]">
+							<span className="absolute inset-[-1000%] aspect-square h-16 w-16 bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)] sm:h-auto sm:w-auto" />
+							<div className="flex aspect-square h-full w-full flex-col justify-end gap-4 rounded-xl bg-neutral-900 p-4 backdrop-blur-3xl">
 								<PaperPlaneIcon className="h-8 w-8 text-primary" />
 							</div>
 						</div>
-						<div className="space-y-2 pt-6">
+						<div className="ml-6 space-y-2 sm:ml-0 sm:pt-6">
 							<p className="text-lg font-medium text-zinc-200">Invite Signups</p>
 							<p className="text-neutral-500 sm:max-w-xs">
 								Easily filter your bookmarks by tags or experience lightning-fast searching with the
@@ -172,81 +172,75 @@ function LandingPage() {
 					</li>
 				</ul>
 			</div>
-			<div className="flex justify-center pb-8 ">
-				<div className="grid max-w-screen-lg flex-1 grid-cols-5 grid-rows-5 gap-4 ">
-					<GradientBorderCard className="col-span-2 row-span-2">
-						<div className="blur-box rounded bg-black p-4">
+			<div className="flex justify-center px-4 pb-8 ">
+				<div className="grid max-w-screen-lg flex-1 grid-cols-1 grid-rows-4 gap-4 sm:grid-cols-5 sm:grid-rows-5 ">
+					<GradientBorderCard
+						flexdir={"flex-col-reverse"}
+						className="col col-span-1 sm:col-span-2 sm:row-span-2"
+					>
+						<div className="blur-box overflow-hidden rounded bg-black p-4 sm:overflow-auto">
 							<AnimatedChart />
 						</div>
-						<GradientBorderCardTitle>In-Depth Analytics</GradientBorderCardTitle>
-						<GradientBorderCardDescription>
-							Harness rich analytics for deeper insights. Make data-driven decisions to refine your
-							waitlist strategy.
-						</GradientBorderCardDescription>
+						<div>
+							<GradientBorderCardTitle>In-Depth Analytics</GradientBorderCardTitle>
+							<GradientBorderCardDescription>
+								Harness rich analytics for deeper insights. Make data-driven decisions to refine your
+								waitlist strategy.
+							</GradientBorderCardDescription>
+						</div>
 					</GradientBorderCard>
-					<GradientBorderCard className="col-span-3 row-span-2">
-						<GradientBorderCardTitle>Custom Invitations</GradientBorderCardTitle>
-						<GradientBorderCardDescription>
-							Craft tailored invitations that resonate with your audience. With customizable templates,
-							your invites will always hit the right note.
-						</GradientBorderCardDescription>
-						<div className="flex flex-1 items-center  ">
-							<div className="h-full w-36 rounded-xl bg-black p-1">
-								<div className="h-full w-full rounded-[8px] bg-black p-4">
-									<p className=" w-fit rounded bg-neutral-800 p-1 font-medium text-primary">
-										Acme Inc.
-									</p>
-									<div className="p-2"></div>
-									<div className="space-y-4 *:bg-primary">
-										<Separator />
-										<Separator />
-										<Separator />
-										<Separator />
-										<Separator />
-										<Separator />
-									</div>
-								</div>
+					<GradientBorderCard flexdir="flex-col" className=" sm:col-span-3 sm:row-span-2">
+						<div>
+							<GradientBorderCardTitle>Custom Invitations</GradientBorderCardTitle>
+							<GradientBorderCardDescription>
+								Craft tailored invitations that resonate with your audience. With customizable
+								templates, your invites will always hit the right note.
+							</GradientBorderCardDescription>
+						</div>
+						<div className="flex flex-1 items-center justify-center">
+							<div className="h-full w-36 rounded-xl bg-black p-2">
+								<div className="h-full w-full rounded-[8px] bg-[#D3FDEE] p-4"></div>
 							</div>
 						</div>
 					</GradientBorderCard>
-					<GradientBorderCard className="col-span-3 row-span-2">
-						<GradientBorderCardTitle>Seamless API Integration</GradientBorderCardTitle>
-						<GradientBorderCardDescription>
-							Add to your existing workflow with our API. Seamlessly integrate your waitlist into your
-							website or app.
-						</GradientBorderCardDescription>
+					<GradientBorderCard flexdir="flex-col-reverse" className="sm:col-span-3 sm:row-span-2">
+						<div>
+							<GradientBorderCardTitle>Seamless API Integration</GradientBorderCardTitle>
+							<GradientBorderCardDescription>
+								Add to your existing workflow with our API. Seamlessly integrate your waitlist into your
+								website or app.
+							</GradientBorderCardDescription>
+						</div>
 					</GradientBorderCard>
-					<GradientBorderCard className="col-span-2 row-span-2">
-						<GradientBorderCardTitle>Custom Domains</GradientBorderCardTitle>
-						<GradientBorderCardDescription>
-							Seamlessly integrate your waitlist into your website with custom domains. Provide a
-							consistent, professional look across your digital presence.
-						</GradientBorderCardDescription>
+					<GradientBorderCard flexdir="flex-col" className="sm:col-span-2 sm:row-span-2">
+						<div>
+							<GradientBorderCardTitle>Custom Domains</GradientBorderCardTitle>
+							<GradientBorderCardDescription>
+								Seamlessly integrate your waitlist into your website with custom domains. Provide a
+								consistent, professional look across your digital presence.
+							</GradientBorderCardDescription>
+						</div>
 						<div className="group relative flex-1">
-							<div className="group-hover:animate-domain-link-in animate-domain-link-out inline-flex h-12 w-3/4  items-center justify-center rounded-2xl border-2 border-zinc-800 bg-black p-2 text-center">
+							<div className="inline-flex h-12 w-3/4 animate-domain-link-out items-center  justify-center rounded-2xl border-2 border-zinc-800 bg-black p-2 text-center group-hover:animate-domain-link-in">
 								<p className="text-xl text-neutral-500">you@yourdomain.com</p>
 							</div>
-							<CursorArrowIcon className="group-hover:animate-domain-cursor-in animate-domain-cursor-out absolute right-1/4 top-1/2 h-8 w-8  justify-end text-neutral-300" />
+							<CursorArrowIcon className="absolute right-1/4 top-1/2 h-8 w-8 animate-domain-cursor-out justify-end  text-neutral-300 group-hover:animate-domain-cursor-in" />
 						</div>
 					</GradientBorderCard>
 				</div>
 			</div>
-			<div className="mx-auto max-w-screen-lg space-y-8 pb-16">
+			<div className="mx-auto max-w-screen-lg space-y-8 px-4 pb-16 sm:px-0">
 				<div className="flex flex-col gap-10">
 					<div className="space-y-2">
 						<h1 className="text-balance text-center text-5xl font-bold text-white">Fully Open Source</h1>
-						<p className="text-balance text-center text-xl text-neutral-400 ">
+						<p className="text-balance text-center text-neutral-400 sm:text-xl ">
 							Fully open source. We believe in the power of open source and the community. Feel free to
 							review, learn from, and contribute to our codebase.
 						</p>
 					</div>
 					<div className="self-center">
 						<Link href={"https://github.com/aabassiouni/waitlister"}>
-							{/* <div className="flex w-fit items-center gap-2 rounded bg-zinc-900 p-2">
-								<GitHubLogoIcon className="h-6 w-6 text-white" />
-								<p className="font-semibold text-white">Star On GitHub</p>
-							</div> */}
-							<button className="animate-background-shine inline-flex h-12 items-center justify-center gap-2 rounded-md border border-primary bg-[linear-gradient(110deg,#000103,45%,#4BE7AE,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors">
+							<button className="inline-flex h-12 animate-background-shine items-center justify-center gap-2 rounded-md border border-primary bg-[linear-gradient(110deg,#000103,45%,#4BE7AE,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors">
 								<GitHubLogoIcon className="h-6 w-6 text-white" />
 								<p className="font-semibold text-white">Star On GitHub</p>
 							</button>
