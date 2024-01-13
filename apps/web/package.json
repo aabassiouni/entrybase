@@ -11,7 +11,7 @@
     "db:push": "tsx src/lib/db/migrate.ts"
   },
   "dependencies": {
-    "@clerk/nextjs": "^4.26.1",
+    "@clerk/nextjs": "^4.29.3",
     "@hookform/resolvers": "^3.3.2",
     "@neoconfetti/react": "^0.1.1",
     "@neondatabase/serverless": "^0.6.0",
@@ -41,7 +41,7 @@
     "drizzle-orm": "^0.28.6",
     "embla-carousel-react": "8.0.0-rc17",
     "lucide-react": "^0.287.0",
-    "next": "14.0.1",
+    "next": "14.0.4",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",
