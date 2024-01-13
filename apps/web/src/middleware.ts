@@ -11,13 +11,10 @@ export default async function middleware(request: NextRequest, evt: NextFetchEve
 				console.log("redirecting to signin");
 				return redirectToSignIn({ returnBackUrl: req.url });
 			}
-			// const userId = auth.userId ?? undefined;
-			// const tenantId = auth.orgId ?? auth.userId ?? undefined;
 			const workspace = await getWorkspaceForTenant(auth.userId!);
 
 			// create a workspace if there isn't one
 			if (!workspace && auth.userId && request.nextUrl.pathname !== "/dashboard/setup") {
-				// await createWorkspaceForUser(auth.userId);
 				return NextResponse.redirect(new URL("/dashboard/setup", req.url));
 			}
 		},
@@ -27,5 +24,5 @@ export default async function middleware(request: NextRequest, evt: NextFetchEve
 }
 
 export const config = {
-	matcher: ["/dashboard", "/dashboard/(.*)", "/(api|trpc)(.*)"],
+	matcher: ["/dashboard", "/dashboard/(.*)", "/success", "/(api|trpc)(.*)"],
 };

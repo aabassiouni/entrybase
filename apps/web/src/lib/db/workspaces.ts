@@ -3,6 +3,7 @@ import { db } from "./db";
 import { eq, and, isNull } from "drizzle-orm";
 import { workspaces } from "./schema";
 import { newId } from "../id";
+import type { Workspace } from ".";
 
 export async function getWorkspaceForTenant(tenantID: string) {
 	const workspace = await db.query.workspaces.findFirst({
@@ -57,4 +58,22 @@ export async function updateWorkspacePlan(workspaceID: string, plan: string) {
 	}
 
 	return;
+}
+
+export async function createProWorkspace(workspace: Workspace) {
+	const workspaceRes = await db.insert(workspaces).values(workspace);
+	
+	return workspaceRes;
+}
+
+export async function findExistingSubscription(subscriptionID: string) {
+	const existingSub = await db
+		.select({
+			subID: workspaces.stripeSubscriptionID,
+		})
+		.from(workspaces)
+		.where(eq(workspaces.stripeSubscriptionID, subscriptionID as string))
+		.then((res) => res[0]);
+
+	return existingSub;
 }

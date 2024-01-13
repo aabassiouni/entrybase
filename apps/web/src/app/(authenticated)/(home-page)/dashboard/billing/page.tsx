@@ -58,7 +58,7 @@ async function BillingSettingsPage() {
 	if (!workspace) {
 		return redirect("/dashboard");
 	}
-	const products = (await stripe.products.list({ expand: ["data.default_price"] }).then((res) => {
+	const products = (await stripe.products.list({ active: true, expand: ["data.default_price"] }).then((res) => {
 		return res.data.sort((a, b) => {
 			//weird stripe ts things
 			// @ts-ignore
@@ -123,7 +123,7 @@ function PricingCard({ plan, product, workspaceID }: { plan: string; product: St
 				<CardDescription className="pb-2">Perfect for indie builders and starters</CardDescription>
 				<div className="space-x-2 text-white">
 					{/* @ts-ignore */}
-					<span className="text-5xl text-primary">${product.default_price.unit_amount / 100}</span>
+					{/* <span className="text-5xl text-primary">${product.default_price.unit_amount / 100}</span> */}
 					<span className="text-base font-extralight text-neutral-400">/mo</span>
 				</div>
 			</CardHeader>
