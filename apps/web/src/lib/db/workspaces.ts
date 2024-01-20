@@ -31,6 +31,7 @@ export async function updateStripeDetailsForWorkspace(
 	return await db
 		.update(workspaces)
 		.set({
+			plan: "pro",
 			stripeCustomerID: stripeCustomerID,
 			stripeSubscriptionID: stripeSubscriptionID as string,
 		})
