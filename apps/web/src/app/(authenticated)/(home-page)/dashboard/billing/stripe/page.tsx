@@ -20,7 +20,7 @@ export default async function StripeRedirect({ params }: { params: { waitlist: s
     if (ws.stripeCustomerID) {
       const session = await stripe.billingPortal.sessions.create({
         customer: ws.stripeCustomerID,
-        return_url: headers().get("referer") ?? "https://unkey.dev/app",
+        return_url: headers().get("referer") ?? "http://localhost:3000/dashboard/billing",
       });
   
       return redirect(session.url);
@@ -40,6 +40,7 @@ export default async function StripeRedirect({ params }: { params: { waitlist: s
       customer_email: user?.emailAddresses.at(0)?.emailAddress,
       billing_address_collection: "auto",
       mode: "setup",
+      payment_method_collection: "always",
       success_url: successUrl,
       cancel_url: cancelUrl,
       currency: "USD",

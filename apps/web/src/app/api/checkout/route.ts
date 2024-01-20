@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
 		line_items: [
 			{
 				price: process.env.STRIPE_PRO_PLAN,
+				quantity: 1,
 			},
 		],
 		customer_email: user?.emailAddresses.at(0)?.emailAddress,

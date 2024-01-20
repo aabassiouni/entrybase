@@ -14,7 +14,27 @@ import { PageHeading } from "@/components/typography";
 import { ArrowLeftCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import ChangePlanButton from "@/components/change-plan-button";
+import { currentUser } from "@clerk/nextjs";
+import { headers } from "next/headers";
 
+const plans = [
+	{
+		name: "free",
+		displayName: "Free",
+		price: 0,
+		signups: 1000,
+		invites: 100,
+		waitlists: 1,
+	},
+	{
+		name: "pro",
+		displayName: "Pro",
+		price: 10,
+		signups: 10000,
+		invites: 1000,
+		waitlists: 10,
+	},
+];
 async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 	let paymentMethod: Stripe.PaymentMethod | undefined = undefined;
 
@@ -80,7 +100,7 @@ async function BillingSettingsPage() {
 					<CardDescription>Change your billing settings</CardDescription>
 				</CardHeader>
 				<Separator />
-				<CardHeader>
+				{/* <CardHeader>
 					<CardTitle>Usage</CardTitle>
 				</CardHeader>
 				<CardContent className="">
@@ -91,7 +111,7 @@ async function BillingSettingsPage() {
 						</div>
 						<Progress className="w-" value={50} />
 					</div>
-				</CardContent>
+				</CardContent> */}
 				<Separator />
 				<PaymentMethod workspace={workspace} />
 				<Separator />
@@ -99,13 +119,13 @@ async function BillingSettingsPage() {
 					<CardTitle>Plan</CardTitle>
 				</CardHeader>
 				<CardContent className="flex justify-center gap-10">
-					{products.map((product) => {
+					{plans.map((plan, index) => {
 						return (
 							<PricingCard
 								workspaceID={workspace.workspaceID}
-								key={product.id}
-								plan={workspace.plan}
-								product={product}
+								plan={plan}
+								key={index}
+								activePlan={workspace.plan}
 							/>
 						);
 					})}
@@ -115,15 +135,67 @@ async function BillingSettingsPage() {
 	);
 }
 
-function PricingCard({ plan, product, workspaceID }: { plan: string; product: Stripe.Product; workspaceID: string }) {
+function PricingCard({
+	activePlan,
+	plan,
+	// product,
+	workspaceID,
+}: {
+	activePlan: string;
+	plan: any;
+	// product: Stripe.Product;
+	workspaceID: string;
+}) {
+	async function changePlan() {
+		"use server";
+		const user = await currentUser();
+
+		const baseUrl = "http://localhost:3000";
+		const successUrl = `${baseUrl}/dashboard/billing/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
+
+		const cancelUrl = headers().get("referer") ?? `${baseUrl}/dashboard/billing`;
+		const ws = await checkWorkspace();
+
+		console.log("ws: ", ws?.stripeCustomerID!);
+		const session = await stripe.checkout.sessions.create({
+			client_reference_id: user?.id,
+			customer_email: user?.emailAddresses.at(0)?.emailAddress,
+			billing_address_collection: "auto",
+			mode: "subscription",
+			line_items: [
+				// {
+				// 	price: process.env.STRIPE_PRO_PLAN_FIXED,
+				// 	quantity: 1,
+				// },
+				// {
+				// 	price: process.env.STRIPE_PRO_PLAN_TIERED,
+				// 	quantity: 1,
+				// },
+				{
+					price: process.env.STRIPE_PRO_PLAN,
+					quantity: 1,
+				},
+			],
+			customer: ws?.stripeCustomerID ?? undefined,
+			success_url: successUrl,
+			cancel_url: cancelUrl,
+			currency: "USD",
+			// customer_creation: "always",
+		});
+
+		if (!session.url) {
+			redirect("/dashboard/billing");
+		}
+		redirect(session.url);
+	}
 	return (
 		<Card className="flex flex-col ">
 			<CardHeader className="w-full text-left">
-				<CardTitle className="">{product.name}</CardTitle>
+				<CardTitle className="">{plan.displayName}</CardTitle>
 				<CardDescription className="pb-2">Perfect for indie builders and starters</CardDescription>
 				<div className="space-x-2 text-white">
 					{/* @ts-ignore */}
-					{/* <span className="text-5xl text-primary">${product.default_price.unit_amount / 100}</span> */}
+					<span className="text-5xl text-primary">${plan.price}</span>
 					<span className="text-base font-extralight text-neutral-400">/mo</span>
 				</div>
 			</CardHeader>
@@ -146,8 +218,10 @@ function PricingCard({ plan, product, workspaceID }: { plan: string; product: St
 				</ul>
 			</CardContent>
 			<CardFooter>
-				{plan !== product.metadata.plan ? (
-					<ChangePlanButton plan={product.metadata.plan} workspaceID={workspaceID} />
+				{activePlan !== plan.name ? (
+					<form className="w-full" action={changePlan}>
+						<Button className="w-full">Change Plan</Button>
+					</form>
 				) : (
 					<Button disabled className="w-full">
 						You are on this plan
