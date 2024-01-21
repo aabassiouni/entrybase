@@ -8,6 +8,10 @@ import { eq } from "drizzle-orm";
 import React from "react";
 import ChangeOrgButton from "./change-org-button";
 import { redirect } from "next/navigation";
+import UserButton from "@/components/user-button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 async function SuccessPage({ searchParams }: { searchParams: { session_id: string } }) {
 	const user = await currentUser();
@@ -31,9 +35,26 @@ async function SuccessPage({ searchParams }: { searchParams: { session_id: strin
 
 	if (existingSub) {
 		return (
-			<div>
-				<p>You already have a subscription!</p>
-				<p>Subscription ID: {existingSub.subID}</p>
+			<div className="w-full ">
+				<div className="flex justify-between p-8 px-24 shadow-md">
+					<Link href={"/dashboard"}>
+						<h1 className="text-4xl font-bold">waitlister</h1>
+					</Link>
+					<UserButton />
+				</div>
+				<div className="p-4">
+					<Card className="mx-auto  w-full max-w-lg">
+						<CardHeader>
+							<CardTitle className="text-center text-3xl">You already have a subscription</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-6"></CardContent>
+						<CardFooter className="justify-center">
+							<Link href={"/dashboard"}>
+								<Button variant={"default"}>Go to Dashboard</Button>
+							</Link>
+						</CardFooter>
+					</Card>
+				</div>
 			</div>
 		);
 	}
@@ -61,10 +82,39 @@ async function SuccessPage({ searchParams }: { searchParams: { session_id: strin
 	await createProWorkspace(workspace);
 
 	return (
-		<div>
-			<p>Workspace created!</p>
-			<p>Workspace ID: {wsID}</p>
-			<ChangeOrgButton orgID={org.id} />
+		<div className="w-full ">
+			<div className="flex justify-between p-8 px-24 shadow-md">
+				<h1 className="text-4xl font-bold">waitlister</h1>
+				<UserButton />
+			</div>
+			<div className="flex p-4">
+				<Card className="mx-auto  w-full max-w-lg">
+					<div className="absolute left-1/2">{/* {render && <Confetti stageWidth={1000} />} */}</div>
+					<CardHeader>
+						<CardTitle className="text-center text-3xl">🎉 Workspace created! 🎉</CardTitle>
+					</CardHeader>
+					<CardContent className="space-y-6">
+						<p className="text-center text-xl font-medium">
+							Your Pro Workspace has been set up successfully.
+						</p>
+						<p className="text-center">
+							You now have access to custom invites, team members and higher invite limits.
+						</p>
+
+						<p className="text-center">Click the button below to go to your new workspace.</p>
+						<ChangeOrgButton orgID={org.id} />
+					</CardContent>
+					<CardFooter className="justify-center">
+						{/* <Link href={`/dashboard/${params.waitlist}`}> */}
+						{/* <ChangeOrgButton orgID={org.id} /> */}
+						{/* </Link> */}
+					</CardFooter>
+				</Card>
+
+				{/* <p>Workspace created!</p> */}
+				{/* <p>Workspace ID: {wsID}</p> */}
+				{/* <ChangeOrgButton orgID={org.id} /> */}
+			</div>
 		</div>
 	);
 }

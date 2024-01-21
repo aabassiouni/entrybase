@@ -16,16 +16,18 @@ function ChangeOrgButton({ orgID }: { orgID: string }) {
 		<Button
 			onClick={async () => {
 				try {
-                    console.log("running onClick")
+					console.log("running onClick");
 					await setActive({ organization: orgID });
 				} catch (e) {
 					console.log(e);
 				} finally {
-                    router.refresh();
+					router.refresh();
 					router.push("/dashboard");
 				}
 			}}
-		>Go to workspace</Button>
+		>
+			Go to workspace
+		</Button>
 	);
 }
 
