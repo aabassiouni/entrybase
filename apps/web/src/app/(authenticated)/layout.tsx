@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/context/theme-provider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "@/lib/uploadthing";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
 					<ClerkProvider>{children}</ClerkProvider>
 				</ThemeProvider>
+				<Toaster />
 			</body>
 		</html>
 	);

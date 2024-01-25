@@ -2,7 +2,13 @@ import Chart from "@/components/Chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { getCounts, getDayRangeChartLabelsAndValues, getSignupsEmailListforUser } from "@/lib/db";
+import {
+	getCounts,
+	getDayRangeChartLabelsAndValues,
+	getSignupsEmailListforUser,
+	getWaitlistByID,
+	getWaitlistWithWorkspace,
+} from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,8 +17,9 @@ import ActionsCard from "@/components/actions-card";
 import { currentUser } from "@clerk/nextjs";
 import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
-import { checkWorkspace } from "@/lib/auth";
-import { notFound } from "next/navigation";
+import { checkWorkspace, getTenantID } from "@/lib/auth";
+import { notFound, redirect } from "next/navigation";
+import { db } from "@/lib/db/db";
 
 // export const revalidate = 20;
 
@@ -124,7 +131,6 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 }
 
 async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
-	
 	const workspace = await checkWorkspace();
 	if (!workspace) {
 		return notFound();
@@ -202,10 +208,16 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 	);
 }
 
-
-
 export default async function Home({ params }: { params: { waitlist: string } }) {
-	console.log("params in dashboard", params);
+
+	const workspace = await checkWorkspace();
+
+	const waitlist = await getWaitlistByID(params.waitlist);
+
+	if (!workspace || waitlist?.workspaceID !== workspace.workspaceID) {
+		redirect("/dashboard");
+	}
+
 	return (
 		<MainLayout>
 			<PageHeading>Dashboard</PageHeading>

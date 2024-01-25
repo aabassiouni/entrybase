@@ -1,4 +1,3 @@
-import TeamMembers from "@/app/(authenticated)/(home-page)/dashboard/team/team-members";
 import { PageHeading } from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { checkWorkspace } from "@/lib/auth";
 import { ArrowLeftCircle } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import TeamsContent from "./teams-content";
 
 async function TeamPage() {
 	const workspace = await checkWorkspace();
@@ -32,10 +31,12 @@ async function TeamPage() {
 					<Separator className="" />
 					<CardContent className="">
 						<div className="flex h-96 items-center justify-center">
-							<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-2 rounded-md border border-primary bg-neutral-900 ">
+							<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-4 rounded-md border border-primary bg-neutral-900 ">
 								<p className="text-center text-lg font-medium">
-									Team members are only available on the Pro plan. Create a new workspace to invite
-									members to your team
+									Team members are only available on the Pro plan.
+								</p>
+								<p className="text-neutral-400">
+									Create a new workspace to invite members to your team
 								</p>
 								<Link href="/dashboard/new">
 									<Button>Create a new workspace</Button>
@@ -62,7 +63,9 @@ async function TeamPage() {
 					<CardDescription>Invite your team members to help you manage your waitlist.</CardDescription>
 				</CardHeader>
 				<Separator className="" />
-				<TeamMembers />
+				<CardContent>
+					<TeamsContent />
+				</CardContent>
 			</Card>
 		</>
 	);

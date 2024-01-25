@@ -31,11 +31,11 @@ function HomeSidebar() {
 			icon: <CreditCard {...iconProps} />,
 			href: `/dashboard/billing`,
 		},
-		// {
-		// 	name: "Teams",
-		// 	icon: <Users {...iconProps} />,
-		// 	href: `/dashboard/teams`,
-		// },
+		{
+			name: "Team",
+			icon: <Users {...iconProps} />,
+			href: `/dashboard/team`,
+		},
 	];
 
 	return (

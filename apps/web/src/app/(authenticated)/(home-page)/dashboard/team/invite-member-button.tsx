@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import {
 	Dialog,
 	DialogClose,
@@ -17,12 +18,19 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOrganization } from "@clerk/nextjs";
+import FormSubmitButton from "@/components/form-submit-button";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	email: z.string().email(),
 });
 
 function InviteMemberButton() {
+	const [loading, setLoading] = useState(false);
+	const [open, setOpen] = useState(false);
+	const { toast } = useToast();
+	const router = useRouter();
 	const { organization } = useOrganization();
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -33,25 +41,31 @@ function InviteMemberButton() {
 		console.log("submitting form");
 		console.log("wut");
 		console.log(values.email);
+		setLoading(true);
 
 		try {
 			await organization?.inviteMember({
 				emailAddress: values.email,
 				role: "org:member",
 			});
-
-			// toast.success(`We have sent an email to ${values.email} with instructions on how to join your workspace`);
-			// router.refresh();
+			toast({
+				title: "Success",
+				description: "Invitation sent",
+			});
 		} catch (err) {
 			console.error(err);
-			// toast.error((err as Error).message);
+			toast({
+				title: "Error",
+			});
 		} finally {
-			// setLoading(false);
+			router.refresh();
+			setLoading(false);
+			setOpen(false);
 		}
-		// console.log(email);
 	}
+
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button>
 					<UserPlus className="mr-2" />
@@ -87,7 +101,13 @@ function InviteMemberButton() {
 									Cancel
 								</Button>
 							</DialogClose>
-							<Button type="submit">Send invite</Button>
+							<FormSubmitButton
+								disabled={!form.formState.isValid}
+								loading={loading}
+								type="submit"
+							>
+								Send invite
+							</FormSubmitButton>
 						</DialogFooter>
 					</form>
 				</Form>
