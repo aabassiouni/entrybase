@@ -13,6 +13,9 @@ import { PageHeading } from "@/components/typography";
 import TemplateSelect from "@/components/template-select";
 import { SearchParams } from "@/types";
 import { checkWorkspace } from "@/lib/auth";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
 async function EmailPreviewPage({
 	params,
@@ -27,10 +30,11 @@ async function EmailPreviewPage({
 
 	if (!user) return;
 
+	const plan = workspace?.plan;
 	const template = searchParams?.template ?? "invite";
 
 	const values = await getEmailTemplateForUser(params.waitlist, user.id, template);
-	
+
 	async function submitEmailTemplate(formData: FormData) {
 		"use server";
 
@@ -39,7 +43,6 @@ async function EmailPreviewPage({
 		const subject = formData.get("subject") === "" ? null : formData.get("subject");
 		const bodyText = formData.get("body") === "" ? null : formData.get("body");
 		const header = formData.get("header") === "" ? null : formData.get("header");
-
 
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
@@ -69,46 +72,62 @@ async function EmailPreviewPage({
 
 	return (
 		<div className="flex w-full">
-			<div className="w-1/2 p-10">
+			<div className="flex w-1/2 flex-col p-10">
 				<PageHeading>Email Preview</PageHeading>
 				<TemplateSelect waitlistID={params.waitlist} />
-				<div className="space-y-2">
-					<form className="space-y-2" action={submitEmailTemplate}>
-						<div>
-							<Label htmlFor="email">Email Subject</Label>
-							<Input
-								defaultValue={values[0]?.subject ?? ""}
-								name="subject"
-								id="subject"
-								className="my-1 w-1/4"
-							/>
+				{plan === "pro" ? (
+					<div className="space-y-2">
+						<form className="space-y-2" action={submitEmailTemplate}>
+							<div>
+								<Label htmlFor="email">Email Subject</Label>
+								<Input
+									defaultValue={values[0]?.subject ?? ""}
+									name="subject"
+									id="subject"
+									className="my-1 w-1/4"
+								/>
+							</div>
+							<div>
+								<Label htmlFor="email">Header</Label>
+								<Input
+									defaultValue={values[0]?.header ?? ""}
+									name="header"
+									id="header"
+									className="my-1 w-1/4"
+								/>
+							</div>
+							<div>
+								<Label htmlFor="bodyText">Body</Label>
+								<Textarea
+									defaultValue={values[0]?.bodyText ?? ""}
+									name="body"
+									id="bodyText"
+									className="h-32 w-full"
+								/>
+							</div>
+							<FormSubmitButton className="w-20 dark:bg-primary dark:hover:bg-primary/80">
+								Submit
+							</FormSubmitButton>
+						</form>
+						<form action={clearEmailTemplate}>
+							<FormSubmitButton className="w-fit ">Reset to default</FormSubmitButton>
+						</form>
+					</div>
+				) : (
+					<div className=" flex h-max w-full flex-1 items-center justify-center">
+						<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-4 rounded-md border border-primary bg-neutral-900 ">
+							<p className="text-center text-lg font-medium">
+								Custom email templates are only available on the Pro plan.
+							</p>
+							<p className="text-center text-neutral-400">
+								Create a new pro workspace to customize email templates
+							</p>
+							<Link href="/dashboard/new">
+								<Button>Create a new workspace</Button>
+							</Link>
 						</div>
-						<div>
-							<Label htmlFor="email">Header</Label>
-							<Input
-								defaultValue={values[0]?.header ?? ""}
-								name="header"
-								id="header"
-								className="my-1 w-1/4"
-							/>
-						</div>
-						<div>
-							<Label htmlFor="bodyText">Body</Label>
-							<Textarea
-								defaultValue={values[0]?.bodyText ?? ""}
-								name="body"
-								id="bodyText"
-								className="h-32 w-full"
-							/>
-						</div>
-						<FormSubmitButton className="w-20 dark:bg-primary dark:hover:bg-primary/80">
-							Submit
-						</FormSubmitButton>
-					</form>
-					<form action={clearEmailTemplate}>
-						<FormSubmitButton className="w-fit ">Reset to default</FormSubmitButton>
-					</form>
-				</div>
+					</div>
+				)}
 			</div>
 			<div className="w-1/2 py-8 pr-10">
 				<Suspense fallback={<Skeleton className="h-full" />}>
