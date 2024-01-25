@@ -10,7 +10,13 @@ export async function findWaitlistForUser(waitlistID: string, workspaceID: strin
 	return await db
 		.select()
 		.from(waitlists)
-		.where(and(eq(waitlists.workspaceID, workspaceID), eq(waitlists.waitlistID, waitlistID), isNull(waitlists.deletedAt)));
+		.where(
+			and(
+				eq(waitlists.workspaceID, workspaceID),
+				eq(waitlists.waitlistID, waitlistID),
+				isNull(waitlists.deletedAt),
+			),
+		);
 }
 
 export async function createWaitlist(waitlist: string, workspaceID: string) {
@@ -61,7 +67,6 @@ export async function updateWaitlistEmailSettings(waitlistID: string, workspaceI
 }
 
 export async function getWaitlistEmailSettings(waitlistID: string) {
-
 	return await db
 		.select({
 			emailSettings: waitlists.emailSettings,
@@ -71,7 +76,6 @@ export async function getWaitlistEmailSettings(waitlistID: string) {
 }
 
 export async function deleteWaitlistByID(waitlistID: string) {
-
 	return await db.update(waitlists).set({ deletedAt: new Date() }).where(eq(waitlists.waitlistID, waitlistID));
 }
 
@@ -112,4 +116,13 @@ export async function getWaitlistLogoURL(waitlistID: string) {
 		.then((result) => {
 			return result[0].logoFileURL;
 		});
+}
+
+export async function getWaitlistWithWorkspace(waitlistID: string) {
+	return await db.query.waitlists.findFirst({
+		where: (table, { and, eq }) => eq(table.waitlistID, waitlistID),
+		with: {
+			workspace: true,
+		},
+	});
 }
