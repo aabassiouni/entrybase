@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useOrganizationList } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -9,11 +10,12 @@ function ChangeOrgButton({ orgID }: { orgID: string }) {
 	const router = useRouter();
 
 	if (!listIsLoaded) {
-		return null;
+		return <Skeleton className="h-10 " />;
 	}
 
 	return (
 		<Button
+		className=""
 			onClick={async () => {
 				try {
 					console.log("running onClick");

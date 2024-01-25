@@ -35,25 +35,25 @@ async function SuccessPage({ searchParams }: { searchParams: { session_id: strin
 
 	if (existingSub) {
 		return (
-			<div className="w-full ">
+			<div className="flex min-h-screen w-full flex-col overflow-y-scroll">
 				<div className="flex justify-between p-8 px-24 shadow-md">
 					<Link href={"/dashboard"}>
 						<h1 className="text-4xl font-bold">waitlister</h1>
 					</Link>
 					<UserButton />
 				</div>
-				<div className="p-4">
-					<Card className="mx-auto  w-full max-w-lg">
-						<CardHeader>
-							<CardTitle className="text-center text-3xl">You already have a subscription</CardTitle>
-						</CardHeader>
-						<CardContent className="space-y-6"></CardContent>
-						<CardFooter className="justify-center">
-							<Link href={"/dashboard"}>
-								<Button variant={"default"}>Go to Dashboard</Button>
-							</Link>
-						</CardFooter>
-					</Card>
+				<div className="p-4 flex-1 flex">
+				<Card className="mx-auto w-full max-w-lg flex-1">
+					<CardHeader>
+						<CardTitle className="text-center text-3xl">You already have a subscription</CardTitle>
+					</CardHeader>
+					<CardContent className="space-y-6"></CardContent>
+					<CardFooter className="justify-center">
+						<Link href={"/dashboard"}>
+							<Button variant={"default"}>Go to Dashboard</Button>
+						</Link>
+					</CardFooter>
+				</Card>
 				</div>
 			</div>
 		);
@@ -82,39 +82,28 @@ async function SuccessPage({ searchParams }: { searchParams: { session_id: strin
 	await createProWorkspace(workspace);
 
 	return (
-		<div className="w-full ">
+		<div className="flex min-h-screen w-full flex-col overflow-y-scroll ">
 			<div className="flex justify-between p-8 px-24 shadow-md">
-				<h1 className="text-4xl font-bold">waitlister</h1>
+				<Link href={"/dashboard"}>
+					<h1 className="text-4xl font-bold">waitlister</h1>
+				</Link>
 				<UserButton />
 			</div>
-			<div className="flex p-4">
-				<Card className="mx-auto  w-full max-w-lg">
-					<div className="absolute left-1/2">{/* {render && <Confetti stageWidth={1000} />} */}</div>
-					<CardHeader>
-						<CardTitle className="text-center text-3xl">🎉 Workspace created! 🎉</CardTitle>
-					</CardHeader>
-					<CardContent className="space-y-6">
-						<p className="text-center text-xl font-medium">
-							Your Pro Workspace has been set up successfully.
-						</p>
-						<p className="text-center">
-							You now have access to custom invites, team members and higher invite limits.
-						</p>
+			<Card className="mx-auto w-full my-4 max-w-lg flex-1">
+				<div className="absolute left-1/2">{/* {render && <Confetti stageWidth={1000} />} */}</div>
+				<CardHeader>
+					<CardTitle className="text-center text-3xl">🎉 Workspace created! 🎉</CardTitle>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-6">
+					<p className="text-center text-xl font-medium">Your Pro Workspace has been set up successfully.</p>
+					<p className="text-center">
+						You now have access to custom invites, team members and higher invite limits.
+					</p>
 
-						<p className="text-center">Click the button below to go to your new workspace.</p>
-						<ChangeOrgButton orgID={org.id} />
-					</CardContent>
-					<CardFooter className="justify-center">
-						{/* <Link href={`/dashboard/${params.waitlist}`}> */}
-						{/* <ChangeOrgButton orgID={org.id} /> */}
-						{/* </Link> */}
-					</CardFooter>
-				</Card>
-
-				{/* <p>Workspace created!</p> */}
-				{/* <p>Workspace ID: {wsID}</p> */}
-				{/* <ChangeOrgButton orgID={org.id} /> */}
-			</div>
+					<p className="text-center">Click the button below to go to your new workspace.</p>
+					<ChangeOrgButton orgID={org.id} />
+				</CardContent>
+			</Card>
 		</div>
 	);
 }
