@@ -12,6 +12,7 @@ import { currentUser } from "@clerk/nextjs";
 import { PageHeading } from "@/components/typography";
 import TemplateSelect from "@/components/template-select";
 import { SearchParams } from "@/types";
+import { checkWorkspace } from "@/lib/auth";
 
 async function EmailPreviewPage({
 	params,
@@ -20,6 +21,8 @@ async function EmailPreviewPage({
 	params: { waitlist: string };
 	searchParams: { template: "invite" | "signup" };
 }) {
+	const workspace = await checkWorkspace(params.waitlist);
+
 	const user = await currentUser();
 
 	if (!user) return;

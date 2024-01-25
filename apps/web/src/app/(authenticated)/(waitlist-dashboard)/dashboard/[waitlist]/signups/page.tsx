@@ -5,10 +5,11 @@ import { getSignupsList } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import { PageHeading } from "@/components/typography";
 import { MainLayout } from "@/components/layout";
+import { checkWorkspace } from "@/lib/auth";
 
 async function UsersPage({ params }: { params: { waitlist: string } }) {
-	const user = await currentUser();
-	if (!user) return null;
+
+	const workspace = await checkWorkspace(params.waitlist);
 	const signupList = await getSignupsList(params.waitlist);
 
 	return (

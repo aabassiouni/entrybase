@@ -1,7 +1,11 @@
 import { Toaster } from "@/components/ui/toaster";
+import { checkWorkspace } from "@/lib/auth";
 import React from "react";
 
-function InviteLayout({ children }: { children: React.ReactNode }) {
+async function InviteLayout({ children, params }: { children: React.ReactNode, params: { waitlist: string }}) {
+
+	const workspace = await checkWorkspace(params.waitlist);
+
 	return (
 		<>
 			{children}

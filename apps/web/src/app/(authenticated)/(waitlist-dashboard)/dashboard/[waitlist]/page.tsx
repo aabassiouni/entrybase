@@ -95,10 +95,6 @@ function PastWeekChartLoading() {
 }
 
 async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
-	const workspace = await checkWorkspace();
-	if (!workspace) {
-		return notFound();
-	}
 
 	const emailsList = await getSignupsEmailListforUser(waitlistID);
 
@@ -131,10 +127,6 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 }
 
 async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
-	const workspace = await checkWorkspace();
-	if (!workspace) {
-		return notFound();
-	}
 
 	const today = new Date();
 	const sevenDaysAgo = new Date();
@@ -210,13 +202,7 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 
 export default async function Home({ params }: { params: { waitlist: string } }) {
 
-	const workspace = await checkWorkspace();
-
-	const waitlist = await getWaitlistByID(params.waitlist);
-
-	if (!workspace || waitlist?.workspaceID !== workspace.workspaceID) {
-		redirect("/dashboard");
-	}
+	const workspace = await checkWorkspace(params.waitlist);
 
 	return (
 		<MainLayout>

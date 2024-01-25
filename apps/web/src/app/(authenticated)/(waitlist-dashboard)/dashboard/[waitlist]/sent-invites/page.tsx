@@ -10,10 +10,7 @@ import { notFound } from "next/navigation";
 
 async function SentInvitesPage({ params }: { params: { waitlist: string } }) {
 	
-	const workspace = await checkWorkspace();
-	if (!workspace) {
-		return notFound();
-	}
+	const workspace = await checkWorkspace(params.waitlist);
 	
 
 	const invites = await getInvitesForWaitlist(params.waitlist);

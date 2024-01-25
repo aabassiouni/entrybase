@@ -9,10 +9,10 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { currentUser } from "@clerk/nextjs";
 import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
+import { checkWorkspace } from "@/lib/auth";
 
 async function AnalyticsPage({ params, searchParams }: { params: { waitlist: string }; searchParams: SearchParams }) {
-	const user = await currentUser();
-	if (!user) return null;
+	const workspace = await checkWorkspace(params.waitlist);
 
 	let signups: EntryResponse;
 	let timeframe = searchParams?.timeframe ?? "today";

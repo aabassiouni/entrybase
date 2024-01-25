@@ -1,9 +1,10 @@
 import React from "react";
 import { redirect } from "next/navigation";
+import { checkWorkspace } from "@/lib/auth";
 
-function SettingsPage({ params }: { params: { waitlist: string }}) {
+async function SettingsPage({ params }: { params: { waitlist: string }}) {
 	const { waitlist } = params;
-	console.log(params)
+	const workspace = await checkWorkspace(waitlist);
 	return redirect(`/dashboard/${waitlist}/settings/waitlist`);
 }
 
