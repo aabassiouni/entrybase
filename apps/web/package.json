@@ -41,6 +41,7 @@
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
     "embla-carousel-react": "8.0.0-rc17",
+    "isomorphic-dompurify": "^2.3.0",
     "lucide-react": "^0.287.0",
     "next": "14.1.0",
     "next-themes": "^0.2.1",
@@ -57,6 +58,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

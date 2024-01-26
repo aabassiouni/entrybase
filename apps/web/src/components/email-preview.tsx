@@ -5,21 +5,26 @@ import { renderAsync } from "@react-email/components";
 import { getEmailTemplateForUser, getWaitlistLogoURL } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import SignupTemplate from "./email/signup-template";
+import { sanitize } from "isomorphic-dompurify";
 
 async function EmailPreview({ waitlistID, template }: { waitlistID: string; template: "invite" | "signup" }) {
-	
 	const user = await currentUser();
 	if (!user) return;
 
 	const values = await getEmailTemplateForUser(waitlistID, user.id, template);
 	const logoURL = await getWaitlistLogoURL(waitlistID);
 
+	const bodyText = sanitize(values[0]?.bodyText!);
+	const header = sanitize(values[0]?.header!);
+
+
+
 	const Template =
 		template === "invite" ? (
 			<InviteTemplate
-				bodyText={values[0]?.bodyText}
+				bodyText={bodyText}
 				logoURL={logoURL}
-				header={values[0]?.header}
+				header={header}
 				companyWebsite={null}
 			/>
 		) : (
