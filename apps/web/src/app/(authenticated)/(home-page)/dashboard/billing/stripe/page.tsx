@@ -16,11 +16,13 @@ export default async function StripeRedirect({ params }: { params: { waitlist: s
       return redirect("/new");
     }
 
+    const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
+	
     // If they have a subscription already, we display the portal
     if (ws.stripeCustomerID) {
       const session = await stripe.billingPortal.sessions.create({
         customer: ws.stripeCustomerID,
-        return_url: headers().get("referer") ?? "http://localhost:3000/dashboard/billing",
+        return_url: headers().get("referer") ?? `${baseUrl}/dashboard/billing`,
       });
   
       return redirect(session.url);
@@ -28,7 +30,6 @@ export default async function StripeRedirect({ params }: { params: { waitlist: s
   
     // If they don't have a subscription, we send them to the checkout
     // and the checkout will redirect them to the success page, which will add the subscription to the user table
-    const baseUrl = "http://localhost:3000";
   
     // do not use `new URL(...).searchParams` here, because it will escape the curly braces and stripe will not replace them with the session id
     const successUrl = `${baseUrl}/dashboard/billing/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
@@ -37,7 +38,7 @@ export default async function StripeRedirect({ params }: { params: { waitlist: s
     
     const session = await stripe.checkout.sessions.create({
       client_reference_id: user?.id,
-      customer_email: user?.emailAddresses.at(0)?.emailAddress,
+      customer_email: user?.emailAddresses?.at(0)?.emailAddress,
       billing_address_collection: "auto",
       mode: "setup",
       payment_method_collection: "always",

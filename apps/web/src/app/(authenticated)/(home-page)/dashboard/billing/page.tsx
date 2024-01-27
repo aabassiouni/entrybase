@@ -150,7 +150,7 @@ function PricingCard({
 		"use server";
 		const user = await currentUser();
 
-		const baseUrl = "http://localhost:3000";
+		const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
 		const successUrl = `${baseUrl}/dashboard/billing/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
 
 		const cancelUrl = headers().get("referer") ?? `${baseUrl}/dashboard/billing`;
