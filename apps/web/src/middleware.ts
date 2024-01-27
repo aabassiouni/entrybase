@@ -15,6 +15,7 @@ export default async function middleware(request: NextRequest, evt: NextFetchEve
 
 			// create a workspace if there isn't one
 			if (!workspace && auth.userId && request.nextUrl.pathname !== "/dashboard/setup") {
+				console.log("no workspace found, creating one");
 				return NextResponse.redirect(new URL("/dashboard/setup", req.url));
 			}
 		},
