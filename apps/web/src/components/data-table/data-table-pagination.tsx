@@ -6,6 +6,7 @@ import { DataTableViewOptions } from "./data-table-view-options";
 import { useInvites } from "../context/invite-context";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
+import ExportToCsvButton from "../export-csv-button";
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;
 }
@@ -46,6 +47,7 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 						Invite {table.getFilteredSelectedRowModel().rows.length}
 					</Button>
 				)}
+				<ExportToCsvButton />
 				<DataTableViewOptions table={table} />
 				<div className="flex items-center space-x-2">
 					<p className="text-sm font-medium">Rows per page</p>

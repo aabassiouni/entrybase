@@ -38,6 +38,7 @@
     "base-x": "^4.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
+    "csv": "^6.3.6",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
     "embla-carousel-react": "8.0.0-rc17",
