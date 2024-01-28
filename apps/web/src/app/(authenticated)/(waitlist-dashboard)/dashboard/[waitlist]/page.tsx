@@ -130,7 +130,7 @@ async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
 
 	const today = new Date();
 	const sevenDaysAgo = new Date();
-	sevenDaysAgo.setDate(today.getDate() - 7);
+	sevenDaysAgo.setDate(today.getDate() - 6);
 
 	const pastWeekSignupsData = await getDayRangeChartLabelsAndValues(
 		waitlistID,
