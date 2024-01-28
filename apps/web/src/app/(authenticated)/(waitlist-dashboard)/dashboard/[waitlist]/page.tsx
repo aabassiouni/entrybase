@@ -20,6 +20,7 @@ import { PageHeading } from "@/components/typography";
 import { checkWorkspace, getTenantID } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/db/db";
+import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
 
 // export const revalidate = 20;
 
@@ -95,15 +96,14 @@ function PastWeekChartLoading() {
 }
 
 async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
-
 	const emailsList = await getSignupsEmailListforUser(waitlistID);
 
 	return (
-		<Card className="">
+		<Card className="flex flex-col">
 			<CardHeader>
 				<CardTitle>Latest Signups</CardTitle>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="flex-1">
 				{emailsList.length > 0 ? (
 					<ScrollArea className="h-96">
 						{emailsList.map((email, i) => (
@@ -114,12 +114,10 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 						))}
 					</ScrollArea>
 				) : (
-					<div className="flex h-96 items-center justify-center">
-						<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-2 rounded-md border border-primary bg-neutral-900 ">
-							<p className="text-lg font-medium">No signups yet</p>
-							<p className="text-sm text-neutral-500">Your latest signups will show up here</p>
-						</div>
-					</div>
+					<EmptyComponent className="">
+						<EmptyComponentTitle>No signups yet</EmptyComponentTitle>
+						<EmptyComponentDescription>Your latest signups will show up here</EmptyComponentDescription>
+					</EmptyComponent>
 				)}
 			</CardContent>
 		</Card>
@@ -127,7 +125,6 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 }
 
 async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
-
 	const today = new Date();
 	const sevenDaysAgo = new Date();
 	sevenDaysAgo.setDate(today.getDate() - 6);
@@ -201,7 +198,6 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 }
 
 export default async function Home({ params }: { params: { waitlist: string } }) {
-
 	const workspace = await checkWorkspace(params.waitlist);
 
 	return (

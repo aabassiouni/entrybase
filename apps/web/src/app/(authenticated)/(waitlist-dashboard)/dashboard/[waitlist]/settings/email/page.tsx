@@ -1,4 +1,5 @@
 import EmailSwitch from "@/components/email-switch";
+import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,11 +73,12 @@ async function EmailSettings({ params }: { params: { waitlist: string } }) {
 								/>
 							</div>
 						) : (
-							<div className="flex h-full items-center justify-center">
-								<div className="rounded border border-primary p-4">
-									<p>No Logo Uploaded</p>
-								</div>
-							</div>
+							<EmptyComponent>
+								<EmptyComponentTitle>No Logo Uploaded</EmptyComponentTitle>
+								<EmptyComponentDescription>
+									Upload your logo by clicking the button below
+								</EmptyComponentDescription>
+							</EmptyComponent>
 						)}
 					</div>
 					<UploadButtonContent />

@@ -16,6 +16,7 @@ import { checkWorkspace } from "@/lib/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
+import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
 
 async function EmailPreviewPage({
 	params,
@@ -114,19 +115,17 @@ async function EmailPreviewPage({
 						</form>
 					</div>
 				) : (
-					<div className=" flex h-max w-full flex-1 items-center justify-center">
-						<div className="flex h-1/2 w-1/2 flex-col items-center justify-center gap-4 rounded-md border border-primary bg-neutral-900 ">
-							<p className="text-center text-lg font-medium">
-								Custom email templates are only available on the Pro plan.
-							</p>
-							<p className="text-center text-neutral-400">
-								Create a new pro workspace to customize email templates
-							</p>
-							<Link href="/dashboard/new">
-								<Button>Create a new workspace</Button>
-							</Link>
-						</div>
-					</div>
+					<EmptyComponent>
+						<EmptyComponentTitle>
+							Custom email templates are only available on the Pro plan.
+						</EmptyComponentTitle>
+						<EmptyComponentDescription>
+							Create a new pro workspace to customize email templates
+						</EmptyComponentDescription>
+						<Link href="/dashboard/new">
+							<Button>Create a new workspace</Button>
+						</Link>
+					</EmptyComponent>
 				)}
 			</div>
 			<div className="w-1/2 py-8 pr-10">
