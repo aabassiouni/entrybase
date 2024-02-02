@@ -1,7 +1,8 @@
-import { Workspace, createProWorkspace, findExistingSubscription } from "@/lib/db";
+import { createProWorkspace, findExistingSubscription } from "@/lib/db";
+import { type Workspace } from "@waitlister/db"
 import { db } from "@/lib/db/db";
-import { workspaces } from "@/lib/db/schema";
-import { newId } from "@/lib/id";
+import { workspaces } from "@waitlister/db";
+import { newId } from "@waitlister/id";
 import { stripe } from "@/lib/stripe";
 import { clerkClient, currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";

@@ -1,6 +1,6 @@
-import { newId } from "@/lib/id";
+import { newId } from "@waitlister/id";
 import { db,  } from "./db";
-import { signups, invites } from "./schema";
+import { invites, signups } from "@waitlister/db";
 import { eq, desc, and, inArray } from "drizzle-orm";
 
 export async function createInvite(
@@ -8,7 +8,7 @@ export async function createInvite(
 	emailIDs: string[],
 	invitedEmails: { email: string; id: string }[],
 ) {
-
+	
 	//mark signups as invited
 	await db
 		.update(signups)

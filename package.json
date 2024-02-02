@@ -1,0 +1,20 @@
+{
+	"name": "waitlister",
+	"workspaces": [
+	  "apps/*",
+	  "packages/*"
+	],
+	"scripts": {
+		"dev": "turbo run dev",
+		"build": "pnpm turbo run build"
+	  },
+	"author": "Ali Bassiouni",
+	"description": "",
+	"private": true,
+	"version": "1.0.0",
+	"devDependencies": {
+		"@types/node": "^20.11.5",
+		"turbo": "^1.12.2",
+		"typescript": "^5"
+	}
+}

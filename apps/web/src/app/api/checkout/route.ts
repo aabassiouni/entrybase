@@ -1,5 +1,5 @@
 import { db } from "@/lib/db/db";
-import { workspaces } from "@/lib/db/schema";
+import { workspaces } from "@waitlister/db";
 import { stripe } from "@/lib/stripe";
 import { auth, currentUser } from "@clerk/nextjs";
 import { eq } from "drizzle-orm";

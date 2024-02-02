@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Progress } from "@/components/ui/progress";
 import { checkWorkspace } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import type { Workspace } from "@/lib/db";
+import type { Workspace } from "@waitlister/db";
 import Stripe from "stripe";
 import { PageHeading } from "@/components/typography";
 import { ArrowLeftCircle } from "lucide-react";

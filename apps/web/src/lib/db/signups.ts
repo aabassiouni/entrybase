@@ -2,7 +2,7 @@ import "server-only";
 
 import { sql, desc, eq, and, asc } from "drizzle-orm";
 import { DBResult, Entry, EntryResponse } from "@/types";
-import { signups } from "./schema";
+import { signups } from "@waitlister/db";
 import { db } from "./db";
 
 export async function getInvitesListByCount(selectionMethod: string, count: number, waitlistID: string) {

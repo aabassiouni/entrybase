@@ -1,6 +1,7 @@
-import { Workspace, createProWorkspace } from "@/lib/db";
+import { createProWorkspace } from "@/lib/db";
+import type { Workspace } from "@waitlister/db";
 import { db } from "@/lib/db/db";
-import { newId } from "@/lib/id";
+import { newId } from "@waitlister/id";
 import { stripe } from "@/lib/stripe";
 import { clerkClient } from "@clerk/nextjs";
 import { headers } from "next/headers";

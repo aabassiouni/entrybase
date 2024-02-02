@@ -1,0 +1,46 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^build"],
+      "env": [
+        "NEXT_PUBLIC_*",
+        "!NEXT_PUBLIC_VERCEL_*",
+        "CLERK_WEBHOOK_SECRET",
+        "CLERK_SECRET_KEY",
+        "DATABASE_PASSWORD",
+        "DATABASE_USERNAME",
+        "DATABASE_HOST",
+        "PLAIN_API_KEY",
+        "RESEND_API_KEY",
+        "STRIPE_PRODUCT_ID_PRO_PLAN",
+        "STRIPE_PRODUCT_ID_SUPPORT",
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET",
+        "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+        "CLERK_SECRET_KEY",
+        "NEXT_PUBLIC_CLERK_SIGN_IN_URL",
+        "NEXT_PUBLIC_CLERK_SIGN_UP_URL",
+        "NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL",
+        "NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL",
+        "DRIZZLE_DATABASE_URL",
+        "UPLOADTHING_SECRET",
+        "UPLOADTHING_APP_ID"
+      ],
+      "outputs": [
+        "dist/**",
+        ".output/**",
+        ".nuxt/**",
+        ".next/**",
+        "!.next/cache/**"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "cache": false
+    }
+  }
+}

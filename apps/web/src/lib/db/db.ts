@@ -2,10 +2,9 @@ import "server-only";
 
 import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import * as schema from "./schema";
+import { invites, waitlists, email_templates, workspaces, signups } from "@waitlister/db";
 
 neonConfig.fetchConnectionCache = true;
-
 if (process.env.NODE_ENV === "development") {
 	neonConfig.fetchEndpoint = (host) => {
 		const protocol = host === "db.localtest.me" ? "http" : "https";
@@ -16,4 +15,4 @@ if (process.env.NODE_ENV === "development") {
 
 const neonDB = neon(process.env.DRIZZLE_DATABASE_URL!);
 
-export const db = drizzle(neonDB, { schema: { ...schema } });
+export const db = drizzle(neonDB, { schema: { invites, waitlists, email_templates, workspaces, signups } });

@@ -1,6 +1,6 @@
 import { desc, eq, and, isNotNull, isNull } from "drizzle-orm";
-import { waitlists } from "./schema";
-import { newId } from "../id";
+import { waitlists } from "@waitlister/db";
+import { newId } from "@waitlister/id";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { selectRandomTwColor } from "../utils";
 import { db } from "./db";
