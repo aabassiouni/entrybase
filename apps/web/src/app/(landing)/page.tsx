@@ -176,9 +176,9 @@ function LandingPage() {
 				<div className="grid max-w-screen-lg flex-1 grid-cols-1 grid-rows-4 gap-4 sm:grid-cols-5 sm:grid-rows-5 ">
 					<GradientBorderCard
 						flexdir={"flex-col-reverse"}
-						className="col col-span-1 sm:col-span-2 sm:row-span-2"
+						className="col animated-chart col-span-1 sm:col-span-2 sm:row-span-2"
 					>
-						<div className="blur-box overflow-hidden rounded bg-black p-4 sm:overflow-auto">
+						<div className=" blur-box overflow-hidden rounded bg-black p-4 sm:overflow-auto">
 							<AnimatedChart />
 						</div>
 						<div>
