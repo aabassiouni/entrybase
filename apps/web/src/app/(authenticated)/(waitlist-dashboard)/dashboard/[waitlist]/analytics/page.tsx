@@ -32,7 +32,7 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 			break;
 		case "pastWeek":
 			const lastWeek = new Date();
-			lastWeek.setDate(lastWeek.getDate() - 7);
+			lastWeek.setDate(lastWeek.getDate() - 6);
 			from = lastWeek;
 			to = new Date();
 			break;
