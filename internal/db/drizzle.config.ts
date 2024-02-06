@@ -6,7 +6,7 @@ import type { Config } from "drizzle-kit";
 dotenv.config({ path: ".env.local" });
 
 export default {
-	schema: "./src/lib/db/schema.ts",
+	schema: "./src/schema/index.ts",
 	out: "./drizzle/migrations",
 	driver: "pg",
 	dbCredentials: {

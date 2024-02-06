@@ -6,17 +6,17 @@
   "types": "./src/index.ts",
   "scripts": {
     "db:migrate": "drizzle-kit generate:pg",
-    "db:push": "tsx src/lib/db/migrate.ts"
+    "db:push": "tsx src/migrate.ts"
   },
   "keywords": [],
   "dependencies": {
     "@types/node": "^20.11.5",
     "dotenv": "^16.3.1",
-    "@neondatabase/serverless": "^0.6.0"
+    "@neondatabase/serverless": "^0.6.0",
+    "drizzle-orm": "^0.28.6",
+    "drizzle-kit": "^0.19.13"
   },
   "devDependencies": {
-    "drizzle-orm": "^0.28.6",
-    "drizzle-kit": "^0.20.13",
     "typescript": "^5.2.2"
   },
   "author": "",
