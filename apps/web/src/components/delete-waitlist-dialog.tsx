@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
 import { deleteWaitlistByID, getWaitlistByID } from "@/lib/db";
 import DeleteWaitlistButton from "./delete-waitlist-button";
+import { Info } from "lucide-react";
 
 async function DeleteWaitlistDialog({ waitlistID }: { waitlistID: string }) {
 	const waitlist = await getWaitlistByID(waitlistID);
@@ -33,7 +34,8 @@ async function DeleteWaitlistDialog({ waitlistID }: { waitlistID: string }) {
 					<DialogTitle>Delete Waitlist</DialogTitle>
 					<DialogDescription>Are you sure you want to delete this waitlist?</DialogDescription>
 				</DialogHeader>
-                <div className="dark:bg-red-800/70 text-red-200 rounded-lg w-fit p-3">
+                <div className="dark:bg-red-800/70 inline-flex text-red-200 rounded-lg w-full p-3">
+					<Info className="w-6 h-6 mr-2" />
                     This action is irreversible.
                 </div>
 				<DialogDescription className="text-base">Enter the waitlist name to continue: <span className="font-bold"> {waitlist?.waitlistName}</span></DialogDescription>
