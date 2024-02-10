@@ -1,7 +1,10 @@
-import { Button, Body, Container, Head, Hr, Html, Tailwind, Text, Section, Link, Img } from "@react-email/components";
-import { EmailTemplateProps } from "@/types";
+import { Body, Container, Hr, Html, Tailwind, Text, Section, Link, Img, Column } from "@react-email/components";
 
-export function SignupTemplate() {
+type SignupTemplateProps = {
+	companyLogo: string | null;
+};
+
+export function SignupTemplate({ companyLogo }: SignupTemplateProps) {
 	return (
 		<Html lang="en" className="">
 			<Tailwind
@@ -12,17 +15,25 @@ export function SignupTemplate() {
 				{/* <Head><meta name="color-scheme" content="dark"/></Head> */}
 				<Body className="mx-auto">
 					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] p-5 font-sans dark:bg-black">
-						<Section className={`h-fit pb-5 pt-10`}>
-							<Img src="/sideprojectAI.png"></Img>
+						<Section className={`flex h-[150px]  items-center justify-center bg-[#4BE7AE]`}>
+							<Column>
+								<Text className="text-center text-3xl font-black">waitlister</Text>
+							</Column>
+							<Column>
+								{companyLogo && (
+									<Img className=" max-h-[150px] max-w-[150px] object-contain" src={companyLogo} />
+								)}
+							</Column>
 						</Section>
 						<Section>
-							<Text className="font-sans text-3xl font-bold">{"You're Signed Up!"}</Text>
+							<Text className="text-center font-sans text-2xl font-bold">{"You're Signed Up!"}</Text>
 						</Section>
 						<Section>
-							<Text>
-								Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis, quos? Harum
-								recusandae, molestias ut necessitatibus cum quod eum aliquid rerum temporibus omnis non
-								veniam quia eligendi repellendus autem quasi eveniet.
+							<Text className="text-center font-sans">
+								Thank you for joining the [Product Name] waitlist!
+							</Text>
+							<Text className="text-center font-sans">
+								We'll be sending out invites gradually so keep an eye on your inbox.
 							</Text>
 						</Section>
 						<Section className="h-24">

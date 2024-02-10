@@ -28,7 +28,7 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 				companyWebsite={null}
 			/>
 		) : (
-			<SignupTemplate />
+			<SignupTemplate companyLogo={logoURL} />
 		);
 
 	const html = await renderAsync(Template);
