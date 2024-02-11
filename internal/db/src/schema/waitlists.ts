@@ -20,9 +20,9 @@ export const waitlists = pgTable("waitlists", {
 	logoFileURL: varchar("logo_file_url"),
 	logoFileKey: varchar("logo_file_key"),
 	domain: varchar("domain", { length: 255 }),
-	// websiteName: varchar("website_name", { length: 255 }),
-	// supportEmail: varchar("support_email", { length: 255 }),
-	// websiteLink: varchar("website_link", { length: 255 }),
+	websiteName: varchar("website_name", { length: 255 }),
+	supportEmail: varchar("support_email", { length: 255 }),
+	websiteLink: varchar("website_link", { length: 255 }),
 });
 
 export const waitlistsRelations = relations(waitlists, ({ one, many }) => ({
