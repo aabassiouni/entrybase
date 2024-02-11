@@ -126,3 +126,48 @@ export async function getWaitlistWithWorkspace(waitlistID: string) {
 		},
 	});
 }
+
+export async function getWaitlistWebsiteDetails(waitlistID: string) {
+	noStore();
+	const websiteDetails = await db.query.waitlists.findFirst({
+		columns: {
+			logoFileURL: true,
+			websiteName: true,
+			websiteLink: true,
+			supportEmail: true,
+		},
+		where: (table, { and, eq }) => eq(table.waitlistID, waitlistID),
+	});
+
+	if (!websiteDetails) {
+		return null;
+	}
+
+	return {
+		logoFileURL: websiteDetails.logoFileURL,
+		websiteName: websiteDetails.websiteName,
+		websiteLink: websiteDetails.websiteLink,
+		supportEmail: websiteDetails.supportEmail,
+	};
+
+}
+export async function updateWaitlistWebstiteDetails({
+	waitlistID,
+	websiteName,
+	websiteLink,
+	supportEmail,
+}: {
+	waitlistID: string;
+	websiteName: string | null;
+	websiteLink: string | null;
+	supportEmail: string | null;
+}) {
+	return await db
+		.update(waitlists)
+		.set({
+			websiteName: websiteName,
+			websiteLink: websiteLink,
+			supportEmail: supportEmail,
+		})
+		.where(eq(waitlists.waitlistID, waitlistID));
+}
