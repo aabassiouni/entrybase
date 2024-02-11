@@ -1,6 +1,6 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { headers } from "next/headers";
-import { findWaitlistForUser, insertWaitlistLogoURL } from "../db";
+import { insertWaitlistLogoURL } from "../db";
 import { checkWorkspace } from "../auth";
 const f = createUploadthing();
 
@@ -19,15 +19,11 @@ export const ourFileRouter = {
 			const referer = headersList.get("referer");
 			const waitlistID = referer?.split("/")[4];
 
-			if (!waitlistID) throw new Error("Unauthorized");
-			// If you throw, the user will not be able to upload
+			if (!waitlistID) throw new Error("No waitlist ID");
 
-			const workspace = await checkWorkspace();
-			if (!workspace) throw new Error("Unauthorized");
+			const workspace = await checkWorkspace(waitlistID);
+			if (!workspace) throw new Error("Unauthorized, No workspace found with this waitlist");
 
-			const waitlist = await findWaitlistForUser(workspace.workspaceID, waitlistID);
-
-			if (waitlist.length == 0) throw new Error("Unauthorized");
 			// Whatever is returned here is accessible in onUploadComplete as `metadata`
 			return { workspaceID: workspace.workspaceID, waitlistId: waitlistID };
 		})
