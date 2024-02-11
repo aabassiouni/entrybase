@@ -1,7 +1,22 @@
-import { Button, Body, Container, Head, Hr, Html, Tailwind, Text, Section, Link, Img } from "@react-email/components";
-import { EmailTemplateProps } from "@/types";
+import { Body, Container, Hr, Html, Tailwind, Text, Section, Link, Img, Column } from "@react-email/components";
 
-export function InviteTemplate({ bodyText, header, companyWebsite, logoURL }: EmailTemplateProps) {
+type InviteTemplateProps = {
+	bodyText: string | null;
+	header: string | null;
+	websiteName: string | null;
+	websiteLink: string | null;
+	websiteLogo: string | null;
+	supportEmail: string | null;
+};
+
+export function InviteTemplate({
+	bodyText,
+	header,
+	websiteName,
+	websiteLogo,
+	websiteLink,
+	supportEmail,
+}: InviteTemplateProps) {
 	return (
 		<Html lang="en" className="">
 			<Tailwind
@@ -11,11 +26,16 @@ export function InviteTemplate({ bodyText, header, companyWebsite, logoURL }: Em
 			>
 				{/* <Head><meta name="color-scheme" content="dark"/></Head> */}
 				<Body className="mx-auto">
-					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] p-5 font-sans dark:bg-black">
-						<Section className={`py-1`}>
-							{logoURL && (
-								<Img className=" max-h-[150px] max-w-[150px] object-contain" src={logoURL}></Img>
-							)}
+					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] font-sans dark:bg-black">
+						<Section className={`flex h-[150px] items-center justify-center rounded-t bg-[#4BE7AE]`}>
+							<Column>
+								<Text className="text-center text-3xl font-black">waitlister</Text>
+							</Column>
+							<Column>
+								{websiteLogo && (
+									<Img className=" max-h-[150px] max-w-[150px] object-contain" src={websiteLogo} />
+								)}
+							</Column>
 						</Section>
 						<Section>
 							<Text className="font-sans text-3xl font-bold">
@@ -27,21 +47,22 @@ export function InviteTemplate({ bodyText, header, companyWebsite, logoURL }: Em
 							) : (
 								<>
 									<Text className="font-sans">
-										Thank you for signing up for [Product Name]! You're now on our waitlist.
+										Thank you for signing up for {websiteName ?? "[Product Name]"}! You're now on
+										our waitlist.
 									</Text>
 									<Text className="font-sans ">
 										What's next?
 										<Text>
 											<ul className="font-sans text-sm">
 												<li>
-													We'll keep you updated on our progress and let you know as soon as
-													[Product Name] is ready.
+													We'll keep you updated on our progress and let you know as soon as&nbsp;
+													{websiteName ?? "[Product Name]"} is ready.
 												</li>
 												<li>Look out for an email from us with early access details.</li>
 											</ul>
 										</Text>
 										<Text className="font-sans">
-											Questions or feedback? Reach out to [Support Email].
+											Questions or feedback? Reach out to {supportEmail ?? "[Support Email]"}.
 										</Text>
 									</Text>
 								</>
@@ -55,10 +76,13 @@ export function InviteTemplate({ bodyText, header, companyWebsite, logoURL }: Em
 							<Hr />
 							<Text className="text-center font-sans text-sm text-slate-400">
 								Sent by&nbsp;
-								<Link href="" className="text-current underline">
+								<Link href={"https://localhost:3000"} className="text-current underline">
 									Waitlister
 								</Link>
-								&nbsp;on behalf of {companyWebsite ? companyWebsite : "[Company Website]"}
+								&nbsp;on behalf of&nbsp;
+								<Link href={websiteLink ?? ""} className="text-current underline">
+									{websiteName ?? "[Website Name]"}
+								</Link>
 							</Text>
 						</Section>
 					</Container>

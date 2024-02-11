@@ -1,8 +1,7 @@
-// "use client";
 import { Card } from "@/components/ui/card";
 import InviteTemplate from "./email/invite-template";
 import { renderAsync } from "@react-email/components";
-import { getEmailTemplateForUser, getWaitlistLogoURL } from "@/lib/db";
+import { getEmailTemplateForUser, getWaitlistLogoURL, getWaitlistWebsiteDetails } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import SignupTemplate from "./email/signup-template";
 import { sanitize } from "isomorphic-dompurify";
@@ -14,25 +13,34 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 	const values = await getEmailTemplateForUser(waitlistID, user.id, template);
 	const logoURL = await getWaitlistLogoURL(waitlistID);
 
+	const websiteDetails = await getWaitlistWebsiteDetails(waitlistID);
+
 	const bodyText = sanitize(values[0]?.bodyText!);
 	const header = sanitize(values[0]?.header!);
 
-
+	const defaultSignupSubject = `You're on the waitlist for ${websiteDetails?.websiteName ?? "[Company]"}! `;
+	const defaultInviteSubject = `You're invited to join ${websiteDetails?.websiteName ?? "[Company]"}! `;
 
 	const Template =
 		template === "invite" ? (
 			<InviteTemplate
 				bodyText={bodyText}
-				logoURL={logoURL}
 				header={header}
-				companyWebsite={null}
+				websiteLogo={websiteDetails?.logoFileURL ?? null}
+				websiteName={websiteDetails?.websiteName ?? null}
+				websiteLink={websiteDetails?.websiteLink ?? null}
+				supportEmail={websiteDetails?.supportEmail ?? null}
 			/>
 		) : (
-			<SignupTemplate companyLogo={logoURL} />
+			<SignupTemplate
+				websiteLogo={websiteDetails?.logoFileURL ?? null}
+				websiteName={websiteDetails?.websiteName ?? null}
+				websiteLink={websiteDetails?.websiteLink ?? null}
+				supportEmail={websiteDetails?.supportEmail ?? null}
+			/>
 		);
 
 	const html = await renderAsync(Template);
-
 	return (
 		<Card className="flex h-full flex-col">
 			<div className="flex h-40 max-h-40 items-center justify-between space-y-1 rounded-t-lg bg-gradient-to-b from-primary/40 to-black p-8 ">
@@ -60,16 +68,15 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 						<span className="w-full rounded-r-md border-y border-r border-[#002417] bg-black p-1 px-2">
 							{values[0]?.subject !== null
 								? values[0]?.subject
-								: `You're on the waitlist for ${"Company"}! `}
+								: template === "invite"
+									? defaultInviteSubject
+									: defaultSignupSubject}
 						</span>
 					</div>
 				</div>
 			</div>
 			<div className="h-full w-full p-4 ">
 				<iframe loading="eager" className="h-full w-full rounded-lg" srcDoc={html} />
-				{/* <div className="h-full w-full" dangerouslySetInnerHTML={{
-					__html: html
-				}}></div> */}
 			</div>
 		</Card>
 	);

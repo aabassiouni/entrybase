@@ -1,10 +1,13 @@
 import { Body, Container, Hr, Html, Tailwind, Text, Section, Link, Img, Column } from "@react-email/components";
 
 type SignupTemplateProps = {
-	companyLogo: string | null;
+	websiteLogo: string | null;
+	websiteName: string | null;
+	websiteLink: string | null;
+	supportEmail: string | null;
 };
 
-export function SignupTemplate({ companyLogo }: SignupTemplateProps) {
+export function SignupTemplate({ websiteLogo, websiteName, supportEmail, websiteLink }: SignupTemplateProps) {
 	return (
 		<Html lang="en" className="">
 			<Tailwind
@@ -14,14 +17,14 @@ export function SignupTemplate({ companyLogo }: SignupTemplateProps) {
 			>
 				{/* <Head><meta name="color-scheme" content="dark"/></Head> */}
 				<Body className="mx-auto">
-					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] p-5 font-sans dark:bg-black">
-						<Section className={`flex h-[150px]  items-center justify-center bg-[#4BE7AE]`}>
+					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] font-sans dark:bg-black">
+						<Section className={`flex h-[150px] items-center justify-center rounded-t bg-[#4BE7AE]`}>
 							<Column>
 								<Text className="text-center text-3xl font-black">waitlister</Text>
 							</Column>
 							<Column>
-								{companyLogo && (
-									<Img className=" max-h-[150px] max-w-[150px] object-contain" src={companyLogo} />
+								{websiteLogo && (
+									<Img className=" max-h-[150px] max-w-[150px] object-contain" src={websiteLogo} />
 								)}
 							</Column>
 						</Section>
@@ -30,7 +33,7 @@ export function SignupTemplate({ companyLogo }: SignupTemplateProps) {
 						</Section>
 						<Section>
 							<Text className="text-center font-sans">
-								Thank you for joining the [Product Name] waitlist!
+								Thank you for joining the {websiteName ?? "[Product Name]"} waitlist!
 							</Text>
 							<Text className="text-center font-sans">
 								We'll be sending out invites gradually so keep an eye on your inbox.
@@ -40,10 +43,13 @@ export function SignupTemplate({ companyLogo }: SignupTemplateProps) {
 							<Hr />
 							<Text className="text-center font-sans text-sm text-slate-400">
 								Sent by&nbsp;
-								<Link href="" className="text-current underline">
+								<Link href={"https://localhost:3000"} className="text-current underline">
 									Waitlister
 								</Link>
-								{/* &nbsp;on behalf of {companyWebsite ? companyWebsite : "[Company Website]"} */}
+								&nbsp;on behalf of&nbsp;
+								<Link href={websiteLink ?? ""} className="text-current underline">
+									{websiteName ?? "[Company Website]"}
+								</Link>
 							</Text>
 						</Section>
 					</Container>
