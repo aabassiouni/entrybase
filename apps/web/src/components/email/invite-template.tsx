@@ -1,4 +1,5 @@
 import { Body, Container, Hr, Html, Tailwind, Text, Section, Link, Img, Column } from "@react-email/components";
+import EmailFooter from "./email-footer";
 
 type InviteTemplateProps = {
 	bodyText: string | null;
@@ -65,19 +66,7 @@ export function InviteTemplate({
 							<Text className="font-sans">Thanks!</Text>
 							<Text className="font-sans">The Waitlister Team</Text>
 						</Section>
-						<Section className="h-24">
-							<Hr />
-							<Text className="text-center font-sans text-sm text-slate-400">
-								Sent by&nbsp;
-								<Link href={"https://localhost:3000"} className="text-current underline">
-									Waitlister
-								</Link>
-								&nbsp;on behalf of&nbsp;
-								<Link href={websiteLink ?? ""} className="text-current underline">
-									{websiteName ?? "[Website Name]"}
-								</Link>
-							</Text>
-						</Section>
+						<EmailFooter websiteLink={websiteLink} websiteName={websiteName} />
 					</Container>
 				</Body>
 			</Tailwind>

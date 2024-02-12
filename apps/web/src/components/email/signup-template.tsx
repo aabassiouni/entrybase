@@ -1,4 +1,5 @@
 import { Body, Container, Hr, Html, Tailwind, Text, Section, Link, Img, Column } from "@react-email/components";
+import EmailFooter from "./email-footer";
 
 type SignupTemplateProps = {
 	websiteLogo: string | null;
@@ -39,19 +40,7 @@ export function SignupTemplate({ websiteLogo, websiteName, supportEmail, website
 								We'll be sending out invites gradually so keep an eye on your inbox.
 							</Text>
 						</Section>
-						<Section className="h-24">
-							<Hr />
-							<Text className="text-center font-sans text-sm text-slate-400">
-								Sent by&nbsp;
-								<Link href={"https://localhost:3000"} className="text-current underline">
-									Waitlister
-								</Link>
-								&nbsp;on behalf of&nbsp;
-								<Link href={websiteLink ?? ""} className="text-current underline">
-									{websiteName ?? "[Company Website]"}
-								</Link>
-							</Text>
-						</Section>
+						<EmailFooter websiteLink={websiteLink} websiteName={websiteName} />
 					</Container>
 				</Body>
 			</Tailwind>
