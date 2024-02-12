@@ -28,47 +28,40 @@ export function InviteTemplate({
 				<Body className="mx-auto">
 					<Container className=" bg- w-[465px] rounded border border-solid border-[#eaeaea] font-sans dark:bg-black">
 						<Section className={`flex h-[150px] items-center justify-center rounded-t bg-[#4BE7AE]`}>
-							<Column>
+							{/* <Column>
 								<Text className="text-center text-3xl font-black">waitlister</Text>
-							</Column>
+							</Column> */}
 							<Column>
 								{websiteLogo && (
 									<Img className=" max-h-[150px] max-w-[150px] object-contain" src={websiteLogo} />
 								)}
 							</Column>
 						</Section>
-						<Section>
-							<Text className="font-sans text-3xl font-bold">
-								{header ? header : "You're Signed Up!"}
+						<Section className="px-4">
+							<Text className="font-sans text-2xl font-bold">
+								{header ? header : "Congrats! You're off the list!"}
 							</Text>
-							<Text className="font-sans">Hello [User's Name],</Text>
 							{bodyText ? (
 								<Text className="w-32 font-sans">{bodyText}</Text>
 							) : (
 								<>
 									<Text className="font-sans">
-										Thank you for signing up for {websiteName ?? "[Product Name]"}! You're now on
-										our waitlist.
+										Head over to&nbsp;
+										<Link href={websiteLink ?? ""} className="text-current underline">
+											{websiteName ?? "[Website Name]"}
+										</Link>
+										&nbsp;to get started.
 									</Text>
-									<Text className="font-sans ">
-										What's next?
-										<Text>
-											<ul className="font-sans text-sm">
-												<li>
-													We'll keep you updated on our progress and let you know as soon as&nbsp;
-													{websiteName ?? "[Product Name]"} is ready.
-												</li>
-												<li>Look out for an email from us with early access details.</li>
-											</ul>
-										</Text>
-										<Text className="font-sans">
-											Questions or feedback? Reach out to {supportEmail ?? "[Support Email]"}.
-										</Text>
+									<Text>
+										Questions or feedback? Please reach out to&nbsp;
+										<Link href={`mailto:${supportEmail}`}>
+											{supportEmail ?? "[Suppport Email]"}.
+										</Link>
 									</Text>
 								</>
 							)}
 						</Section>
-						<Section>
+						<Section className="px-4">
 							<Text className="font-sans">Thanks!</Text>
 							<Text className="font-sans">The Waitlister Team</Text>
 						</Section>
