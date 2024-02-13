@@ -6,6 +6,14 @@ import { newId } from "@waitlister/id";
 import { unstable_noStore as noStore } from "next/cache";
 import { db } from "./db";
 
+type setEmailTemplateForUserParams = {
+	waitlistID: string;
+	template: "invite" | "signup";
+	subject: string | null;
+	bodyText: string | null;
+	header: string | null;
+};
+
 export async function initEmailTemplates(waitlistID: string) {
 	return await db
 		.insert(email_templates)
@@ -16,16 +24,22 @@ export async function initEmailTemplates(waitlistID: string) {
 		.returning({ templateID: email_templates.templateID });
 }
 
-export async function setEmailTemplateForUser(emailTemplate: any) {
+export async function setEmailTemplateForUser({
+	bodyText,
+	header,
+	subject,
+	template,
+	waitlistID,
+}: setEmailTemplateForUserParams) {
 	noStore();
 	return await db
 		.update(email_templates)
 		.set({
-			bodyText: emailTemplate.bodyText,
-			header: emailTemplate.header,
-			subject: emailTemplate.subject,
+			bodyText: bodyText,
+			header: header,
+			subject: subject,
 		})
-		.where(eq(email_templates.waitlistID, emailTemplate.waitlistID));
+		.where(and(eq(email_templates.waitlistID, waitlistID), eq(email_templates.template, template)));
 }
 
 export async function getEmailTemplateForUser(waitlistID: string, userID: string, template: "invite" | "signup") {
