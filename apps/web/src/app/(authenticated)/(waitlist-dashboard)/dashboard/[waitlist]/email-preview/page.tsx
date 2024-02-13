@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import FormSubmitButton from "@/components/form-submit-button";
-import { currentUser } from "@clerk/nextjs";
+import { auth, currentUser } from "@clerk/nextjs";
 import { PageHeading } from "@/components/typography";
 import TemplateSelect from "@/components/template-select";
 import { SearchParams } from "@/types";
@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
 import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
+import TemplateForm from "./template-form";
 
 async function EmailPreviewPage({
 	params,
@@ -32,23 +33,39 @@ async function EmailPreviewPage({
 	if (!user) return;
 
 	const plan = workspace?.plan;
+	const disabled = plan !== "pro";
 	const template = searchParams?.template ?? "invite";
 
-	const values = await getEmailTemplateForUser(params.waitlist, user.id, template);
+	const templateValues = await getEmailTemplateForUser(params.waitlist, user.id, template).then((res) => {
+		return {
+			subject: res[0]?.subject,
+			bodyText: res[0]?.bodyText,
+			header: res[0]?.header,
+		};
+	});
 
-	async function submitEmailTemplate(formData: FormData) {
+	async function submitEmailTemplate(values: {
+		subject: string | null;
+		bodyText: string | null;
+		header: string | null;
+	}) {
 		"use server";
 
-		if (!user!.id) return;
+		console.log("template", template);
+		console.log("submitting", values);
 
-		const subject = formData.get("subject") === "" ? null : formData.get("subject");
-		const bodyText = formData.get("body") === "" ? null : formData.get("body");
-		const header = formData.get("header") === "" ? null : formData.get("header");
+		const user = auth();
+		if (!user.userId) {
+			throw new Error("No user found");
+		}
+
+		const subject = values.subject === "" ? null : values.subject;
+		const bodyText = values.bodyText === "" ? null : values.bodyText;
+		const header = values.header === "" ? null : values.header;
 
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			template: template,
-			userID: user!.id,
 			subject: subject,
 			bodyText: bodyText,
 			header: header,
@@ -63,7 +80,6 @@ async function EmailPreviewPage({
 		await setEmailTemplateForUser({
 			waitlistID: params.waitlist,
 			template: template,
-			userID: user!.id,
 			subject: null,
 			bodyText: null,
 			header: null,
@@ -76,45 +92,14 @@ async function EmailPreviewPage({
 			<div className="flex w-1/2 flex-col p-10">
 				<PageHeading>Email Preview</PageHeading>
 				<TemplateSelect waitlistID={params.waitlist} />
-				{plan === "pro" ? (
-					<div className="space-y-2">
-						<form className="space-y-2" action={submitEmailTemplate}>
-							<div>
-								<Label htmlFor="email">Email Subject</Label>
-								<Input
-									defaultValue={values[0]?.subject ?? ""}
-									name="subject"
-									id="subject"
-									className="my-1 w-1/4"
-								/>
-							</div>
-							<div>
-								<Label htmlFor="email">Header</Label>
-								<Input
-									defaultValue={values[0]?.header ?? ""}
-									name="header"
-									id="header"
-									className="my-1 w-1/4"
-								/>
-							</div>
-							<div>
-								<Label htmlFor="bodyText">Body</Label>
-								<Textarea
-									defaultValue={values[0]?.bodyText ?? ""}
-									name="body"
-									id="bodyText"
-									className="h-32 w-full"
-								/>
-							</div>
-							<FormSubmitButton className="w-20 dark:bg-primary dark:hover:bg-primary/80">
-								Submit
-							</FormSubmitButton>
-						</form>
-						<form action={clearEmailTemplate}>
-							<FormSubmitButton className="w-fit ">Reset to default</FormSubmitButton>
-						</form>
-					</div>
-				) : (
+				{/* {plan === "pro" ? ( */}
+				<div className="space-y-2">
+					<TemplateForm disabled={disabled} initialValues={templateValues} action={submitEmailTemplate} />
+					<form action={clearEmailTemplate}>
+						<FormSubmitButton className="w-fit ">Reset to default</FormSubmitButton>
+					</form>
+				</div>
+				{/* ) : (
 					<EmptyComponent>
 						<EmptyComponentTitle>
 							Custom email templates are only available on the Pro plan.
@@ -126,7 +111,7 @@ async function EmailPreviewPage({
 							<Button>Create a new workspace</Button>
 						</Link>
 					</EmptyComponent>
-				)}
+				)} */}
 			</div>
 			<div className="w-1/2 py-8 pr-10">
 				<Suspense fallback={<Skeleton className="h-full" />}>
