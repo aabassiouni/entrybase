@@ -33,7 +33,7 @@ async function NewWorkspacePage() {
 						<Input name="workspaceName" required className="w-42" placeholder="Workspace Name" />
 					</CardContent>
 					<Separator />
-					<CardFooter>
+					<CardFooter className="pt-6">
 						<Button className="w-fit">Create Workspace</Button>
 					</CardFooter>
 				</form>
