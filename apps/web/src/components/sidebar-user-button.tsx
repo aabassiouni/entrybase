@@ -10,7 +10,7 @@ import {
 import { Button } from "./ui/button";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
-import { LogOut, User } from "lucide-react";
+import { CreditCard, LogOut, User, Users } from "lucide-react";
 import { SignOutButton, currentUser } from "@clerk/nextjs";
 import { ThemeToggle } from "./theme-toggle";
 import { checkWorkspace } from "@/lib/auth";
@@ -66,14 +66,19 @@ async function SidebarUserButton() {
 							Account
 						</DropdownMenuItem>
 					</Link>
+					<Link href={"/dashboard/billing"}>
+						<DropdownMenuItem>
+							<CreditCard className="mr-2 h-4 w-4" />
+							Billing
+						</DropdownMenuItem>
+					</Link>
+					<Link href={"/dashboard/team"}>
+						<DropdownMenuItem>
+							<Users className="mr-2 h-4 w-4" />
+							Team
+						</DropdownMenuItem>
+					</Link>
 				</DropdownMenuGroup>
-				{/* <DropdownMenuSeparator /> */}
-				{/* <DropdownMenuGroup>
-					<DropdownMenuLabel>Workspace</DropdownMenuLabel>
-					<DropdownMenuItem className="px-0 py-0">
-						<TeamSelect className="w-full px-2" />
-					</DropdownMenuItem>
-				</DropdownMenuGroup> */}
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<SignOutButton>
