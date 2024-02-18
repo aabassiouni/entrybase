@@ -30,14 +30,9 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	const waitlistID = context.params.waitlistID;
 
 	// check if user has waitlist
-	const workspace = await checkWorkspace();
+	const workspace = await checkWorkspace(waitlistID);
+
 	if (!workspace) {
-		return NextResponse.redirect("/dashboard/setup");
-	}
-
-	const waitlist = await findWaitlistForUser(workspace.workspaceID, waitlistID);
-
-	if (waitlist.length === 0) {
 		return NextResponse.redirect("/dashboard");
 	}
 
