@@ -1,6 +1,12 @@
 import { InviteTemplate } from "@/components/email/invite-template";
 import { checkWorkspace } from "@/lib/auth";
-import { createInvite, findWaitlistForUser, getEmailTemplateForUser, getInvitesListByCount } from "@/lib/db";
+import {
+	createInvite,
+	findWaitlistForUser,
+	getEmailTemplateForUser,
+	getInvitesListByCount,
+	getWaitlistWebsiteDetails,
+} from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -36,9 +42,16 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 		return NextResponse.redirect("/dashboard");
 	}
 
-	const emailTemplate = await getEmailTemplateForUser(userId, waitlistID, "invite").then((res) => res[0]);
+	const { bodyText, header, subject } = await getEmailTemplateForUser(userId, waitlistID, "invite").then(
+		(res) => res[0],
+	);
+	const { logoFileURL, supportEmail, websiteName, websiteLink } = await getWaitlistWebsiteDetails(waitlistID);
 
-	console.log("Email values:", emailTemplate?.subject, emailTemplate?.bodyText, emailTemplate?.header);
+	if (logoFileURL === null || websiteName === null || websiteLink === null || supportEmail === null) {
+		return NextResponse.json({ message: "error", error: "website details not found" });
+	}
+
+	console.log("Email values:", subject, bodyText, header);
 
 	switch (type) {
 		case "count":

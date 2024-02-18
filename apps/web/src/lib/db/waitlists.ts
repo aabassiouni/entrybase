@@ -139,17 +139,12 @@ export async function getWaitlistWebsiteDetails(waitlistID: string) {
 		where: (table, { and, eq }) => eq(table.waitlistID, waitlistID),
 	});
 
-	if (!websiteDetails) {
-		return null;
-	}
-
 	return {
-		logoFileURL: websiteDetails.logoFileURL,
-		websiteName: websiteDetails.websiteName,
-		websiteLink: websiteDetails.websiteLink,
-		supportEmail: websiteDetails.supportEmail,
+		logoFileURL: websiteDetails?.logoFileURL || null,
+		websiteName: websiteDetails?.websiteName || null,
+		websiteLink: websiteDetails?.websiteLink || null,
+		supportEmail: websiteDetails?.supportEmail || null,
 	};
-
 }
 export async function updateWaitlistWebstiteDetails({
 	waitlistID,

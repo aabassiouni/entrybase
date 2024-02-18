@@ -10,33 +10,34 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 	const user = await currentUser();
 	if (!user) return;
 
-	const values = await getEmailTemplateForUser(waitlistID, user.id, template);
-	const logoURL = await getWaitlistLogoURL(waitlistID);
+	const { bodyText, header, subject } = await getEmailTemplateForUser(waitlistID, user.id, template).then(
+		(res) => res[0],
+	);
 
-	const websiteDetails = await getWaitlistWebsiteDetails(waitlistID);
+	const { logoFileURL, supportEmail, websiteLink, websiteName } = await getWaitlistWebsiteDetails(waitlistID);
 
-	const bodyText = sanitize(values[0]?.bodyText!);
-	const header = sanitize(values[0]?.header!);
+	const sanitizedBodyText = sanitize(bodyText!);
+	const sanitizedHeader = sanitize(header!);
 
-	const defaultSignupSubject = `You're on the waitlist for ${websiteDetails?.websiteName ?? "[Company]"}! `;
-	const defaultInviteSubject = `You're invited to join ${websiteDetails?.websiteName ?? "[Company]"}! `;
+	const defaultSignupSubject = `You're on the waitlist for ${websiteName ?? "[Company]"}! `;
+	const defaultInviteSubject = `You're invited to join ${websiteName ?? "[Company]"}! `;
 
 	const Template =
 		template === "invite" ? (
 			<InviteTemplate
-				bodyText={bodyText}
-				header={header}
-				websiteLogo={websiteDetails?.logoFileURL ?? null}
-				websiteName={websiteDetails?.websiteName ?? null}
-				websiteLink={websiteDetails?.websiteLink ?? null}
-				supportEmail={websiteDetails?.supportEmail ?? null}
+				bodyText={sanitizedBodyText}
+				header={sanitizedHeader}
+				websiteLogo={logoFileURL}
+				websiteName={websiteName}
+				websiteLink={websiteLink}
+				supportEmail={supportEmail}
 			/>
 		) : (
 			<SignupTemplate
-				websiteLogo={websiteDetails?.logoFileURL ?? null}
-				websiteName={websiteDetails?.websiteName ?? null}
-				websiteLink={websiteDetails?.websiteLink ?? null}
-				supportEmail={websiteDetails?.supportEmail ?? null}
+				websiteLogo={logoFileURL}
+				websiteName={websiteName}
+				websiteLink={websiteLink}
+				supportEmail={supportEmail}
 			/>
 		);
 
@@ -66,8 +67,8 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 							Subject:
 						</p>
 						<span className="w-full rounded-r-md border-y border-r border-[#002417] bg-black p-1 px-2">
-							{values[0]?.subject !== null
-								? values[0]?.subject
+							{subject !== null
+								? subject
 								: template === "invite"
 									? defaultInviteSubject
 									: defaultSignupSubject}
