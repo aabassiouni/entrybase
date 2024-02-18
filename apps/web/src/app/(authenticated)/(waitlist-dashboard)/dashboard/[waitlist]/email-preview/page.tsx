@@ -8,6 +8,9 @@ import { PageHeading } from "@/components/typography";
 import TemplateSelect from "@/components/template-select";
 import { checkWorkspace } from "@/lib/auth";
 import TemplateForm from "./template-form";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { InfoIcon } from "lucide-react";
+import Link from "next/link";
 
 async function EmailPreviewPage({
 	params,
@@ -81,7 +84,26 @@ async function EmailPreviewPage({
 	return (
 		<div className="flex w-full">
 			<div className="flex w-1/2 flex-col p-10">
-				<PageHeading>Email Preview</PageHeading>
+				<PageHeading className="gap-4">
+					Email Preview
+					{plan === "free" && (
+						<TooltipProvider delayDuration={200}>
+							<Tooltip>
+								<TooltipTrigger asChild>
+									<div className="rounded-full border border-zinc-800 bg-zinc-900 p-1">
+										<InfoIcon className="h-5 w-5 " />
+									</div>
+								</TooltipTrigger>
+								<TooltipContent className="w-52" side="bottom">
+									<p>Custom email templates are available in Pro Workspaces.</p>
+									<Link href={"/dashboard/new"} className="mx-auto text-center underline">
+										Upgrade Now
+									</Link>
+								</TooltipContent>
+							</Tooltip>
+						</TooltipProvider>
+					)}
+				</PageHeading>
 				<TemplateSelect waitlistID={params.waitlist} />
 				<div className="space-y-2">
 					<TemplateForm
