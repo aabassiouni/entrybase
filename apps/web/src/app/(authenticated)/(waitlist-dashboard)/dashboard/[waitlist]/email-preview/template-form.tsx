@@ -1,6 +1,5 @@
 "use client";
 import FormSubmitButton from "@/components/form-submit-button";
-import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,14 +15,15 @@ type TemplateFormProps = {
 		header: string | null;
 		bodyText: string | null;
 	};
-	action: (values: { subject: string | null; bodyText: string | null; header: string | null }) => void;
+	submitAction: (values: { subject: string | null; bodyText: string | null; header: string | null }) => void;
+	clearAction: () => void;
 };
 const formSchema = z.object({
 	subject: z.string().nullable(),
 	header: z.string().nullable(),
 	bodyText: z.string().nullable(),
 });
-function TemplateForm({ disabled, initialValues, action }: TemplateFormProps) {
+function TemplateForm({ disabled, initialValues, submitAction, clearAction }: TemplateFormProps) {
 	const form = useForm({
 		defaultValues: {
 			subject: initialValues.subject ?? "",
@@ -33,11 +33,14 @@ function TemplateForm({ disabled, initialValues, action }: TemplateFormProps) {
 		resolver: zodResolver(formSchema),
 	});
 	async function handleSubmit(values: z.infer<typeof formSchema>) {
-		return await action(values);
+		return await submitAction(values);
+	}
+	async function handleClear() {
+		return await clearAction();
 	}
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(handleSubmit)}>
+			<form>
 				<FormField
 					control={form.control}
 					name="subject"
@@ -50,7 +53,7 @@ function TemplateForm({ disabled, initialValues, action }: TemplateFormProps) {
 									{...field}
 									defaultValue={initialValues?.subject ?? ""}
 									disabled={disabled}
-									className="my-1 w-1/4"
+									className="my-1 w-full"
 								/>
 							</FormControl>
 							<FormDescription />
@@ -64,14 +67,19 @@ function TemplateForm({ disabled, initialValues, action }: TemplateFormProps) {
 					disabled={disabled}
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Header</FormLabel>
+							<div className="inline-flex items-center gap-2">
+								<FormLabel className="">Header</FormLabel>
+							</div>
 							<FormControl>
-								<Input
-									{...field}
-									defaultValue={initialValues.subject ?? ""}
-									disabled={disabled}
-									className="my-1 w-1/4"
-								/>
+								<div className="">
+									<Input
+										{...field}
+										// onMouseMove={()}
+										defaultValue={initialValues.subject ?? ""}
+										disabled={disabled}
+										className="peer my-1 w-full"
+									/>
+								</div>
 							</FormControl>
 							<FormDescription />
 							<FormMessage />
@@ -99,12 +107,24 @@ function TemplateForm({ disabled, initialValues, action }: TemplateFormProps) {
 					)}
 				/>
 
-				<FormSubmitButton
-					loading={form.formState.isSubmitting}
-					className="w-20 dark:bg-primary dark:hover:bg-primary/80"
-				>
-					Submit
-				</FormSubmitButton>
+				<div className="flex w-full gap-4">
+					<FormSubmitButton
+						onClick={form.handleSubmit(handleSubmit)}
+						loading={form.formState.isSubmitting}
+						disabled={disabled}
+						className="w-full  dark:bg-primary dark:hover:bg-primary/80"
+					>
+						Submit
+					</FormSubmitButton>
+					<FormSubmitButton
+						loading={form.formState.isSubmitting}
+						disabled={disabled}
+						onClick={form.handleSubmit(handleClear)}
+						className="w-full "
+					>
+						Reset to default
+					</FormSubmitButton>
+				</div>
 			</form>
 		</Form>
 	);

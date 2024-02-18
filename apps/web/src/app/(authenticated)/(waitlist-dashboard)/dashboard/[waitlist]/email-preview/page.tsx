@@ -1,22 +1,12 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import EmailPreview from "@/components/email-preview";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { getEmailTemplateForUser, setEmailTemplateForUser } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import FormSubmitButton from "@/components/form-submit-button";
 import { auth, currentUser } from "@clerk/nextjs";
 import { PageHeading } from "@/components/typography";
 import TemplateSelect from "@/components/template-select";
-import { SearchParams } from "@/types";
 import { checkWorkspace } from "@/lib/auth";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
-import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
 import TemplateForm from "./template-form";
 
 async function EmailPreviewPage({
@@ -75,6 +65,7 @@ async function EmailPreviewPage({
 
 	async function clearEmailTemplate() {
 		"use server";
+		console.log("clearing template");
 		if (!user!.id) return;
 
 		await setEmailTemplateForUser({
@@ -92,26 +83,14 @@ async function EmailPreviewPage({
 			<div className="flex w-1/2 flex-col p-10">
 				<PageHeading>Email Preview</PageHeading>
 				<TemplateSelect waitlistID={params.waitlist} />
-				{/* {plan === "pro" ? ( */}
 				<div className="space-y-2">
-					<TemplateForm disabled={disabled} initialValues={templateValues} action={submitEmailTemplate} />
-					<form action={clearEmailTemplate}>
-						<FormSubmitButton className="w-fit ">Reset to default</FormSubmitButton>
-					</form>
+					<TemplateForm
+						disabled={disabled}
+						initialValues={templateValues}
+						submitAction={submitEmailTemplate}
+						clearAction={clearEmailTemplate}
+					/>
 				</div>
-				{/* ) : (
-					<EmptyComponent>
-						<EmptyComponentTitle>
-							Custom email templates are only available on the Pro plan.
-						</EmptyComponentTitle>
-						<EmptyComponentDescription>
-							Create a new pro workspace to customize email templates
-						</EmptyComponentDescription>
-						<Link href="/dashboard/new">
-							<Button>Create a new workspace</Button>
-						</Link>
-					</EmptyComponent>
-				)} */}
 			</div>
 			<div className="w-1/2 py-8 pr-10">
 				<Suspense fallback={<Skeleton className="h-full" />}>
