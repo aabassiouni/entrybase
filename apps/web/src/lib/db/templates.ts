@@ -43,6 +43,7 @@ export async function setEmailTemplateForUser({
 }
 
 export async function getEmailTemplateForUser(waitlistID: string, userID: string, template: "invite" | "signup") {
+	noStore();
 	return await db
 		.select()
 		.from(email_templates)
