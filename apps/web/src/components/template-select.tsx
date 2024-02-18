@@ -1,30 +1,48 @@
 "use client";
-import React from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import React, { useLayoutEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Badge } from "./ui/badge";
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
-function TemplateSelect({waitlistID}: {waitlistID: string}) {
+function TemplateSelect({ waitlistID }: { waitlistID: string }) {
+	const [isLoading, setIsLoading] = React.useState(false);
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const template = searchParams.get("template") ?? "invite";
 
+	useLayoutEffect(() => {
+		router.prefetch(`/dashboard/${waitlistID}/email-preview?template=signup`);
+	}, [waitlistID, searchParams]);
 	return (
-
-		<Select
-			name="template"
-            value={template}
-			onValueChange={(value) => {
-				router.push(`/dashboard/${waitlistID}/email-preview?template=${value}`);
-			}}
-		>
-			<SelectTrigger className="w-40">
-				<SelectValue placeholder="Select a template " />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectItem value="invite">Invite</SelectItem>
-				<SelectItem value="signup">Signup</SelectItem>
-			</SelectContent>
-		</Select>
+		<div className="mx-auto flex gap-5 ">
+			<Badge
+				className={cn(
+					"cursor-pointer text-sm font-normal",
+					template === "invite" ? "border border-primary bg-primary dark:text-black" : "",
+				)}
+				variant={"outline"}
+				onClick={() => {
+					router.push(`/dashboard/${waitlistID}/email-preview?template=invite`);
+				}}
+			>
+				Invite Template
+			</Badge>
+			<Badge
+				className={cn(
+					"cursor-pointer text-sm font-normal",
+					template === "signup" ? "border border-primary bg-primary dark:text-black" : "",
+				)}
+				variant={"outline"}
+				onClick={() => {
+					setIsLoading(true);
+					router.push(`/dashboard/${waitlistID}/email-preview?template=signup`);
+					setIsLoading(false);
+				}}
+			>
+				{isLoading ? <Loader2 className="animate-spin" /> : "Signup Template"}
+			</Badge>
+		</div>
 	);
 }
 
