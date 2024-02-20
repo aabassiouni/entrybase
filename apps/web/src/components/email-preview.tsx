@@ -10,9 +10,10 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 	const user = await currentUser();
 	if (!user) return;
 
-	const { bodyText, header, subject } = await getEmailTemplateForUser(waitlistID, user.id, template).then(
-		(res) => res[0],
-	);
+	const { bodyText, header, subject } = await getEmailTemplateForUser({
+		waitlistID,
+		template
+	})
 
 	const { logoFileURL, supportEmail, websiteLink, websiteName } = await getWaitlistWebsiteDetails(waitlistID);
 

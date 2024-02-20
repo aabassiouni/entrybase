@@ -42,10 +42,14 @@ export async function setEmailTemplateForUser({
 		.where(and(eq(email_templates.waitlistID, waitlistID), eq(email_templates.template, template)));
 }
 
-export async function getEmailTemplateForUser(waitlistID: string, userID: string, template: "invite" | "signup") {
+export async function getEmailTemplateForUser({
+	waitlistID,
+	template,
+}: { waitlistID: string; template: "invite" | "signup" }) {
 	noStore();
 	return await db
 		.select()
 		.from(email_templates)
-		.where(and(eq(email_templates.waitlistID, waitlistID), eq(email_templates.template, template)));
+		.where(and(eq(email_templates.waitlistID, waitlistID), eq(email_templates.template, template)))
+		.then((res) => res[0]);
 }

@@ -1,8 +1,6 @@
-import { InviteTemplate } from "@/components/email/invite-template";
 import { checkWorkspace } from "@/lib/auth";
 import {
 	createInvite,
-	findWaitlistForUser,
 	getEmailTemplateForUser,
 	getInvitesListByCount,
 	getWaitlistWebsiteDetails,
@@ -42,9 +40,11 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 		return NextResponse.redirect("/dashboard");
 	}
 
-	const { bodyText, header, subject } = await getEmailTemplateForUser(userId, waitlistID, "invite").then(
-		(res) => res[0],
-	);
+	const { bodyText, header, subject } = await getEmailTemplateForUser({
+		waitlistID,
+		template: "invite",
+	});
+
 	const { logoFileURL, supportEmail, websiteName, websiteLink } = await getWaitlistWebsiteDetails(waitlistID);
 
 	if (logoFileURL === null || websiteName === null || websiteLink === null || supportEmail === null) {

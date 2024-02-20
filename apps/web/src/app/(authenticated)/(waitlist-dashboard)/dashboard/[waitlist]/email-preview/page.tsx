@@ -29,12 +29,9 @@ async function EmailPreviewPage({
 	const disabled = plan !== "pro";
 	const template = searchParams?.template ?? "invite";
 
-	const templateValues = await getEmailTemplateForUser(params.waitlist, user.id, template).then((res) => {
-		return {
-			subject: res[0]?.subject,
-			bodyText: res[0]?.bodyText,
-			header: res[0]?.header,
-		};
+	const templateValues = await getEmailTemplateForUser({
+		waitlistID: params.waitlist,
+		template: template,
 	});
 
 	async function submitEmailTemplate(values: {
@@ -69,6 +66,7 @@ async function EmailPreviewPage({
 	async function clearEmailTemplate() {
 		"use server";
 		console.log("clearing template");
+		
 		if (!user!.id) return;
 
 		await setEmailTemplateForUser({

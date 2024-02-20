@@ -23,7 +23,6 @@
 				"noDangerouslySetInnerHtml": "off"
 			},
 			"style": {
-				"useBlockStatements": "error",
 				"noNonNullAssertion": "off"
 			},
 			"performance": {
