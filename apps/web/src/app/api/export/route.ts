@@ -2,7 +2,7 @@ import { checkWorkspace } from "@/lib/auth";
 import { getSignupsList } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
-import { stringify } from "csv";
+import { stringify } from "csv/sync";
 import * as fs from "fs";
 import { Resend } from "resend";
 
@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
 	}
 
 	const signups = await getSignupsList(waitlist).then((res) => {
-		return res.map((signup) => {
+		const data = res.map((signup) => {
 			return {
 				email: signup.email,
 				firstName: signup.firstName,
@@ -30,40 +30,46 @@ export async function POST(request: NextRequest) {
 				createdAt: new Date(signup.createdAt!).toLocaleString(),
 			};
 		});
+		return [
+			{
+				email: "Email",
+				firstName: "First Name",
+				lastName: "Last Name",
+				status: "Status",
+				createdAt: "Created At",
+			},
+			...data,
+		];
 	});
 
 	const filename = `${waitlist}-signups`;
-    const filePath = process.env.NODE_ENV === "production" ? `/tmp/${filename}.csv` : `${filename}.csv`;
+	const filePath = process.env.NODE_ENV === "production" ? `/tmp/${filename}.csv` : `${filename}.csv`;
 
-	stringify(signups, function (err, output) {
-		if (err) throw err;
-		fs.writeFile(filePath, output, (err) => {
-			if (err) {
-				console.error(err);
-				return NextResponse.json({ message: "error" }, { status: 500 });
-			}
+	try {
+		fs.writeFileSync(filePath, stringify(signups));
+
+		const resend = new Resend(process.env.RESEND_API_KEY);
+
+		const { data, error } = await resend.emails.send({
+			from: "Ali B <onboarding@resend.dev>",
+			to: user.emailAddresses[0].emailAddress,
+			subject: "Signups CSV",
+			attachments: [
+				{
+					filename: `${filename}.csv`,
+					content: fs.readFileSync(filePath, "base64"),
+				},
+			],
+			html: `<p>Here is your CSV file for ${waitlist}.</p>`,
 		});
-	});
 
-	const resend = new Resend(process.env.RESEND_API_KEY);
-
-	const { data, error } = await resend.emails.send({
-		from: "Ali B <onboarding@resend.dev>",
-		to: user.emailAddresses[0].emailAddress,
-		subject: "Signups CSV",
-		attachments: [
-			{
-				filename: `${filename}.csv`,
-				content: fs.readFileSync(filePath).toString("base64"),
-			},
-		],
-		html: `<p>Here is your CSV file for ${waitlist}.</p>`,
-	});
-
-    if (error) {
-        console.error(error);
-        return NextResponse.json({ message: "error" }, { status: 500 });
-    }
+		if (error) {
+			console.error(error);
+			return NextResponse.json({ message: "error" }, { status: 500 });
+		}
+	} catch (error) {
+		return NextResponse.json({ message: "error" }, { status: 500 });
+	}
 
 	return NextResponse.json({ message: "success" });
 }
