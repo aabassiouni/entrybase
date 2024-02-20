@@ -74,7 +74,7 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 				<CardFooter />
 			</Card>
 			<div className="py-4">
-				<div className="rounded-md border border-gray-800">
+				<div className="rounded-md border border-neutral-700">
 					<Table>
 						<TableHeader>
 							<TableRow>
@@ -85,7 +85,7 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 						<TableBody>
 							{signups.entries.map((row: any, i: number) => (
 								<TableRow className="even:bg-zinc-950/50" key={i}>
-									<TableCell className="w-fit border-r border-slate-700">{row.label}</TableCell>
+									<TableCell className="w-fit border-r border-neutral-700">{row.label}</TableCell>
 									<TableCell className="w-fit">{row.value}</TableCell>
 								</TableRow>
 							))}
