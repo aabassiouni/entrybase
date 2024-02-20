@@ -1,18 +1,19 @@
 {
 	"name": "waitlister",
 	"workspaces": [
-	  "apps/*",
-	  "packages/*"
+		"apps/*",
+		"packages/*"
 	],
 	"scripts": {
 		"dev": "turbo run dev",
 		"build": "pnpm turbo run build"
-	  },
+	},
 	"author": "Ali Bassiouni",
 	"description": "",
 	"private": true,
 	"version": "1.0.0",
 	"devDependencies": {
+		"@biomejs/biome": "1.5.3",
 		"@types/node": "^20.11.5",
 		"turbo": "^1.12.2",
 		"typescript": "^5"
