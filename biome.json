@@ -4,6 +4,7 @@
 		"enabled": true
 	},
 	"formatter": {
+		"enabled": true,
 		"lineWidth": 120,
 		"indentStyle": "tab",
 		"indentWidth": 4
@@ -29,7 +30,8 @@
 				"noDelete": "off"
 			},
 			"suspicious": {
-				"noExplicitAny": "off"
+				"noExplicitAny": "off",
+				"noArrayIndexKey": "off"
 			},
 			"complexity": {
 				"noForEach": "off"

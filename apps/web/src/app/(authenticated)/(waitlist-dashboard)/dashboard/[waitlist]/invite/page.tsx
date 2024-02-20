@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import React, { useState } from "react";
 import { Mail, X } from "lucide-react";
-import { redirect, useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -58,15 +58,24 @@ function InvitePage() {
 			body: JSON.stringify({ inviteCount: values.inviteCount, selectionMethod: values.selectionMethod }),
 		});
 		const res = await data.json();
-		if (res.message === "success") {
-			router.push(`/dashboard/${waitlist}/invite/success`);
+		if (data.status === 400) {
+			if (res.code === "NO_WEBSITE_DETAILS") {
+				toast({
+					title: "Error",
+					description:
+						"You have not set up your website details. Go to Waitlist Settings to add your waitlist details",
+					variant: "destructive",
+				});
+			} else {
+				toast({
+					title: "Error",
+					description: "An error occurred while sending invites",
+					variant: "destructive",
+				});
+			}
 		}
-		if (res.message === "error") {
-			toast({
-				title: "Error",
-				description: "Something went wrong, please try again",
-				variant: "destructive",
-			});
+		if (data.status === 200) {
+			router.push(`/dashboard/${waitlist}/invite/success`);
 		}
 		setIsLoading(false);
 	}
@@ -79,15 +88,24 @@ function InvitePage() {
 			body: JSON.stringify({ inviteCount: invites.length, invitesList: invites }),
 		});
 		const res = await data.json();
-		if (res.message === "success") {
-			router.push(`/dashboard/${waitlist}/invite/success`);
+		if (data.status === 400) {
+			if (res.code === "NO_WEBSITE_DETAILS") {
+				toast({
+					title: "Error",
+					description:
+						"You have not set up your website details. Go to Waitlist Settings to add your waitlist details",
+					variant: "destructive",
+				});
+			} else {
+				toast({
+					title: "Error",
+					description: "An error occurred while sending invites",
+					variant: "destructive",
+				});
+			}
 		}
-		if (res.message === "error") {
-			toast({
-				title: "Error",
-				description: "Something went wrong, please try again",
-				variant: "destructive",
-			});
+		if (data.status === 200) {
+			router.push(`/dashboard/${waitlist}/invite/success`);
 		}
 		setIsLoading(false);
 	}
@@ -101,7 +119,7 @@ function InvitePage() {
 					</CardHeader>
 					<Separator className="my-0.5" />
 					<div className="px-6 pt-6">
-						<Link href={`email-preview`}>
+						<Link href={"email-preview"}>
 							<Button variant={"default"}>
 								Preview email
 								<Mail className="ml-2" />
@@ -259,6 +277,7 @@ function InvitePage() {
 											>
 												{invite.email}
 												<button
+													type="button"
 													onClick={() => {
 														const newInvites = invites.filter(
 															(item) => item.id !== invite.id,

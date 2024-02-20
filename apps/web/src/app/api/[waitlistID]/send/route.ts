@@ -1,10 +1,5 @@
 import { checkWorkspace } from "@/lib/auth";
-import {
-	createInvite,
-	getEmailTemplateForUser,
-	getInvitesListByCount,
-	getWaitlistWebsiteDetails,
-} from "@/lib/db";
+import { createInvite, getEmailTemplateForUser, getInvitesListByCount, getWaitlistWebsiteDetails } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -48,7 +43,7 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	const { logoFileURL, supportEmail, websiteName, websiteLink } = await getWaitlistWebsiteDetails(waitlistID);
 
 	if (logoFileURL === null || websiteName === null || websiteLink === null || supportEmail === null) {
-		return NextResponse.json({ message: "error", error: "website details not found" });
+		return NextResponse.json({ code: "NO_WEBSITE_DETAILS", message: "website details not found" }, { status: 400 });
 	}
 
 	console.log("Email values:", subject, bodyText, header);
