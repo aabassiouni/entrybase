@@ -1,17 +1,9 @@
-import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
-import React, { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
-import { checkWorkspace } from "@/lib/auth";
-import { stripe } from "@/lib/stripe";
-import Stripe from "stripe";
-import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs";
 
 async function NewWorkspacePage() {
