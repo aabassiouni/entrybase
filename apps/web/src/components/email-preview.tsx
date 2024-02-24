@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import InviteTemplate from "./email/invite-template";
 import { renderAsync } from "@react-email/components";
-import { getEmailTemplateForUser, getWaitlistLogoURL, getWaitlistWebsiteDetails } from "@/lib/db";
+import { getEmailTemplateForUser, getWaitlistWebsiteDetails } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
 import SignupTemplate from "./email/signup-template";
 import { sanitize } from "isomorphic-dompurify";
@@ -12,10 +12,11 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 
 	const { bodyText, header, subject } = await getEmailTemplateForUser({
 		waitlistID,
-		template
-	})
+		template,
+	});
 
-	const { logoFileURL, supportEmail, websiteLink, websiteName } = await getWaitlistWebsiteDetails(waitlistID);
+	const { logoFileURL, supportEmail, websiteLink, websiteName, brandColor } =
+		await getWaitlistWebsiteDetails(waitlistID);
 
 	const sanitizedBodyText = sanitize(bodyText!);
 	const sanitizedHeader = sanitize(header!);
@@ -31,6 +32,7 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 				websiteLogo={logoFileURL}
 				websiteName={websiteName}
 				websiteLink={websiteLink}
+				brandColor={brandColor}
 				supportEmail={supportEmail}
 			/>
 		) : (
@@ -39,6 +41,7 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 				websiteName={websiteName}
 				websiteLink={websiteLink}
 				supportEmail={supportEmail}
+				brandColor={brandColor}
 			/>
 		);
 
@@ -51,34 +54,26 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
 						<p className="w-20 rounded-l-md border-b border-l border-t border-neutral-800 bg-neutral-900 p-1 px-2">
 							From:
 						</p>
-						<span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">
-							x@gmail.com
-						</span>
+						<span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">x@gmail.com</span>
 					</div>
 					<div className="flex  items-center  text-sm">
 						<p className="w-20 rounded-l-md border-b border-l border-t border-neutral-800 bg-neutral-900 p-1 px-2">
 							To:
 						</p>
-						<span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">
-							x@gmail.com
-						</span>
+						<span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">x@gmail.com</span>
 					</div>
 					<div className="flex items-center text-sm">
 						<p className="w-20  rounded-l-md border-b border-l border-t border-neutral-800 bg-neutral-900 p-1 px-2">
 							Subject:
 						</p>
 						<span className="w-full rounded-r-md border-y border-r border-[#002417] bg-black p-1 px-2">
-							{subject !== null
-								? subject
-								: template === "invite"
-									? defaultInviteSubject
-									: defaultSignupSubject}
+							{subject !== null ? subject : template === "invite" ? defaultInviteSubject : defaultSignupSubject}
 						</span>
 					</div>
 				</div>
 			</div>
 			<div className="h-full w-full p-4 ">
-				<iframe loading="eager" className="h-full w-full rounded-lg" srcDoc={html} />
+				<iframe title="preview" loading="eager" className="h-full w-full rounded-lg" srcDoc={html} />
 			</div>
 		</Card>
 	);

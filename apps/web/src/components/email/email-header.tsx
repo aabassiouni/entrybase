@@ -1,9 +1,14 @@
 import { Column, Img, Section } from "@react-email/components";
 import React from "react";
 
-function EmailHeader({ websiteLogo }: { websiteLogo: string | null }) {
+function EmailHeader({ websiteLogo, brandColor }: { websiteLogo: string | null; brandColor: string | null }) {
 	return (
-		<Section className={`flex h-[150px] items-center justify-center rounded-t bg-[#4BE7AE]`}>
+		<Section
+			style={{
+				backgroundColor: brandColor || undefined,
+			}}
+			className={"flex h-[150px] items-center justify-center rounded-t"}
+		>
 			<Column>
 				{websiteLogo ? (
 					<Img className=" max-h-[150px] max-w-[150px] object-contain" src={websiteLogo} />
