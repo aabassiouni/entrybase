@@ -135,6 +135,7 @@ export async function getWaitlistWebsiteDetails(waitlistID: string) {
 			websiteName: true,
 			websiteLink: true,
 			supportEmail: true,
+			brandColor: true,
 		},
 		where: (table, { and, eq }) => eq(table.waitlistID, waitlistID),
 	});
@@ -144,18 +145,21 @@ export async function getWaitlistWebsiteDetails(waitlistID: string) {
 		websiteName: websiteDetails?.websiteName || null,
 		websiteLink: websiteDetails?.websiteLink || null,
 		supportEmail: websiteDetails?.supportEmail || null,
+		brandColor: websiteDetails?.brandColor || null,
 	};
 }
-export async function updateWaitlistWebstiteDetails({
+export async function updateWaitlistWebsiteDetails({
 	waitlistID,
 	websiteName,
 	websiteLink,
 	supportEmail,
+	brandColor,
 }: {
 	waitlistID: string;
 	websiteName: string | null;
 	websiteLink: string | null;
 	supportEmail: string | null;
+	brandColor: string | null;
 }) {
 	return await db
 		.update(waitlists)
@@ -163,6 +167,7 @@ export async function updateWaitlistWebstiteDetails({
 			websiteName: websiteName,
 			websiteLink: websiteLink,
 			supportEmail: supportEmail,
+			brandColor: brandColor,
 		})
 		.where(eq(waitlists.waitlistID, waitlistID));
 }

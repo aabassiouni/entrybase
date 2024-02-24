@@ -5,7 +5,6 @@ import { workspaces } from "./workspaces";
 
 export const waitlists = pgTable("waitlists", {
 	waitlistID: varchar("waitlist_id", { length: 256 }).primaryKey().notNull(),
-	// userID: varchar("user_id", { length: 50 }).notNull(),
 	workspaceID: varchar("workspace_id", { length: 256 })
 		.notNull()
 		.references(() => workspaces.workspaceID),
@@ -23,6 +22,7 @@ export const waitlists = pgTable("waitlists", {
 	websiteName: varchar("website_name", { length: 255 }),
 	supportEmail: varchar("support_email", { length: 255 }),
 	websiteLink: varchar("website_link", { length: 255 }),
+	brandColor: varchar("brand_color", { length: 7 }),
 });
 
 export const waitlistsRelations = relations(waitlists, ({ one, many }) => ({
