@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useFormStatus } from "react-dom";
-import { Button } from "./ui/button";
+import { Button, ButtonProps } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,7 +10,7 @@ function FormSubmitButton({
 	children,
 	className,
 	...props
-}: { loading?: boolean; children: React.ReactNode; className?: string } & React.ComponentPropsWithoutRef<"button">) {
+}: { loading?: boolean; children: React.ReactNode; className?: string } & ButtonProps) {
 	const { pending, action, data, method } = useFormStatus();
 	return (
 		<Button {...props} className={cn(className)} type="submit">
