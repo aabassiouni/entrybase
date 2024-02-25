@@ -1,9 +1,9 @@
-import { getWaitlistsForUser} from "@/lib/db";
+import { getWaitlistsForUser } from "@/lib/db";
 import WaitlistDropdown from "./waitlist-dropdown";
 import { checkWorkspace } from "@/lib/auth";
 import { notFound, redirect } from "next/navigation";
 
-export default async function WaitlistSelect() {
+export default async function WaitlistSelect({ className }: { className?: string }) {
 	const workspace = await checkWorkspace();
 
 	if (!workspace) {
@@ -15,5 +15,5 @@ export default async function WaitlistSelect() {
 		return redirect("/dashboard");
 	}
 
-	return <WaitlistDropdown waitlists={waitlists} />;
+	return <WaitlistDropdown className={className} waitlists={waitlists} />;
 }

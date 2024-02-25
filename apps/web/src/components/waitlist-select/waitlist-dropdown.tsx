@@ -10,15 +10,17 @@ import { cn } from "@/lib/utils";
 
 function WaitlistDropdown({
 	waitlists,
+	className,
 }: {
 	waitlists: { waitlistID: string; waitlistName: string; colorString: string }[];
+	className?: string;
 }) {
 	const router = useRouter();
 	const params = useParams();
 	const defaultWaitlist = params.waitlist as string;
 
 	return (
-		<div className="w-full px-4 py-2 ">
+		<div className={cn("w-full px-4 py-2 ", className)}>
 			<Select
 				defaultValue={defaultWaitlist}
 				onValueChange={(value) => {
