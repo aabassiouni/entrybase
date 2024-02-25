@@ -16,7 +16,6 @@ export async function handleDelete(formData: FormData) {
 }
 
 export async function createWaitlistAction(formData: FormData) {
-	// const { userId } = auth();
 	const workspace = await checkWorkspace();
 	if (!workspace) {
 		return notFound();
@@ -27,7 +26,7 @@ export async function createWaitlistAction(formData: FormData) {
 	const [{ waitlistID }] = await createWaitlist(waitlistName, workspace.workspaceID);
 
 	await initEmailTemplates(waitlistID);
-	notifyDiscord({
+	await notifyDiscord({
 		waitlist: waitlistID,
 	});
 	redirect(`/dashboard/${waitlistID}`);
