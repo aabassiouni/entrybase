@@ -6,6 +6,7 @@ import { checkWorkspace } from "@/lib/auth";
 import { ArrowLeftCircle } from "lucide-react";
 import Link from "next/link";
 import TeamsContent from "./teams-content";
+import { Suspense } from "react";
 
 async function TeamPage() {
 	const workspace = await checkWorkspace();
@@ -51,6 +52,7 @@ async function TeamPage() {
 
 	return (
 		<>
+			{/* {new Promise(() => true)} */}
 			<PageHeading>
 				<Link href="/dashboard">
 					<ArrowLeftCircle className="mr-4" />
@@ -64,7 +66,9 @@ async function TeamPage() {
 				</CardHeader>
 				<Separator className="" />
 				<CardContent>
-					<TeamsContent />
+					<Suspense fallback={<div></div>}>
+						<TeamsContent />
+					</Suspense>
 				</CardContent>
 			</Card>
 		</>
