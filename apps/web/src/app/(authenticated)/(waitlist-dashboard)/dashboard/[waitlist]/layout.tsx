@@ -5,7 +5,7 @@ import MobileTopbar from "@/components/dashboard-mobile-topbar";
 
 export default function DashboardLayout({ children, params }: { children: React.ReactNode; params: any }) {
 	return (
-		<div className="sm:flex">
+		<div className="sm:flex h-screen">
 			<InviteProvider>
 				<MobileTopbar wtSegment={params.waitlist} />
 				<DashboardSidebar wtSegment={params.waitlist} />
