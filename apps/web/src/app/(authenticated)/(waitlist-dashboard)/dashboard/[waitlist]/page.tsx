@@ -2,13 +2,7 @@ import Chart from "@/components/Chart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import {
-	getCounts,
-	getDayRangeChartLabelsAndValues,
-	getSignupsEmailListforUser,
-	getWaitlistByID,
-	getWaitlistWithWorkspace,
-} from "@/lib/db";
+import { getCounts, getDayRangeChartLabelsAndValues, getSignupsEmailListforUser } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,9 +11,7 @@ import ActionsCard from "@/components/actions-card";
 import { currentUser } from "@clerk/nextjs";
 import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
-import { checkWorkspace, getTenantID } from "@/lib/auth";
-import { notFound, redirect } from "next/navigation";
-import { db } from "@/lib/db/db";
+import { checkWorkspace } from "@/lib/auth";
 import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
 
 // export const revalidate = 20;
@@ -32,7 +24,6 @@ function CountCardsLoading() {
 					<CardTitle>Signups</CardTitle>
 				</CardHeader>
 				<CardContent>
-					{/* <p className="text-3xl font-bold">{counts.total}</p> */}
 					<Skeleton className="h-12 w-24" />
 				</CardContent>
 			</Card>
@@ -41,7 +32,6 @@ function CountCardsLoading() {
 					<CardTitle>Invites</CardTitle>
 				</CardHeader>
 				<CardContent>
-					{/* <p className="text-3xl font-bold">{counts.invited}</p> */}
 					<Skeleton className="h-12 w-24" />
 				</CardContent>
 			</Card>
@@ -50,7 +40,6 @@ function CountCardsLoading() {
 					<CardTitle>Waiting</CardTitle>
 				</CardHeader>
 				<CardContent>
-					{/* <p className="text-3xl font-bold">{counts.waiting}</p> */}
 					<Skeleton className="h-12 w-24" />
 				</CardContent>
 			</Card>
@@ -114,10 +103,12 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
 						))}
 					</ScrollArea>
 				) : (
-					<EmptyComponent className="">
-						<EmptyComponentTitle>No signups yet</EmptyComponentTitle>
-						<EmptyComponentDescription>Your latest signups will show up here</EmptyComponentDescription>
-					</EmptyComponent>
+					<div className="">
+						<EmptyComponent className="">
+							<EmptyComponentTitle>No signups yet</EmptyComponentTitle>
+							<EmptyComponentDescription>Your latest signups will show up here</EmptyComponentDescription>
+						</EmptyComponent>
+					</div>
 				)}
 			</CardContent>
 		</Card>
@@ -140,13 +131,13 @@ async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
 			<CardHeader>
 				<CardTitle>Past Week</CardTitle>
 			</CardHeader>
-			<CardContent className="">
+			<CardContent className="p-4">
 				<Chart
 					data={pastWeekSignupsData.entries}
 					margin={{
 						top: 5,
 						right: 20,
-						left: -5,
+						left: -20,
 						bottom: 0,
 					}}
 				/>
@@ -171,8 +162,8 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 					<p className="text-3xl font-bold">{counts.total}</p>
 					{counts.delta > 0 ? (
 						<Badge className=" relative z-30 inline-flex items-center justify-center bg-green-500 text-sm text-black dark:bg-primary">
-							<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur"></div>
-							<p className="z-5">{"+" + counts.delta}</p>
+							<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur" />
+							<p className="z-5">{`+${counts.delta}`}</p>
 						</Badge>
 					) : null}
 				</CardContent>
@@ -198,19 +189,19 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 }
 
 export default async function Home({ params }: { params: { waitlist: string } }) {
-	const workspace = await checkWorkspace(params.waitlist);
+	const _workspace = await checkWorkspace(params.waitlist);
 
 	return (
 		<MainLayout>
 			<PageHeading>Dashboard</PageHeading>
-			<div className="grid grid-cols-5 gap-4">
+			<div className="flex flex-wrap sm:!grid sm:grid-cols-5 gap-4">
 				<Suspense fallback={<CountCardsLoading />}>
 					<CountCards waitlistID={params.waitlist} />
 				</Suspense>
 				<ActionsCard waitlistID={params.waitlist} />
 			</div>
-			<div className="p-4"></div>
-			<div className="grid grid-cols-2 gap-4">
+			<div className="p-4" />
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 				<Suspense fallback={<PastWeekChartLoading />}>
 					<PastWeekChart waitlistID={params.waitlist} />
 				</Suspense>

@@ -1,12 +1,16 @@
 // import "./globals.css";
 import DashboardSidebar from "@/components/dashboard-sidebar";
 import { InviteProvider } from "@/components/context/invite-context";
+import MobileTopbar from "@/components/mobile-topbar";
 
-export default function DashboardLayout({ children, params }: { children: React.ReactNode, params: any }) {
+export default function DashboardLayout({ children, params }: { children: React.ReactNode; params: any }) {
 	return (
-		<InviteProvider>
-			<DashboardSidebar wtSegment={params.waitlist} />
-			{children}
-		</InviteProvider>
+		<div className="sm:flex">
+			<InviteProvider>
+				<MobileTopbar wtSegment={params.waitlist} />
+				<DashboardSidebar wtSegment={params.waitlist} />
+				{children}
+			</InviteProvider>
+		</div>
 	);
 }

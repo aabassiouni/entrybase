@@ -32,7 +32,7 @@ async function ActionsCardStats({ waitlistID }: { waitlistID: string }) {
 
 function ActionsCard({ waitlistID }: { waitlistID: string }) {
 	return (
-		<div className="col-span-2 h-full">
+		<div className="sm:col-span-2 h-32 sm:h-full  w-full">
 			<Carousel className="h-full">
 				<Card className="flex h-full w-full items-center px-4">
 					<CarouselPrevious className="relative" />
