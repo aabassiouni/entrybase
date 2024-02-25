@@ -1,15 +1,16 @@
 import HomeSidebar from "@/components/home-sidebar";
 import { MainLayout } from "@/components/layout";
-import { PageHeading } from "@/components/typography";
 import React from "react";
+import HomeMobileTopbar from "@/components/home-mobile-topbar";
 
 function HomeLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<HomeSidebar />
-			<MainLayout>
-				{children}
-			</MainLayout>
+			<HomeMobileTopbar />
+			<div className="sm:flex">
+				<HomeSidebar />
+				<MainLayout>{children}</MainLayout>
+			</div>
 		</>
 	);
 }

@@ -1,7 +1,7 @@
 // import "./globals.css";
 import DashboardSidebar from "@/components/dashboard-sidebar";
 import { InviteProvider } from "@/components/context/invite-context";
-import MobileTopbar from "@/components/mobile-topbar";
+import MobileTopbar from "@/components/dashboard-mobile-topbar";
 
 export default function DashboardLayout({ children, params }: { children: React.ReactNode; params: any }) {
 	return (

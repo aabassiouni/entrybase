@@ -1,21 +1,10 @@
 import Link from "next/link";
-import React from "react";
 import { Separator } from "./ui/separator";
 import TeamSelect from "./team-select";
-import { Button } from "./ui/button";
-import { CreditCard, Home, Settings, User, Users } from "lucide-react";
+import { CreditCard, User, Users } from "lucide-react";
 import SidebarUserButton from "./sidebar-user-button";
+import { SidebarItem } from "./sidebar-item";
 
-function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children: React.ReactNode; href: string }) {
-	return (
-		<Link href={href}>
-			<Button variant="ghost" className="h-10 w-full justify-start gap-2 p-4 text-base ">
-				<div className="rounded-md bg-primary p-1">{icon}</div>
-				{children}
-			</Button>
-		</Link>
-	);
-}
 function HomeSidebar() {
 	const iconProps = { className: "text-secondary", width: "1.125rem", height: "1.125rem" };
 
@@ -24,22 +13,22 @@ function HomeSidebar() {
 		{
 			name: "Account",
 			icon: <User {...iconProps} />,
-			href: `/dashboard/account`,
+			href: "/dashboard/account",
 		},
 		{
 			name: "Billing",
 			icon: <CreditCard {...iconProps} />,
-			href: `/dashboard/billing`,
+			href: "/dashboard/billing",
 		},
 		{
 			name: "Team",
 			icon: <Users {...iconProps} />,
-			href: `/dashboard/team`,
+			href: "/dashboard/team",
 		},
 	];
 
 	return (
-		<div className="flex min-h-screen w-72 shrink-0 flex-col items-center justify-between rounded-r-2xl border-r border-neutral-800  bg-primary/50 dark:bg-black">
+		<div className="hidden sm:flex min-h-screen w-72 shrink-0 flex-col items-center justify-between rounded-r-2xl border-r border-neutral-800  bg-primary/50 dark:bg-black">
 			<div className="w-full">
 				<div className="py-10">
 					<Link href="/dashboard">

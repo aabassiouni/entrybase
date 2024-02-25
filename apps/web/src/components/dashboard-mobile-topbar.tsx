@@ -1,23 +1,13 @@
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Archive, Home, LineChart, List, Mail, Menu, SendHorizonal, Settings } from "lucide-react";
 import TeamSelect from "./team-select";
-import Link from "next/link";
-import { Button } from "./ui/button";
 import WaitlistSelect from "./waitlist-select";
 import { Skeleton } from "./ui/skeleton";
 import { Separator } from "./ui/separator";
 import SidebarUserButton from "./sidebar-user-button";
-function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children: React.ReactNode; href: string }) {
-	return (
-		<Link href={href}>
-			<Button variant="ghost" className="h-10 w-full justify-start gap-2 p-4 text-base ">
-				<div className="rounded-md bg-primary p-1">{icon}</div>
-				{children}
-			</Button>
-		</Link>
-	);
-}
+import { SidebarItem } from "./sidebar-item";
+
 function WaitlistSelectLoading() {
 	return (
 		<>
