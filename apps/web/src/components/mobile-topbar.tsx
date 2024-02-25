@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import WaitlistSelect from "./waitlist-select";
 import { Skeleton } from "./ui/skeleton";
+import { Separator } from "./ui/separator";
+import SidebarUserButton from "./sidebar-user-button";
 function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children: React.ReactNode; href: string }) {
 	return (
 		<Link href={href}>
@@ -70,7 +72,7 @@ function MobileTopbar({ wtSegment }: { wtSegment: string }) {
 		},
 	];
 	return (
-		<div className="bg-black gap-2 items-center py-6 rounded-b-2xl border-b border-neutral-800 sm:hidden flex  px-4">
+		<div className="bg-black gap-2 items-center py-6 rounded-b-2xl border-b border-neutral-800 sm:!hidden flex px-4">
 			<Sheet>
 				<SheetTrigger>
 					<Menu />
@@ -97,11 +99,15 @@ function MobileTopbar({ wtSegment }: { wtSegment: string }) {
 							{item.name}
 						</SidebarItem>
 					))}
+					<div className="w-full">
+						<Separator className="my-4" />
+						<SidebarUserButton />
+					</div>
 				</SheetContent>
 			</Sheet>
 			<div className="flex justify-between w-full">
 				<h1 className="text-4xl font-black text-center">w</h1>
-				<TeamSelect className="p-0" />
+				<TeamSelect className="p-0 w-1/2" />
 			</div>
 		</div>
 	);
