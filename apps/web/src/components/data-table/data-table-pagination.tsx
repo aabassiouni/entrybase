@@ -7,21 +7,24 @@ import { useInvites } from "../context/invite-context";
 import { useRouter } from "next/navigation";
 import { Input } from "../ui/input";
 import ExportToCsvButton from "../export-csv-button";
+import { useTransition } from "react";
+import { Loader2 } from "lucide-react";
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>;
 }
 
 export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
-	const { invites, setInvites } = useInvites();
+	const { setInvites } = useInvites();
+	const [isPending, startTransition] = useTransition();
 	const router = useRouter();
 	return (
-		<div className="flex items-center justify-between px-2 py-2">
-			<div className="flex items-center gap-3">
-				<div className="text-muted-foreground flex-1 text-sm">
+		<div className="flex flex-col gap-4 items- justify-between px-2 py-2">
+			<div className="flex flex- items-center gap-3">
+				<div className="text-muted-foreground w-1/2 flex- text-sm">
 					{table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length}{" "}
 					row(s) selected.
 				</div>
-				<div className="">
+				<div className="w-1/2 sm:w-auto">
 					<Input
 						placeholder="Filter emails..."
 						value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -29,28 +32,35 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 						className="max-w-sm"
 					/>
 				</div>
+				<ExportToCsvButton className="hidden sm:block" />
+				{/* {table.getFilteredSelectedRowModel().rows.length > 0 && ( */}
+				<Button
+					onClick={() => {
+						setInvites(
+							table.getFilteredSelectedRowModel().rows.map((row) => {
+								//@ts-ignore
+								return { email: row.original?.email, id: row.original?.signupID };
+							}),
+						);
+						startTransition(() => {
+							router.push("invite");
+						});
+					}}
+					disabled={table.getFilteredSelectedRowModel().rows.length === 0}
+					className="h-8 px-3 py-2"
+				>
+					{isPending ? (
+						<Loader2 className="animate-spin" />
+					) : (
+						`Invite ${table.getFilteredSelectedRowModel().rows.length}`
+					)}
+				</Button>
+				{/* )} */}
 			</div>
-			<div className="flex items-center space-x-6 lg:space-x-8">
-				{table.getFilteredSelectedRowModel().rows.length > 0 && (
-					<Button
-						onClick={() => {
-							setInvites(
-								table.getFilteredSelectedRowModel().rows.map((row) => {
-									//@ts-ignore
-									return { email: row.original?.email, id: row.original?.signupID };
-								}),
-							);
-							router.push(`invite`);
-						}}
-						className="h-8 px-3 py-2"
-					>
-						Invite {table.getFilteredSelectedRowModel().rows.length}
-					</Button>
-				)}
-				<ExportToCsvButton />
+			<div className="flex items-center justify-between gap-6 lg:gap-8">
 				<DataTableViewOptions table={table} />
 				<div className="flex items-center space-x-2">
-					<p className="text-sm font-medium">Rows per page</p>
+					<p className="text-sm font-medium">Show</p>
 					<Select
 						value={`${table.getState().pagination.pageSize}`}
 						onValueChange={(value) => {
@@ -69,46 +79,48 @@ export function DataTablePagination<TData>({ table }: DataTablePaginationProps<T
 						</SelectContent>
 					</Select>
 				</div>
-				<div className="flex w-[100px] items-center justify-center text-sm font-medium">
-					Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-				</div>
-				<div className="flex items-center space-x-2">
-					<Button
-						variant="outline"
-						className="hidden h-8 w-8 p-0 lg:flex"
-						onClick={() => table.setPageIndex(0)}
-						disabled={!table.getCanPreviousPage()}
-					>
-						<span className="sr-only">Go to first page</span>
-						<DoubleArrowLeftIcon className="h-4 w-4" />
-					</Button>
-					<Button
-						variant="outline"
-						className="h-8 w-8 p-0"
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
-					>
-						<span className="sr-only">Go to previous page</span>
-						<ChevronLeftIcon className="h-4 w-4" />
-					</Button>
-					<Button
-						variant="outline"
-						className="h-8 w-8 p-0"
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
-					>
-						<span className="sr-only">Go to next page</span>
-						<ChevronRightIcon className="h-4 w-4" />
-					</Button>
-					<Button
-						variant="outline"
-						className="hidden h-8 w-8 p-0 lg:flex"
-						onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-						disabled={!table.getCanNextPage()}
-					>
-						<span className="sr-only">Go to last page</span>
-						<DoubleArrowRightIcon className="h-4 w-4" />
-					</Button>
+				<div className="flex">
+					<div className="flex w-[100px] items-center justify-center text-sm font-medium">
+						Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+					</div>
+					<div className="flex items-center space-x-2">
+						<Button
+							variant="outline"
+							className="hidden h-8 w-8 p-0 lg:flex"
+							onClick={() => table.setPageIndex(0)}
+							disabled={!table.getCanPreviousPage()}
+						>
+							<span className="sr-only">Go to first page</span>
+							<DoubleArrowLeftIcon className="h-4 w-4" />
+						</Button>
+						<Button
+							variant="outline"
+							className="h-8 w-8 p-0"
+							onClick={() => table.previousPage()}
+							disabled={!table.getCanPreviousPage()}
+						>
+							<span className="sr-only">Go to previous page</span>
+							<ChevronLeftIcon className="h-4 w-4" />
+						</Button>
+						<Button
+							variant="outline"
+							className="h-8 w-8 p-0"
+							onClick={() => table.nextPage()}
+							disabled={!table.getCanNextPage()}
+						>
+							<span className="sr-only">Go to next page</span>
+							<ChevronRightIcon className="h-4 w-4" />
+						</Button>
+						<Button
+							variant="outline"
+							className="hidden h-8 w-8 p-0 lg:flex"
+							onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+							disabled={!table.getCanNextPage()}
+						>
+							<span className="sr-only">Go to last page</span>
+							<DoubleArrowRightIcon className="h-4 w-4" />
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>

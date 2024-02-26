@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { useParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-function ExportToCsvButton() {
+function ExportToCsvButton({ className }: { className?: string }) {
 	const { waitlist } = useParams();
 	const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ function ExportToCsvButton() {
 	}
 
 	return (
-		<Button disabled={loading} onClick={handleClick} className="h-8 px-3 py-2">
+		<Button disabled={loading} onClick={handleClick} className={cn("h-8 px-3 py-2", className)}>
 			{loading ? <Loader2 className="animate-spin" /> : "Export"}
 		</Button>
 	);
