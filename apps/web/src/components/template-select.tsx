@@ -1,12 +1,11 @@
 "use client";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
 
 function TemplateSelect({ waitlistID }: { waitlistID: string }) {
-	const [isLoading, setIsLoading] = React.useState(false);
+	const [_isPending, startTransition] = useTransition();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const template = searchParams.get("template") ?? "invite";
@@ -14,16 +13,19 @@ function TemplateSelect({ waitlistID }: { waitlistID: string }) {
 	useLayoutEffect(() => {
 		router.prefetch(`/dashboard/${waitlistID}/email-preview?template=signup`);
 	}, [waitlistID, searchParams]);
+
 	return (
 		<div className="mx-auto flex gap-5 ">
 			<Badge
 				className={cn(
-					"cursor-pointer text-sm font-normal",
+					"cursor-pointer min-w-11  text-sm font-normal",
 					template === "invite" ? "border border-primary bg-primary dark:text-black" : "",
 				)}
 				variant={"outline"}
 				onClick={() => {
-					router.push(`/dashboard/${waitlistID}/email-preview?template=invite`);
+					startTransition(() => {
+						router.push(`/dashboard/${waitlistID}/email-preview?template=invite`);
+					});
 				}}
 			>
 				Invite Template
@@ -35,12 +37,12 @@ function TemplateSelect({ waitlistID }: { waitlistID: string }) {
 				)}
 				variant={"outline"}
 				onClick={() => {
-					setIsLoading(true);
-					router.push(`/dashboard/${waitlistID}/email-preview?template=signup`);
-					setIsLoading(false);
+					startTransition(() => {
+						router.push(`/dashboard/${waitlistID}/email-preview?template=signup`);
+					});
 				}}
 			>
-				{isLoading ? <Loader2 className="animate-spin" /> : "Signup Template"}
+				Signup Template
 			</Badge>
 		</div>
 	);
