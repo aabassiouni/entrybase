@@ -29,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					 */
 					routerConfig={extractRouterConfig(ourFileRouter)}
 				/>
-				<ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+				<ThemeProvider attribute="class" defaultTheme="dark" enableColorScheme disableTransitionOnChange>
 					<ClerkProvider>{children}</ClerkProvider>
 				</ThemeProvider>
 				<Toaster />
