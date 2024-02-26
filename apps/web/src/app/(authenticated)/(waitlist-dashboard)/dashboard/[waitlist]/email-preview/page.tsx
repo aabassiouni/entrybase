@@ -66,7 +66,7 @@ async function EmailPreviewPage({
 	async function clearEmailTemplate() {
 		"use server";
 		console.log("clearing template");
-		
+
 		if (!user!.id) return;
 
 		await setEmailTemplateForUser({
@@ -80,8 +80,8 @@ async function EmailPreviewPage({
 	}
 
 	return (
-		<div className="flex w-full">
-			<div className="flex w-1/2 flex-col p-10">
+		<div className="flex flex-wrap w-full">
+			<div className="flex sm:w-1/2 w-full flex-col p-4 sm:p-10">
 				<PageHeading className="gap-4">
 					Email Preview
 					{plan === "free" && (
@@ -112,7 +112,7 @@ async function EmailPreviewPage({
 					/>
 				</div>
 			</div>
-			<div className="w-1/2 py-8 pr-10">
+			<div className="sm:w-1/2 h-screen py-8 px-4 sm:pr-10">
 				<Suspense fallback={<Skeleton className="h-full" />}>
 					<EmailPreview template={template} waitlistID={params.waitlist} />
 				</Suspense>
