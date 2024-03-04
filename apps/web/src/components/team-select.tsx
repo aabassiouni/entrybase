@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useOrganization, useOrganizationList, useUser } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "./ui/skeleton";
+import { useOrganization, useOrganizationList } from "@clerk/nextjs";
+import { PlusCircledIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { Skeleton } from "./ui/skeleton";
 
 function TeamSelectLoading({ className }: { className?: string }) {
 	return (
@@ -74,11 +74,14 @@ function TeamSelect({ className }: { className?: string }) {
 						);
 					})}
 					<Link href={"/dashboard/new"}>
-						<button className="relative flex w-full items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-neutral-800 focus:bg-neutral-100 focus:text-neutral-900 dark:focus:bg-neutral-800 dark:focus:text-neutral-50">
+						<button
+							type="button"
+							className="relative flex w-full items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-neutral-800 focus:bg-neutral-100 focus:text-neutral-900 dark:focus:bg-neutral-800 dark:focus:text-neutral-50"
+						>
 							<span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
 								<PlusCircledIcon className="h-4 w-4" />
 							</span>
-							Create Waitlist
+							Create Workspace
 						</button>
 					</Link>
 				</SelectContent>
