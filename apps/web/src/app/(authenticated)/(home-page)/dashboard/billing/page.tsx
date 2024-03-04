@@ -56,7 +56,7 @@ async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 			<CardHeader>
 				<CardTitle>Payment Method</CardTitle>
 			</CardHeader>
-			<CardContent className="flex justify-between items-center gap-8">
+			<CardContent className="flex flex-col md:flex-row justify-between items-center gap-8">
 				<Suspense fallback={<Skeleton className="h-10 w-96" />}>
 					{paymentMethod ? (
 						<div className="flex items-center gap-4">
@@ -101,7 +101,7 @@ async function BillingSettingsPage() {
 					<CardHeader>
 						<CardTitle>Workspace</CardTitle>
 					</CardHeader>
-					<CardContent className="flex justify-between">
+					<CardContent className="flex flex-col md:flex-row justify-between">
 						<div>
 							<p className="text-lg font-">
 								You are currently on the {workspace.plan === "free" ? "Free" : "Pro"} plan
@@ -111,7 +111,7 @@ async function BillingSettingsPage() {
 					</CardContent>
 				</div>
 				<Separator />
-				<div className="flex">
+				<div className="flex flex-col md:flex-row">
 					<div className="flex-1">
 						<CardHeader>
 							<CardTitle>Usage</CardTitle>
@@ -135,7 +135,7 @@ async function BillingSettingsPage() {
 				<CardHeader>
 					<CardTitle>Plan</CardTitle>
 				</CardHeader>
-				<CardContent className="flex justify-center gap-10">
+				<CardContent className=" flex flex-col md:flex-row justify-center gap-10">
 					{plans.map((plan, index) => {
 						return <PricingCard plan={plan} key={index} activePlan={workspace.plan} />;
 					})}
