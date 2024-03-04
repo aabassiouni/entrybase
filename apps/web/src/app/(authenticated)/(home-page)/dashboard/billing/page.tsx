@@ -1,45 +1,47 @@
-import EmailSwitch from "@/components/email-switch";
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import React, { Suspense } from "react";
-import { stripe } from "@/lib/stripe";
-import Link from "next/link";
-import { Progress } from "@/components/ui/progress";
-import { checkWorkspace } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import type { Workspace } from "@waitlister/db";
-import Stripe from "stripe";
 import { PageHeading } from "@/components/typography";
-import { ArrowLeftCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
-import ChangePlanButton from "@/components/change-plan-button";
+import { checkWorkspace } from "@/lib/auth";
+import { stripe } from "@/lib/stripe";
 import { currentUser } from "@clerk/nextjs";
+import type { Workspace } from "@waitlister/db";
+import { ArrowLeftCircle, Check } from "lucide-react";
 import { headers } from "next/headers";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import React, { Suspense } from "react";
+import Stripe from "stripe";
 
 const plans = [
 	{
 		name: "free",
 		displayName: "Free",
 		price: 0,
-		signups: 1000,
-		invites: 100,
-		waitlists: 1,
+		description: "For indie builders and starters",
+		features: ["Unlimited Signups", "5 Waitlists", "100 Invites"],
 	},
 	{
 		name: "pro",
 		displayName: "Pro",
 		price: 10,
-		signups: 10000,
-		invites: 1000,
-		waitlists: 10,
+		features: [
+			"Unlimited Signups",
+			"Unlimited Waitlists",
+			"3000 invites included, $0.01 per invite after",
+			"Custom Email templates",
+			"Team members",
+		],
 	},
 ];
+
 async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 	let paymentMethod: Stripe.PaymentMethod | undefined = undefined;
 
 	if (workspace.stripeCustomerID) {
-		const [customer, paymentMethods] = await Promise.all([
+		const [_customer, paymentMethods] = await Promise.all([
 			stripe.customers.retrieve(workspace.stripeCustomerID),
 			stripe.customers.listPaymentMethods(workspace.stripeCustomerID),
 		]);
@@ -50,26 +52,29 @@ async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 	}
 
 	return (
-		<>
+		<div className="flex-1">
 			<CardHeader>
 				<CardTitle>Payment Method</CardTitle>
 			</CardHeader>
-			<CardContent className="flex items-center gap-8">
+			<CardContent className="flex justify-between items-center gap-8">
 				<Suspense fallback={<Skeleton className="h-10 w-96" />}>
 					{paymentMethod ? (
 						<div className="flex items-center gap-4">
-							{paymentMethod.card?.brand}
-							<p className="text-center text-neutral-500">•••• •••• •••• {paymentMethod.card?.last4}</p>
+							<span className="text-neutral-500">•••• •••• •••• {paymentMethod.card?.last4}</span>
 						</div>
 					) : (
 						<p className="text-neutral-500">No payment method added</p>
 					)}
 					<Link href={"billing/stripe"}>
-						{paymentMethod ? <Button>Change Payment Method</Button> : <Button>Add Payment Method</Button>}
+						{paymentMethod ? (
+							<Button className="dark:bg-light">Change Payment Method</Button>
+						) : (
+							<Button>Add Payment Method</Button>
+						)}
 					</Link>
 				</Suspense>
 			</CardContent>
-		</>
+		</div>
 	);
 }
 
@@ -78,14 +83,6 @@ async function BillingSettingsPage() {
 	if (!workspace) {
 		return redirect("/dashboard");
 	}
-	const products = (await stripe.products.list({ active: true, expand: ["data.default_price"] }).then((res) => {
-		return res.data.sort((a, b) => {
-			//weird stripe ts things
-			// @ts-ignore
-			return a.default_price?.unit_amount - b?.default_price?.unit_amount;
-		});
-	})) as Stripe.Product[];
-
 	return (
 		<>
 			<PageHeading>
@@ -94,40 +91,53 @@ async function BillingSettingsPage() {
 				</Link>
 				Billing
 			</PageHeading>
-			<Card className="h-full">
+			<Card className="h-fit">
 				<CardHeader className="pb-4">
 					<CardTitle>Billing Settings</CardTitle>
 					<CardDescription>Change your billing settings</CardDescription>
 				</CardHeader>
 				<Separator />
-				{/* <CardHeader>
-					<CardTitle>Usage</CardTitle>
-				</CardHeader>
-				<CardContent className="">
-					<div className="w-1/3 space-y-4">
-						<div className="flex justify-between">
-							<h1 className="text-lg font-medium">Signup emails</h1>
-							<p className="">500/1000</p>
+				<div>
+					<CardHeader>
+						<CardTitle>Workspace</CardTitle>
+					</CardHeader>
+					<CardContent className="flex justify-between">
+						<div>
+							<p className="text-lg font-">
+								You are currently on the {workspace.plan === "free" ? "Free" : "Pro"} plan
+							</p>
 						</div>
-						<Progress className="w-" value={50} />
-					</div>
-				</CardContent> */}
+						<p className="text-neutral-500">{workspace.workspaceID}</p>
+					</CardContent>
+				</div>
 				<Separator />
-				<PaymentMethod workspace={workspace} />
+				<div className="flex">
+					<div className="flex-1">
+						<CardHeader>
+							<CardTitle>Usage</CardTitle>
+						</CardHeader>
+						<CardContent className="space-y-4">
+							<div className="flex items-center justify-between">
+								<h1 className="text-lg font-medium">Waitlists</h1>
+								<p>2/5</p>
+							</div>
+							<Progress value={(2/5)*100} />
+							<div className="flex items-center justify-between">
+								<h1 className="text-lg font-medium">Invite emails sent</h1>
+								<p>500/1000</p>
+							</div>
+							<Progress value={50} />
+						</CardContent>
+					</div>
+					<PaymentMethod workspace={workspace} />
+				</div>
 				<Separator />
 				<CardHeader>
 					<CardTitle>Plan</CardTitle>
 				</CardHeader>
 				<CardContent className="flex justify-center gap-10">
 					{plans.map((plan, index) => {
-						return (
-							<PricingCard
-								workspaceID={workspace.workspaceID}
-								plan={plan}
-								key={index}
-								activePlan={workspace.plan}
-							/>
-						);
+						return <PricingCard plan={plan} key={index} activePlan={workspace.plan} />;
 					})}
 				</CardContent>
 			</Card>
@@ -138,13 +148,9 @@ async function BillingSettingsPage() {
 function PricingCard({
 	activePlan,
 	plan,
-	// product,
-	workspaceID,
 }: {
 	activePlan: string;
 	plan: any;
-	// product: Stripe.Product;
-	workspaceID: string;
 }) {
 	async function changePlan() {
 		"use server";
@@ -159,18 +165,9 @@ function PricingCard({
 		console.log("ws: ", ws?.stripeCustomerID!);
 		const session = await stripe.checkout.sessions.create({
 			client_reference_id: user?.id,
-			customer_email: user?.emailAddresses.at(0)?.emailAddress,
 			billing_address_collection: "auto",
 			mode: "subscription",
 			line_items: [
-				// {
-				// 	price: process.env.STRIPE_PRO_PLAN_FIXED,
-				// 	quantity: 1,
-				// },
-				// {
-				// 	price: process.env.STRIPE_PRO_PLAN_TIERED,
-				// 	quantity: 1,
-				// },
 				{
 					price: process.env.STRIPE_PRO_PLAN,
 					quantity: 1,
@@ -180,7 +177,6 @@ function PricingCard({
 			success_url: successUrl,
 			cancel_url: cancelUrl,
 			currency: "USD",
-			// customer_creation: "always",
 		});
 
 		if (!session.url) {
@@ -189,45 +185,37 @@ function PricingCard({
 		redirect(session.url);
 	}
 	return (
-		<Card className="flex flex-col ">
+		<Card className="flex flex-col max-w-xs ">
 			<CardHeader className="w-full text-left">
-				<CardTitle className="">{plan.displayName}</CardTitle>
+				<CardTitle className="text-[#D3FDEE]">{plan.displayName}</CardTitle>
 				<CardDescription className="pb-2">Perfect for indie builders and starters</CardDescription>
-				<div className="space-x-2 text-white">
-					{/* @ts-ignore */}
-					<span className="text-5xl text-primary">${plan.price}</span>
+				<div className="flex items-end pb-2 text-white">
+					<span className="self-start text-lg text-primary">$</span>
+					<span className="text-5xl font-medium text-primary">{plan.price}</span>
 					<span className="text-base font-extralight text-neutral-400">/mo</span>
 				</div>
-			</CardHeader>
-			<Separator />
-			<CardContent className="flex-1">
-				<ul className="pt-4">
-					<li className="inline-flex w-full gap-2">
-						<span>•</span>
-						<p className="text-base font-light text-white">1000 signups</p>
-					</li>
-					<li className="inline-flex w-full gap-2">
-						<span>•</span>
-
-						<p className="text-base font-light text-white">100 invites</p>
-					</li>
-					<li className="inline-flex w-full gap-2">
-						<span>•</span>
-						<p className="text-base font-light text-white">1 waitlist</p>
-					</li>
-				</ul>
-			</CardContent>
-			<CardFooter>
 				{activePlan !== plan.name ? (
 					<form className="w-full" action={changePlan}>
-						<Button className="w-full">Change Plan</Button>
+						<Button className="dark:bg-[#D3FDEE] w-full">Change Plan</Button>
 					</form>
 				) : (
-					<Button disabled className="w-full">
+					<Button disabled className="w-full dark:bg-[#D3FDEE]">
 						You are on this plan
 					</Button>
 				)}
-			</CardFooter>
+			</CardHeader>
+			<Separator />
+			<CardContent className="flex-1 pt-4">
+				{plan.features.map((feature: string, index: number) => {
+					return (
+						<div key={index} className="flex items-center gap-2">
+							<Check className="text-primary" size={16} />
+							<p className="text-base font-light text-[#D3FDEE]">{feature}</p>
+						</div>
+					);
+				})}
+			</CardContent>
+			<CardFooter />
 		</Card>
 	);
 }

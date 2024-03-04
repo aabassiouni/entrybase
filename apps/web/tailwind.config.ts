@@ -15,6 +15,7 @@ export default withUt({
 			colors: {
 				primary: "#4BE7AE",
 				secondary: "#0F6C4A",
+				light: "#D3FDEE",
 				text: "#D3FDEE",
 			},
 			keyframes: {

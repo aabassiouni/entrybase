@@ -7,7 +7,7 @@ function HomeLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
 			<HomeMobileTopbar />
-			<div className="sm:flex">
+			<div className="sm:flex h-screen">
 				<HomeSidebar />
 				<MainLayout>{children}</MainLayout>
 			</div>
