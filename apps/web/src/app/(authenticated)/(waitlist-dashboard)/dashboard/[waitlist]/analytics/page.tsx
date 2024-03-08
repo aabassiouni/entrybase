@@ -6,7 +6,6 @@ import { EntryResponse, SearchParams } from "@/types";
 import { getDayChartLabelsAndValues, getDayRangeChartLabelsAndValues } from "@/lib/db";
 import TimeframeSelect from "@/components/timeframe-select";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { currentUser } from "@clerk/nextjs";
 import { MainLayout } from "@/components/layout";
 import { PageHeading } from "@/components/typography";
 import { checkWorkspace } from "@/lib/auth";
@@ -15,8 +14,8 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 	const workspace = await checkWorkspace(params.waitlist);
 
 	let signups: EntryResponse;
-	let timeframe = searchParams?.timeframe ?? "today";
-	let from, to;
+	const timeframe = searchParams?.timeframe ?? "today";
+	let from: Date, to: Date;
 
 	//this is just here to make the url look nice
 	switch (timeframe) {
@@ -68,6 +67,7 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 						data={signups.entries}
 						margin={{
 							right: 30,
+							left: -30,
 						}}
 					/>
 				</CardContent>
