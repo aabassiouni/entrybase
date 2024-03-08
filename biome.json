@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
+	"$schema": "https://biomejs.dev/schemas/1.6.0/schema.json",
 	"organizeImports": {
 		"enabled": true
 	},
@@ -24,7 +24,8 @@
 				"noDangerouslySetInnerHtml": "off"
 			},
 			"style": {
-				"noNonNullAssertion": "off"
+				"noNonNullAssertion": "off",
+				"useSingleVarDeclarator": "off"
 			},
 			"performance": {
 				"noDelete": "off"
@@ -35,6 +36,9 @@
 			},
 			"complexity": {
 				"noForEach": "off"
+			},
+			"nursery":{
+				"useSortedClasses": "warn"
 			}
 		},
 		"ignore": [
