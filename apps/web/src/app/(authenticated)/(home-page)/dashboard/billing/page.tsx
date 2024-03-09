@@ -6,14 +6,12 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { checkWorkspace } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
-import { currentUser } from "@clerk/nextjs";
 import type { Workspace } from "@waitlister/db";
 import { ArrowLeftCircle, Check } from "lucide-react";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
-import Stripe from "stripe";
+import type Stripe from "stripe";
 
 const plans = [
 	{
@@ -56,7 +54,7 @@ async function PaymentMethod({ workspace }: { workspace: Workspace }) {
 			<CardHeader>
 				<CardTitle>Payment Method</CardTitle>
 			</CardHeader>
-			<CardContent className="flex flex-col md:flex-row justify-between items-center gap-8">
+			<CardContent className="flex flex-col items-center justify-between gap-8 md:flex-row">
 				<Suspense fallback={<Skeleton className="h-10 w-96" />}>
 					{paymentMethod ? (
 						<div className="flex items-center gap-4">
@@ -101,9 +99,9 @@ async function BillingSettingsPage() {
 					<CardHeader>
 						<CardTitle>Workspace</CardTitle>
 					</CardHeader>
-					<CardContent className="flex flex-col md:flex-row justify-between">
+					<CardContent className="flex flex-col justify-between md:flex-row">
 						<div>
-							<p className="text-lg font-">
+							<p className="font- text-lg">
 								You are currently on the {workspace.plan === "free" ? "Free" : "Pro"} plan
 							</p>
 						</div>
@@ -118,12 +116,12 @@ async function BillingSettingsPage() {
 						</CardHeader>
 						<CardContent className="space-y-4">
 							<div className="flex items-center justify-between">
-								<h1 className="text-lg font-medium">Waitlists</h1>
+								<h1 className="font-medium text-lg">Waitlists</h1>
 								<p>2/5</p>
 							</div>
 							<Progress value={(2/5)*100} />
 							<div className="flex items-center justify-between">
-								<h1 className="text-lg font-medium">Invite emails sent</h1>
+								<h1 className="font-medium text-lg">Invite emails sent</h1>
 								<p>500/1000</p>
 							</div>
 							<Progress value={50} />
@@ -135,7 +133,7 @@ async function BillingSettingsPage() {
 				<CardHeader>
 					<CardTitle>Plan</CardTitle>
 				</CardHeader>
-				<CardContent className=" flex flex-col md:flex-row justify-center gap-10">
+				<CardContent className="flex flex-col justify-center gap-10 md:flex-row">
 					{plans.map((plan, index) => {
 						return <PricingCard plan={plan} key={index} activePlan={workspace.plan} />;
 					})}
@@ -152,52 +150,20 @@ function PricingCard({
 	activePlan: string;
 	plan: any;
 }) {
-	async function changePlan() {
-		"use server";
-		const user = await currentUser();
-
-		const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
-		const successUrl = `${baseUrl}/dashboard/billing/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
-
-		const cancelUrl = headers().get("referer") ?? `${baseUrl}/dashboard/billing`;
-		const ws = await checkWorkspace();
-
-		console.log("ws: ", ws?.stripeCustomerID!);
-		const session = await stripe.checkout.sessions.create({
-			client_reference_id: user?.id,
-			billing_address_collection: "auto",
-			mode: "subscription",
-			line_items: [
-				{
-					price: process.env.STRIPE_PRO_PLAN,
-					quantity: 1,
-				},
-			],
-			customer: ws?.stripeCustomerID ?? undefined,
-			success_url: successUrl,
-			cancel_url: cancelUrl,
-			currency: "USD",
-		});
-
-		if (!session.url) {
-			redirect("/dashboard/billing");
-		}
-		redirect(session.url);
-	}
 	return (
-		<Card className="flex flex-col max-w-xs ">
+		<Card className="flex max-w-xs flex-col">
 			<CardHeader className="w-full text-left">
 				<CardTitle className="text-[#D3FDEE]">{plan.displayName}</CardTitle>
 				<CardDescription className="pb-2">Perfect for indie builders and starters</CardDescription>
 				<div className="flex items-end pb-2 text-white">
 					<span className="self-start text-lg text-primary">$</span>
-					<span className="text-5xl font-medium text-primary">{plan.price}</span>
-					<span className="text-base font-extralight text-neutral-400">/mo</span>
+					<span className="font-medium text-5xl text-primary">{plan.price}</span>
+					<span className="font-extralight text-base text-neutral-400">/mo</span>
 				</div>
 				{activePlan !== plan.name ? (
-					<form className="w-full" action={changePlan}>
-						<Button className="dark:bg-[#D3FDEE] w-full">Change Plan</Button>
-					</form>
+					<Link className="w-full" href={'/dashboard/new'}>
+						<Button className="w-full dark:bg-[#D3FDEE]">Change Plan</Button>
+					</Link>
 				) : (
 					<Button disabled className="w-full dark:bg-[#D3FDEE]">
 						You are on this plan
@@ -210,7 +176,7 @@ function PricingCard({
 					return (
 						<div key={index} className="flex items-center gap-2">
 							<Check className="text-primary" size={16} />
-							<p className="text-base font-light text-[#D3FDEE]">{feature}</p>
+							<p className="font-light text-[#D3FDEE] text-base">{feature}</p>
 						</div>
 					);
 				})}
