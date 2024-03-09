@@ -81,6 +81,17 @@ async function BillingSettingsPage() {
 	if (!workspace) {
 		return redirect("/dashboard");
 	}
+	const subId = workspace.stripeSubscriptionID;
+	if (!subId) {
+		return redirect("/dashboard");
+	}
+	const usageAmount = await stripe.invoices
+		.retrieveUpcoming({
+			subscription: subId,
+		})
+		.then((invoice) => {
+			return invoice.lines.data[0].quantity;
+		});
 	return (
 		<>
 			<PageHeading>
@@ -119,12 +130,12 @@ async function BillingSettingsPage() {
 								<h1 className="font-medium text-lg">Waitlists</h1>
 								<p>2/5</p>
 							</div>
-							<Progress value={(2/5)*100} />
+							<Progress value={(2 / 5) * 100} />
 							<div className="flex items-center justify-between">
 								<h1 className="font-medium text-lg">Invite emails sent</h1>
-								<p>500/1000</p>
+								<p>{`${usageAmount}/1000`}</p>
 							</div>
-							<Progress value={50} />
+							<Progress value={((usageAmount ?? 0 )/ 1000) * 100} />
 						</CardContent>
 					</div>
 					<PaymentMethod workspace={workspace} />
@@ -161,7 +172,7 @@ function PricingCard({
 					<span className="font-extralight text-base text-neutral-400">/mo</span>
 				</div>
 				{activePlan !== plan.name ? (
-					<Link className="w-full" href={'/dashboard/new'}>
+					<Link className="w-full" href={"/dashboard/new"}>
 						<Button className="w-full dark:bg-[#D3FDEE]">Change Plan</Button>
 					</Link>
 				) : (

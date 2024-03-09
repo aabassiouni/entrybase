@@ -1,8 +1,5 @@
-import { db } from "@/lib/db/db";
-import { workspaces } from "@waitlister/db";
 import { stripe } from "@/lib/stripe";
-import { auth, currentUser } from "@clerk/nextjs";
-import { eq } from "drizzle-orm";
+import { currentUser } from "@clerk/nextjs";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type { NextRequest } from "next/server";
@@ -18,21 +15,18 @@ export async function POST(request: NextRequest) {
 		return redirect("/signin");
 	}
 
-
-	// If they don't have a subscription, we send them to the checkout
-	// and the checkout will redirect them to the success page, which will add the subscription to the user table
-	const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "http://localhost:3000";;
-
-	// do not use `new URL(...).searchParams` here, because it will escape the curly braces and stripe will not replace them with the session id
+	const baseUrl = process.env.BASE_URL ? `https://${process.env.BASE_URL}` : "http://localhost:3000";
 	const successUrl = `${baseUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
-
 	const cancelUrl = headers().get("referer") ?? `${baseUrl}/dashboard/billing`;
 
 	const session = await stripe.checkout.sessions.create({
 		client_reference_id: user?.id,
 		line_items: [
 			{
-				price: process.env.STRIPE_PRO_PLAN,
+				price: process.env.STRIPE_PRO_PLAN_USAGE,
+			},
+			{
+				price:process.env.STRIPE_PRO_PLAN_FLAT,
 				quantity: 1,
 			},
 		],
@@ -48,8 +42,8 @@ export async function POST(request: NextRequest) {
 		},
 	});
 
-    if (!session.url) {
-        return redirect("/dashboard/billing");
-    }
+	if (!session.url) {
+		return redirect("/dashboard/billing");
+	}
 	return redirect(session.url);
 }

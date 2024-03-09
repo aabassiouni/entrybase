@@ -1,7 +1,8 @@
 import { checkWorkspace } from "@/lib/auth";
 import { createInvite, getEmailTemplateForUser, getInvitesListByCount, getWaitlistWebsiteDetails } from "@/lib/db";
+import { stripe } from "@/lib/stripe";
 import { auth } from "@clerk/nextjs";
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -46,8 +47,6 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 		return NextResponse.json({ code: "NO_WEBSITE_DETAILS", message: "website details not found" }, { status: 400 });
 	}
 
-	console.log("Email values:", subject, bodyText, header);
-
 	switch (type) {
 		case "count":
 			return await handleCount();
@@ -57,9 +56,6 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 
 	async function handleCount() {
 		const emailsList = await getInvitesListByCount(selectionMethod, inviteCount, waitlistID);
-		for (const email of emailsList) {
-			console.log("sending email to", email.email);
-		}
 
 		const resendResponse = { data: { data: [{ id: "1" }, { id: "2" }] }, error: null };
 		// const resendResponse = await resend.batch.send(
@@ -87,6 +83,19 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 			console.log("Error sending emails:", resendResponse.error);
 			return NextResponse.json({ message: "error" });
 		}
+
+		const subId = workspace?.stripeSubscriptionID;
+		if (!subId) {
+			return NextResponse.json({ code: "NO_SUBSCRIPTION_FOUND", message: "error" });
+		}
+		const sub = await stripe.subscriptions.retrieve(subId);
+
+		console.log("recording usage for", sub.items.data[0].id);
+		await stripe.subscriptionItems.createUsageRecord(sub.items.data[0].id, {
+			quantity: inviteCount,
+			timestamp: "now",
+			action: "increment",
+		});
 
 		return NextResponse.json({ message: "success" });
 	}
@@ -123,6 +132,19 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 			console.log("Error sending emails:", resendResponse.error);
 			return NextResponse.json({ message: "error" });
 		}
+
+		const subId = workspace?.stripeSubscriptionID;
+		if (!subId) {
+			return NextResponse.json({ code: "NO_SUBSCRIPTION_FOUND", message: "error" });
+		}
+		const sub = await stripe.subscriptions.retrieve(subId);
+
+		console.log("recording usage for", sub.items.data[0].id);
+		await stripe.subscriptionItems.createUsageRecord(sub.items.data[0].id, {
+			quantity: inviteCount,
+			timestamp: "now",
+			action: "increment",
+		});
 
 		return NextResponse.json({ message: "success" });
 	}
