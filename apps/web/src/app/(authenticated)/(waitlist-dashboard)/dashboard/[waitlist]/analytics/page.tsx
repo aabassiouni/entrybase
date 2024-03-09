@@ -1,14 +1,14 @@
-import React from "react";
 import Chart from "@/components/Chart";
+import { MainLayout } from "@/components/layout";
+import TimeframeSelect from "@/components/timeframe-select";
+import { PageHeading } from "@/components/typography";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { checkWorkspace } from "@/lib/auth";
+import { getDayChartLabelsAndValues, getDayRangeChartLabelsAndValues } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 import { EntryResponse, SearchParams } from "@/types";
-import { getDayChartLabelsAndValues, getDayRangeChartLabelsAndValues } from "@/lib/db";
-import TimeframeSelect from "@/components/timeframe-select";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { MainLayout } from "@/components/layout";
-import { PageHeading } from "@/components/typography";
-import { checkWorkspace } from "@/lib/auth";
+import React from "react";
 
 async function AnalyticsPage({ params, searchParams }: { params: { waitlist: string }; searchParams: SearchParams }) {
 	const workspace = await checkWorkspace(params.waitlist);
@@ -16,7 +16,6 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 	let signups: EntryResponse;
 	const timeframe = searchParams?.timeframe ?? "today";
 	let from: Date, to: Date;
-
 	//this is just here to make the url look nice
 	switch (timeframe) {
 		case "today":
@@ -41,6 +40,12 @@ async function AnalyticsPage({ params, searchParams }: { params: { waitlist: str
 			from = lastMonth;
 			to = new Date();
 			break;
+		default: {
+			const defaultDate = new Date();
+			defaultDate.setDate(defaultDate.getDate() - 6);
+			from = defaultDate;
+			to = new Date();
+		}
 	}
 
 	if (from === undefined || to === undefined) {

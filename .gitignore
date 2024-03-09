@@ -1,5 +1,6 @@
 node_modules
 
+.turbo/
 api-node/
 /trash
 bruno/
