@@ -1,4 +1,5 @@
-import { createWorkspaceForTenant, getWorkspaceForTenant } from "@/lib/db";
+import { createPersonalWorkspaceForTenant, getWorkspaceForTenant } from "@/lib/db";
+import { stripe } from "@/lib/stripe";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -13,7 +14,9 @@ async function SetupPage() {
 	console.log(workspace);
 
 	if (!workspace) {
-		const workspace = await createWorkspaceForTenant(user.id);
+		const workspace = await createPersonalWorkspaceForTenant({
+			tenantID: user.id,
+		});
 		console.log(workspace);
 		return redirect("/dashboard");
 	}

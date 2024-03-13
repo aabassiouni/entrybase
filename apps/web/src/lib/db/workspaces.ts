@@ -1,8 +1,8 @@
 import { db } from "./db";
 
-import { eq, and, isNull } from "drizzle-orm";
-import { workspaces, type Workspace } from "@waitlister/db";
+import { type Workspace, workspaces } from "@waitlister/db";
 import { newId } from "@waitlister/id";
+import { and, eq, isNull } from "drizzle-orm";
 
 export async function getWorkspaceForTenant(tenantID: string) {
 	const workspace = await db.query.workspaces.findFirst({
@@ -11,7 +11,7 @@ export async function getWorkspaceForTenant(tenantID: string) {
 	return workspace;
 }
 
-export async function createWorkspaceForTenant(tenantID: string) {
+export async function createPersonalWorkspaceForTenant({ tenantID }: { tenantID: string }) {
 	const workspace = await db.insert(workspaces).values({
 		workspaceID: newId("ws"),
 		workspaceName: "Personal",
@@ -21,7 +21,6 @@ export async function createWorkspaceForTenant(tenantID: string) {
 
 	return workspace;
 }
-
 export async function updateStripeDetailsForWorkspace(
 	workspaceID: string,
 	stripeCustomerID: string,
@@ -62,7 +61,7 @@ export async function updateWorkspacePlan(workspaceID: string, plan: string) {
 
 export async function createProWorkspace(workspace: Workspace) {
 	const workspaceRes = await db.insert(workspaces).values(workspace);
-	
+
 	return workspaceRes;
 }
 
