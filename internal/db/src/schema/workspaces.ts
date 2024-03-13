@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgEnum, pgTable, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, pgEnum, pgTable, timestamp, varchar,  } from "drizzle-orm/pg-core";
 import { waitlists } from "./waitlists";
 
 export const planEnum = pgEnum("plan", ["free", "pro"]);
@@ -13,6 +13,7 @@ export const workspaces = pgTable("workspaces", {
 	stripeSubscriptionID: varchar("stripe_subscription_id", { length: 256 }),
 	createdAt: timestamp("created_at").notNull().defaultNow(),
 	deletedAt: timestamp("deleted_at"),
+	remainingInvites: integer("remaining_invites").notNull().default(1000),
 });
 
 export const workspacesRelations = relations(workspaces, ({ one, many }) => ({
