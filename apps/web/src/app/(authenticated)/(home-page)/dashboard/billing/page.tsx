@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { checkWorkspace } from "@/lib/auth";
+import { getWaitlistsForUser } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 import type { Workspace } from "@waitlister/db";
 import { ArrowLeftCircle, Check } from "lucide-react";
@@ -81,17 +82,12 @@ async function BillingSettingsPage() {
 	if (!workspace) {
 		return redirect("/dashboard");
 	}
-	const subId = workspace.stripeSubscriptionID;
-	if (!subId) {
-		return redirect("/dashboard");
-	}
-	const usageAmount = await stripe.invoices
-		.retrieveUpcoming({
-			subscription: subId,
-		})
-		.then((invoice) => {
-			return invoice.lines.data[0].quantity;
-		});
+
+	const usageAmount = (workspace.remainingInvites - 1000) * -1;
+	const limit = workspace.plan === "free" ? 1000 : 3000;
+	const waitlistsUsed = await getWaitlistsForUser(workspace.workspaceID).then((waitlists) => waitlists.length);
+	const waitlistsLimit = workspace.plan === "free" ? 5 : undefined;
+
 	return (
 		<>
 			<PageHeading>
@@ -128,14 +124,17 @@ async function BillingSettingsPage() {
 						<CardContent className="space-y-4">
 							<div className="flex items-center justify-between">
 								<h1 className="font-medium text-lg">Waitlists</h1>
-								<p>2/5</p>
+								<p>
+									{`${waitlistsUsed}/`}
+									{waitlistsLimit ?? <span>&#8734;</span>}
+								</p>
 							</div>
-							<Progress value={(2 / 5) * 100} />
+							<Progress value={(waitlistsUsed / 5) * 100} />
 							<div className="flex items-center justify-between">
 								<h1 className="font-medium text-lg">Invite emails sent</h1>
 								<p>{`${usageAmount}/1000`}</p>
 							</div>
-							<Progress value={((usageAmount ?? 0 )/ 1000) * 100} />
+							<Progress value={((usageAmount ?? 0) / limit) * 100} />
 						</CardContent>
 					</div>
 					<PaymentMethod workspace={workspace} />

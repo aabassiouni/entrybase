@@ -21,6 +21,16 @@ export async function createPersonalWorkspaceForTenant({ tenantID }: { tenantID:
 
 	return workspace;
 }
+
+export async function updateRemainingInvitesForWorkspace({
+	workspaceID,
+	remainingInvites,
+}: { workspaceID: string; remainingInvites: number }) {
+	const workspace = await db.update(workspaces).set({ remainingInvites }).where(eq(workspaces.workspaceID, workspaceID));
+
+	return workspace;
+}
+
 export async function updateStripeDetailsForWorkspace(
 	workspaceID: string,
 	stripeCustomerID: string,

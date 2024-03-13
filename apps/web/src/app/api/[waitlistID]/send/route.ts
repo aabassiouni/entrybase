@@ -1,5 +1,11 @@
 import { checkWorkspace } from "@/lib/auth";
-import { createInvite, getEmailTemplateForUser, getInvitesListByCount, getWaitlistWebsiteDetails } from "@/lib/db";
+import {
+	createInvite,
+	getEmailTemplateForUser,
+	getInvitesListByCount,
+	getWaitlistWebsiteDetails,
+	updateRemainingInvitesForWorkspace,
+} from "@/lib/db";
 import { stripe } from "@/lib/stripe";
 import { auth } from "@clerk/nextjs";
 import { type NextRequest, NextResponse } from "next/server";
@@ -55,6 +61,10 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 	}
 
 	async function handleCount() {
+		if (!workspace) {
+			return NextResponse.redirect("/dashboard");
+		}
+
 		const emailsList = await getInvitesListByCount(selectionMethod, inviteCount, waitlistID);
 
 		const resendResponse = { data: { data: [{ id: "1" }, { id: "2" }] }, error: null };
@@ -84,23 +94,33 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 			return NextResponse.json({ message: "error" });
 		}
 
-		const subId = workspace?.stripeSubscriptionID;
-		if (!subId) {
-			return NextResponse.json({ code: "NO_SUBSCRIPTION_FOUND", message: "error" });
-		}
-		const sub = await stripe.subscriptions.retrieve(subId);
-
-		console.log("recording usage for", sub.items.data[0].id);
-		await stripe.subscriptionItems.createUsageRecord(sub.items.data[0].id, {
-			quantity: inviteCount,
-			timestamp: "now",
-			action: "increment",
+		await updateRemainingInvitesForWorkspace({
+			workspaceID: workspace.workspaceID,
+			remainingInvites: workspace.remainingInvites - inviteCount,
 		});
+
+		if (workspace?.stripeSubscriptionID) {
+			const subId = workspace?.stripeSubscriptionID;
+			if (!subId) {
+				return NextResponse.json({ code: "NO_SUBSCRIPTION_FOUND", message: "error" });
+			}
+			const sub = await stripe.subscriptions.retrieve(subId);
+			console.log("recording usage for", sub.items.data[0].id);
+			await stripe.subscriptionItems.createUsageRecord(sub.items.data[0].id, {
+				quantity: inviteCount,
+				timestamp: "now",
+				action: "increment",
+			});
+		}
 
 		return NextResponse.json({ message: "success" });
 	}
 
 	async function handleList() {
+		if (!workspace) {
+			return NextResponse.redirect("/dashboard");
+		}
+
 		const emailsList = invitesList;
 
 		const resendResponse = { data: { data: [{ id: "1" }, { id: "2" }] }, error: null };
@@ -133,18 +153,24 @@ export async function POST(request: NextRequest, context: { params: { waitlistID
 			return NextResponse.json({ message: "error" });
 		}
 
-		const subId = workspace?.stripeSubscriptionID;
-		if (!subId) {
-			return NextResponse.json({ code: "NO_SUBSCRIPTION_FOUND", message: "error" });
-		}
-		const sub = await stripe.subscriptions.retrieve(subId);
-
-		console.log("recording usage for", sub.items.data[0].id);
-		await stripe.subscriptionItems.createUsageRecord(sub.items.data[0].id, {
-			quantity: inviteCount,
-			timestamp: "now",
-			action: "increment",
+		await updateRemainingInvitesForWorkspace({
+			workspaceID: workspace.workspaceID,
+			remainingInvites: workspace.remainingInvites - inviteCount,
 		});
+
+		if (workspace?.stripeSubscriptionID) {
+			const subId = workspace?.stripeSubscriptionID;
+			if (!subId) {
+				return NextResponse.json({ code: "NO_SUBSCRIPTION_FOUND", message: "error" });
+			}
+			const sub = await stripe.subscriptions.retrieve(subId);
+			console.log("recording usage for", sub.items.data[0].id);
+			await stripe.subscriptionItems.createUsageRecord(sub.items.data[0].id, {
+				quantity: inviteCount,
+				timestamp: "now",
+				action: "increment",
+			});
+		}
 
 		return NextResponse.json({ message: "success" });
 	}
