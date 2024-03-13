@@ -6,7 +6,8 @@
   "types": "./src/index.ts",
   "scripts": {
     "db:migrate": "drizzle-kit generate:pg",
-    "db:push": "tsx src/migrate.ts"
+    "db:push": "tsx src/migrate.ts",
+    "db:studio": "drizzle-kit studio"
   },
   "keywords": [],
   "dependencies": {
