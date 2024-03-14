@@ -1,6 +1,6 @@
 import { authMiddleware, redirectToSignIn } from "@clerk/nextjs";
-import { createWorkspaceForTenant, getWorkspaceForTenant } from "./lib/db";
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { getWorkspaceForTenant } from "./lib/db";
+import { type NextFetchEvent, type NextRequest, NextResponse } from "next/server";
 
 export default async function middleware(request: NextRequest, evt: NextFetchEvent) {
 	const res = await authMiddleware({
