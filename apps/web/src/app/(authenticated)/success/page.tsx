@@ -78,6 +78,7 @@ async function SuccessPage({ searchParams }: { searchParams: { session_id: strin
 		createdAt: new Date(),
 		deletedAt: null,
 		workspaceName: session.metadata?.workspaceName!,
+		remainingInvites: 3000,
 	};
 
 	await createProWorkspace(workspace);
