@@ -1,8 +1,8 @@
+import { signups } from "@entrybase/db";
+import { newId } from "@entrybase/id";
+import { sql } from "drizzle-orm";
 import { Context } from "hono";
 import { db } from "../db";
-import { sql } from "drizzle-orm";
-import { newId } from "@waitlister/id";
-import { signups } from "@waitlister/db";
 
 export async function signupRoute(c: Context) {
 	try {

@@ -1,7 +1,7 @@
 import { db } from "./db";
 
-import { type Workspace, workspaces } from "@waitlister/db";
-import { newId } from "@waitlister/id";
+import { type Workspace, workspaces } from "@entrybase/db";
+import { newId } from "@entrybase/id";
 import { and, eq, isNull } from "drizzle-orm";
 
 export async function getWorkspaceForTenant(tenantID: string) {

@@ -1,5 +1,5 @@
 {
-	"name": "@waitlister/web",
+	"name": "@entrybase/web",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -36,8 +36,8 @@
 		"@tanstack/react-table": "^8.10.7",
 		"@uploadthing/react": "^6.0.2",
 		"@upstash/redis": "^1.24.0",
-		"@waitlister/db": "workspace:^",
-		"@waitlister/id": "workspace:^",
+		"@entrybase/db": "workspace:^",
+		"@entrybase/id": "workspace:^",
 		"base-x": "^4.0.0",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.0.0",

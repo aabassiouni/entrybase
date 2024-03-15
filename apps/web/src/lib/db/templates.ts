@@ -1,8 +1,8 @@
 import "server-only";
 
-import { eq, and } from "drizzle-orm";
-import { email_templates } from "@waitlister/db";
-import { newId } from "@waitlister/id";
+import { email_templates } from "@entrybase/db";
+import { newId } from "@entrybase/id";
+import { and, eq } from "drizzle-orm";
 import { unstable_noStore as noStore } from "next/cache";
 import { db } from "./db";
 

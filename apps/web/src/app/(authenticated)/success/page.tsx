@@ -1,18 +1,18 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import UserButton from "@/components/user-button";
 import { createProWorkspace, findExistingSubscription } from "@/lib/db";
-import { type Workspace } from "@waitlister/db"
 import { db } from "@/lib/db/db";
-import { workspaces } from "@waitlister/db";
-import { newId } from "@waitlister/id";
 import { stripe } from "@/lib/stripe";
 import { clerkClient, currentUser } from "@clerk/nextjs";
+import { type Workspace } from "@entrybase/db"
+import { workspaces } from "@entrybase/db";
+import { newId } from "@entrybase/id";
 import { eq } from "drizzle-orm";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 import ChangeOrgButton from "./change-org-button";
-import { redirect } from "next/navigation";
-import UserButton from "@/components/user-button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 async function SuccessPage({ searchParams }: { searchParams: { session_id: string } }) {
 	const user = await currentUser();
@@ -39,7 +39,7 @@ async function SuccessPage({ searchParams }: { searchParams: { session_id: strin
 			<div className="flex min-h-screen w-full flex-col overflow-y-scroll">
 				<div className="flex justify-between p-8 px-24 shadow-md">
 					<Link href={"/dashboard"}>
-						<h1 className="text-4xl font-bold">waitlister</h1>
+						<h1 className="text-4xl font-bold">entrybase</h1>
 					</Link>
 					<UserButton />
 				</div>
@@ -87,7 +87,7 @@ async function SuccessPage({ searchParams }: { searchParams: { session_id: strin
 		<div className="flex min-h-screen w-full flex-col overflow-y-scroll ">
 			<div className="flex justify-between p-8 px-24 shadow-md">
 				<Link href={"/dashboard"}>
-					<h1 className="text-4xl font-bold">waitlister</h1>
+					<h1 className="text-4xl font-bold">entrybase</h1>
 				</Link>
 				<UserButton />
 			</div>

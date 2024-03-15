@@ -1,5 +1,5 @@
 {
-	"name": "waitlister",
+	"name": "entrybase",
 	"workspaces": [
 		"apps/*",
 		"packages/*"

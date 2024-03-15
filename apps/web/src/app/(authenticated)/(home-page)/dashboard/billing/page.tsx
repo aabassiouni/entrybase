@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { checkWorkspace } from "@/lib/auth";
 import { getWaitlistsForUser } from "@/lib/db";
 import { stripe } from "@/lib/stripe";
-import type { Workspace } from "@waitlister/db";
+import type { Workspace } from "@entrybase/db";
 import { ArrowLeftCircle, Check } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";

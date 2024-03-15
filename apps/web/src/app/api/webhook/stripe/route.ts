@@ -1,12 +1,12 @@
+import { Readable } from "node:stream";
 import { createProWorkspace } from "@/lib/db";
-import type { Workspace } from "@waitlister/db";
 import { db } from "@/lib/db/db";
-import { newId } from "@waitlister/id";
 import { stripe } from "@/lib/stripe";
 import { clerkClient } from "@clerk/nextjs";
+import type { Workspace } from "@entrybase/db";
+import { newId } from "@entrybase/id";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { Readable } from "node:stream";
 import Stripe from "stripe";
 
 

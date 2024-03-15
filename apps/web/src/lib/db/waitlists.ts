@@ -1,10 +1,10 @@
-import { desc, eq, and, isNotNull, isNull } from "drizzle-orm";
-import { waitlists } from "@waitlister/db";
-import { newId } from "@waitlister/id";
+import { waitlists } from "@entrybase/db";
+import { newId } from "@entrybase/id";
+import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
+import { utapi } from "../uploadthing/server";
 import { selectRandomTwColor } from "../utils";
 import { db } from "./db";
-import { utapi } from "../uploadthing/server";
 
 export async function findWaitlistForUser(waitlistID: string, workspaceID: string) {
 	return await db

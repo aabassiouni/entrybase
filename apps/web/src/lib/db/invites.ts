@@ -1,7 +1,7 @@
-import { newId } from "@waitlister/id";
+import { invites, signups } from "@entrybase/db";
+import { newId } from "@entrybase/id";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import { db,  } from "./db";
-import { invites, signups } from "@waitlister/db";
-import { eq, desc, and, inArray } from "drizzle-orm";
 
 export async function createInvite(
 	waitlistID: string,

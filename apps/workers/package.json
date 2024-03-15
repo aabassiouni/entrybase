@@ -1,5 +1,5 @@
 {
-	"name": "@waitlister/api",
+	"name": "@entrybase/api",
 	"scripts": {
 		"build": "tsc",
 		"dev": "pnpm build && wrangler dev",
@@ -12,8 +12,8 @@
 		"hono": "^3.12.7",
 		"typescript": "^5.3.3",
 		"zod": "^3.22.4",
-		"@waitlister/db": "workspace:^",
-		"@waitlister/id": "workspace:^"
+		"@entrybase/db": "workspace:^",
+		"@entrybase/id": "workspace:^"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20231218.0",

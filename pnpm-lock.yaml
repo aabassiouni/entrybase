@@ -56,6 +56,12 @@ importers:
       '@clerk/types':
         specifier: ^3.60.0
         version: 3.60.0
+      '@entrybase/db':
+        specifier: workspace:^
+        version: link:../../internal/db
+      '@entrybase/id':
+        specifier: workspace:^
+        version: link:../../internal/id
       '@hookform/resolvers':
         specifier: ^3.3.2
         version: 3.3.4(react-hook-form@7.50.0)
@@ -125,12 +131,6 @@ importers:
       '@upstash/redis':
         specifier: ^1.24.0
         version: 1.28.3
-      '@waitlister/db':
-        specifier: workspace:^
-        version: link:../../internal/db
-      '@waitlister/id':
-        specifier: workspace:^
-        version: link:../../internal/id
       base-x:
         specifier: ^4.0.0
         version: 4.0.0
@@ -243,15 +243,15 @@ importers:
 
   apps/workers:
     dependencies:
+      '@entrybase/db':
+        specifier: workspace:^
+        version: link:../../internal/db
+      '@entrybase/id':
+        specifier: workspace:^
+        version: link:../../internal/id
       '@neondatabase/serverless':
         specifier: ^0.7.2
         version: 0.7.2
-      '@waitlister/db':
-        specifier: workspace:^
-        version: link:../../internal/db
-      '@waitlister/id':
-        specifier: workspace:^
-        version: link:../../internal/id
       base-x:
         specifier: ^4.0.0
         version: 4.0.0
