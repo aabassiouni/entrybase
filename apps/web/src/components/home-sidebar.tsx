@@ -32,7 +32,7 @@ function HomeSidebar() {
 			<div className="w-full">
 				<div className="py-10">
 					<Link href="/dashboard">
-						<h1 className=" text-center text-4xl font-black">waitlister</h1>
+						<h1 className=" text-center text-4xl font-black">entrybase</h1>
 					</Link>
 				</div>
 				<Separator className="mb-2" />

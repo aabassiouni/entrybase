@@ -8,7 +8,7 @@ function EmailFooter({ websiteLink, websiteName }: { websiteLink: string | null;
 			<Text className="text-center font-sans text-sm text-slate-400">
 				Sent by&nbsp;
 				<Link href={"https://localhost:3000"} className="text-current underline">
-					Waitlister
+					Entrybase
 				</Link>
 				&nbsp;on behalf of&nbsp;
 				<Link href={websiteLink ?? ""} className="text-current underline">

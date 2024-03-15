@@ -1,18 +1,18 @@
-import "../globals.css";
+import { ThemeProvider } from "@/components/context/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
+import { ourFileRouter } from "@/lib/uploadthing";
+import { ClerkProvider } from "@clerk/nextjs";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 // import "@uploadthing/react/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "@/components/context/theme-provider";
-import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
-import { ourFileRouter } from "@/lib/uploadthing";
-import { Toaster } from "@/components/ui/toaster";
+import "../globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Dashboard | Waitlister",
+	title: "Dashboard | Entrybase",
 	description: "Waitlist management and analytics for your SaaS",
 };
 

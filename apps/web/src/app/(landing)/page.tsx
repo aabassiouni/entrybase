@@ -15,7 +15,7 @@ function LandingPage() {
 	return (
 		<div className="sm:flex-1">
 			<div className="bg- flex items-center justify-around p-4">
-				<p className="text-center font-black text-4xl text-white">waitlister</p>
+				<p className="text-center font-black text-4xl text-white">Entrybase</p>
 				<Link href={"/dashboard"}>
 					<button
 						type="button"
@@ -75,7 +75,7 @@ function LandingPage() {
 						Seamless Invite Management
 					</h1>
 					<p className="text-balance text-center text-xl text-neutral-400 ">
-						Waitlister lets you take control of your waitlist and choose who you want to invite and when.
+						Entrybase lets you take control of your waitlist and choose who you want to invite and when.
 						Launch on your terms
 					</p>
 					<div className="h-96  bg-gray-800">asdf</div>
@@ -85,7 +85,7 @@ function LandingPage() {
 				<div className="space-y-2">
 					<h1 className="text-balance text-center font-bold text-5xl text-white">How it works</h1>
 					<p className="text-balance text-center text-lg text-neutral-400 sm:text-xl">
-						Waitlister lets you take control of your waitlist and choose who you want to invite and when.
+						Entrybase lets you take control of your waitlist and choose who you want to invite and when.
 						Launch on your terms.
 					</p>
 				</div>
