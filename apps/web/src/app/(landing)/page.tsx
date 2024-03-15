@@ -238,7 +238,7 @@ function LandingPage() {
 						</p>
 					</div>
 					<div className="self-center">
-						<Link href={"https://github.com/aabassiouni/waitlister"}>
+						<Link href={"https://github.com/aabassiouni/entrybase"}>
 							<button
 								type="button"
 								className="inline-flex h-12 animate-background-shine items-center justify-center gap-2 rounded-md border border-primary bg-[length:200%_100%] bg-[linear-gradient(110deg,#000103,45%,#4BE7AE,55%,#000103)] px-6 font-medium text-slate-400 transition-colors"
