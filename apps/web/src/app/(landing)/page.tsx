@@ -27,7 +27,7 @@ function LandingPage() {
 				</Link>
 			</div>
 			<div className="relative px-4 pb-10">
-				<div className="-z-10 absolute inset-0 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#4BE7AE_100%)]" />
+				<div className="-z-10 absolute inset-0 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#020705_40%,#4BE7AE_100%)]" />
 				<div className="flex h-[350px] flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-center gap-4">
 						<div className="-z-10 absolute h-full w-full bg-[radial-gradient(#1c1917_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
@@ -67,7 +67,7 @@ function LandingPage() {
 				</div>
 			</div>
 			<div className="h- relative flex flex-col items-center sm:py-16">
-				<div className="-z-10 absolute inset-0 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_90%,#000_40%,#4BE7AE_100%)]" />
+				<div className="-z-10 absolute inset-0 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_90%,#020705_40%,#4BE7AE_100%)]" />
 			</div>
 			{/* <div className="mx-auto max-w-screen-lg py-24">
 				<div className="space-y-4 ">
@@ -250,7 +250,7 @@ function LandingPage() {
 					</div>
 				</div>
 			</div>
-			<div className="h-1/3 bg-neutral-950" />
+			<div className="h-1/3 bg-[#020705]" />
 		</div>
 	);
 }
