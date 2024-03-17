@@ -5,6 +5,8 @@ import {
 	GradientBorderCardTitle,
 } from "@/components/landing/gradient-border-card";
 import "@/components/landing/landing.css";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { CursorArrowIcon, GitHubLogoIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -44,15 +46,12 @@ function LandingPage() {
 								Get Started For Free
 							</button>
 						</Link> */}
-						<div className="flex">
-							<input
-								type="email"
-								className="h-12 rounded-lg rounded-r-none border border-primary border-r-0 bg-neutral-800 px-2 text-white"
-							/>
-							<button type="submit" className="h-12 w-20 rounded-r-lg bg-primary font-semibold text-sm">
-								Join Waitlist
-							</button>
-						</div>
+						<form action="/signup">
+							<div className="flex gap-2">
+								<Input className="h-12 border-primary bg-[#071711] text-white" />
+								<Button className="h-12 bg-primary text-[#020705]">Join Waitlist</Button>
+							</div>
+						</form>
 					</div>
 				</div>
 				<div className="flex items-center justify-center">

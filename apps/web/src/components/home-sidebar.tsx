@@ -1,13 +1,12 @@
+import { CreditCard, ScrollText, User, Users } from "lucide-react";
 import Link from "next/link";
-import { Separator } from "./ui/separator";
-import TeamSelect from "./team-select";
-import { CreditCard, User, Users } from "lucide-react";
-import SidebarUserButton from "./sidebar-user-button";
 import { SidebarItem } from "./sidebar-item";
+import SidebarUserButton from "./sidebar-user-button";
+import TeamSelect from "./team-select";
+import { Separator } from "./ui/separator";
 
 function HomeSidebar() {
 	const iconProps = { className: "text-secondary", width: "1.125rem", height: "1.125rem" };
-
 
 	const settingsLinks = [
 		{
@@ -28,20 +27,25 @@ function HomeSidebar() {
 	];
 
 	return (
-		<div className="hidden sm:flex min-h-screen w-72 shrink-0 flex-col items-center justify-between rounded-r-2xl border-r border-neutral-800  bg-primary/50 dark:bg-black">
+		<div className="hidden min-h-screen w-72 shrink-0 flex-col items-center justify-between rounded-r-2xl border-neutral-800 border-r bg-primary/50 sm:flex dark:bg-black">
 			<div className="w-full">
 				<div className="py-10">
 					<Link href="/dashboard">
-						<h1 className=" text-center text-4xl font-black">entrybase</h1>
+						<h1 className="text-center font-black text-4xl">entrybase</h1>
 					</Link>
 				</div>
 				<Separator className="mb-2" />
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">Workspace</p>
+					<p className="p self-start px-3 text-neutral-400 text-sm">Workspace</p>
 					<TeamSelect />
 				</div>
 				<div>
-					<p className="p self-start px-3 text-sm text-neutral-400">Settings</p>
+					<div className="px-4">
+						<SidebarItem icon={<ScrollText {...iconProps} />} href="/dashboard">
+							Waitlists
+						</SidebarItem>
+					</div>
+					<p className="p self-start px-3 text-neutral-400 text-sm">Settings</p>
 					<div className="h-full w-full grow space-y-2 px-4">
 						{settingsLinks.map((item, i) => (
 							<SidebarItem key={i} icon={item.icon} href={item.href}>
@@ -53,7 +57,7 @@ function HomeSidebar() {
 			</div>
 			<div className="w-full">
 				<Separator />
-				<div className=" p-4">
+				<div className="p-4">
 					<SidebarUserButton />
 				</div>
 			</div>
