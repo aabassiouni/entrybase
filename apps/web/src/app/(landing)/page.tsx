@@ -18,14 +18,13 @@ function LandingPage() {
 	return (
 		<div className="sm:flex-1">
 			<div className="bg- flex items-center justify-around p-4">
-				<p className="text-center font-black text-4xl text-white">Entrybase</p>
+				<p className="text-center font-black text-3xl text-white sm:text-4xl">entrybase</p>
 				<Link href={"/dashboard"}>
-					<button
-						type="button"
-						className="w- relative inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 font-medium text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
-					>
-						<div className="-inset-1 -z-10 absolute rounded-lg bg-gradient-to-b from-primary to-[#4BE7AE] opacity-75 blur" />
-						Login
+					<button type="button" className="rounded-md bg-gradient-to-b from-[#9AEDCE] to-[#2BC28B] p-0.5">
+						<div className="relative inline-flex h-12 items-center justify-center rounded-[calc(0.375rem-0.125rem)] bg-primary px-6 font-medium text-[#071711] transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+							<div className="-inset-1 -z-10 absolute rounded-lg bg-gradient-to-b from-primary to-[#4BE7AE] opacity-75 blur" />
+							Login
+						</div>
 					</button>
 				</Link>
 			</div>
@@ -38,7 +37,7 @@ function LandingPage() {
 							Open source waitlist management and analytics platform
 						</h1>
 						<p className="text-center text-lg text-white sm:text-xl">
-							Validate your ideas and ship as fast as you can install
+							Validate your ideas fast. Ship even faster.
 						</p>
 						{/* <Link href={"/dashboard"}>
 							<button className="w- relative inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 font-medium text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
@@ -78,7 +77,7 @@ function LandingPage() {
 						Entrybase lets you take control of your waitlist and choose who you want to invite and when.
 						Launch on your terms
 					</p>
-					<div className="h-96  bg-gray-800">asdf</div>
+					<div className="h-96 bg-gray-800">asdf</div>
 				</div>
 			</div> */}
 			<div className="mx-auto max-w-screen-lg space-y-8 px-4 py-16">
@@ -254,7 +253,53 @@ function LandingPage() {
 					</div>
 				</div>
 			</div>
-			<div className="h-1/3 bg-[#020705]" />
+			<div className="bg-[#020705] p-24">
+				<div className="mx-auto flex max-w-screen-lg items-center justify-between">
+					<div className="space-y-4">
+						<p className="font-black text-3xl text-white sm:text-4xl">entrybase</p>
+						{/* <p className=" text-neutral-500">Open source waitlist management and analytics platform</p> */}
+						<div className="flex gap-2">
+							<Link href={"https://github.com/aabassiouni/entrybase"}>
+								<GitHubLogoIcon className="h-6 w-6 text-white" />
+							</Link>
+							<svg
+								width="24"
+								height="24"
+								viewBox="0 0 1200 1227"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"
+									fill="white"
+								/>
+							</svg>
+						</div>
+					</div>
+					<div>
+						<p className="text-neutral-500">©2024 Entrybase. All rights reserved.</p>
+						<div className="flex items-center justify-center gap-4">
+							<Link href={"/privacy"}>
+								<p className="cursor-pointer text-neutral-500">Privacy Policy</p>
+							</Link>
+							<Link href={"/terms"}>
+								<p className="cursor-pointer text-neutral-500">Terms of Service</p>
+							</Link>
+						</div>
+					</div>
+				</div>
+				{/* <div className="mx-auto flex max-w-screen-lg flex-col items-center justify-center">
+					<p className="text-center text-neutral-500">© 2022 Entrybase. All rights reserved.</p>
+					<div className="flex items-center justify-center gap-4">
+						<Link href={"/privacy"}>
+							<p className="cursor-pointer text-neutral-500">Privacy Policy</p>
+						</Link>
+						<Link href={"/terms"}>
+							<p className="cursor-pointer text-neutral-500">Terms of Service</p>
+						</Link>
+					</div>
+				</div> */}
+			</div>
 		</div>
 	);
 }
