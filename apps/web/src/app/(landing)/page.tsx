@@ -48,7 +48,15 @@ function LandingPage() {
 						<form action="/signup">
 							<div className="flex gap-2">
 								<Input className="h-12 border-primary bg-[#071711] text-white" />
-								<Button className="h-12 bg-primary text-[#020705]">Join Waitlist</Button>
+								<button
+									type="button"
+									className="rounded-md bg-gradient-to-b from-[#9AEDCE] to-[#2BC28B]"
+								>
+									<div className="relative inline-flex h-12 items-center justify-center rounded-[calc(0.375rem-0.125rem)] bg-primary px-6 font-medium text-[#071711] transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+										<div className="-inset-1 -z-10 absolute rounded-lg bg-gradient-to-b from-primary to-[#4BE7AE] opacity-50 blur" />
+										Join Waitlist
+									</div>
+								</button>
 							</div>
 						</form>
 					</div>
