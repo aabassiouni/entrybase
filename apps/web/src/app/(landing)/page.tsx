@@ -231,10 +231,10 @@ function LandingPage() {
 							</GradientBorderCardDescription>
 						</div>
 						<div className="group relative flex-1">
-							<div className="inline-flex h-12 w-3/4 animate-domain-link-out items-center justify-center rounded-2xl border-2 border-zinc-800 bg-black p-2 text-center group-hover:animate-domain-link-in">
+							<div className="inline-flex h-12 w-3/4 animate-input items-center justify-center rounded-2xl border-2 border-zinc-800 bg-tintedBlack p-2 text-center">
 								<p className="text-neutral-500 text-xl">you@yourdomain.com</p>
 							</div>
-							<CursorArrowIcon className="absolute top-1/2 right-1/4 h-8 w-8 animate-domain-cursor-out justify-end text-neutral-300 group-hover:animate-domain-cursor-in" />
+							<CursorArrowIcon className="absolute top-1/2 right-1/4 h-8 w-8 animate-cursor justify-end text-neutral-300" />
 						</div>
 					</GradientBorderCard>
 				</div>

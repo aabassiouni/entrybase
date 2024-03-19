@@ -1,12 +1,33 @@
 path {
     transition: stroke-dashoffset 2s ease;
 }
+
 .animated-chart:hover path {
     stroke-dashoffset: 0;
 }
+
 .animated-area {
     transition: fill-opacity 2s ease;
 }
+
 .animated-chart:hover .animated-area {
     fill-opacity: 0.8;
 }
+
+.animate-input {
+    transition: transform 0.8s ease-in-out;
+}
+
+.group:hover .animate-input {
+    transform: translateY(2.5rem) translateX(1.5rem);
+}
+
+.animate-cursor {
+    transition: transform 0.8s ease-in-out;
+}
+
+.group:hover .animate-cursor {
+    transform: translateY(-1.25rem) translateX(-1.25rem);
+
+}
+
