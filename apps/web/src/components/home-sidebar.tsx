@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SidebarItem } from "./sidebar-item";
 import SidebarUserButton from "./sidebar-user-button";
 import TeamSelect from "./team-select";
+import TextLogo from "./text-logo";
 import { Separator } from "./ui/separator";
 
 function HomeSidebar() {
@@ -31,7 +32,7 @@ function HomeSidebar() {
 			<div className="w-full">
 				<div className="py-10">
 					<Link href="/dashboard">
-						<h1 className="text-center font-black text-4xl">entrybase</h1>
+						<TextLogo />
 					</Link>
 				</div>
 				<Separator className="mb-2" />

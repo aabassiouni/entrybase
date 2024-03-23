@@ -1,12 +1,13 @@
-import React, { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Archive, ArrowLeftCircle, Home, LineChart, List, Mail, SendHorizonal, Settings } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 import SidebarUserButton from "./sidebar-user-button";
-import { Home, LineChart, List, SendHorizonal, Mail, Settings, Archive, ArrowLeftCircle } from "lucide-react";
+import TeamSelect from "./team-select";
+import TextLogo from "./text-logo";
 import { Skeleton } from "./ui/skeleton";
 import WaitlistSelect from "./waitlist-select";
-import TeamSelect from "./team-select";
 
 function WaitlistSelectLoading() {
 	return (
@@ -79,7 +80,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
 			<div>
 				<div className="py-10">
 					<Link href="/dashboard">
-						<h1 className=" text-center text-4xl font-black">entrybase</h1>
+						<TextLogo />
 					</Link>
 				</div>
 				<Separator className="mb-2" />

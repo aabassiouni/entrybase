@@ -5,6 +5,7 @@ import {
 	GradientBorderCardTitle,
 } from "@/components/landing/gradient-border-card";
 import "@/components/landing/landing.css";
+import TextLogo from "@/components/text-logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { CursorArrowIcon, GitHubLogoIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
@@ -18,7 +19,7 @@ function LandingPage() {
 	return (
 		<div className="sm:flex-1">
 			<div className="bg- flex items-center justify-around p-4">
-				<p className="text-center font-black text-3xl text-white sm:text-4xl">entrybase</p>
+				<TextLogo className="text-white" />
 				<Link href={"/dashboard"}>
 					<button type="button" className="rounded-md bg-gradient-to-b from-[#9AEDCE] to-[#2BC28B] p-0.5">
 						<div className="relative inline-flex h-12 items-center justify-center rounded-[calc(0.375rem-0.125rem)] bg-primary px-6 font-medium text-[#071711] transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
@@ -264,7 +265,7 @@ function LandingPage() {
 			<div className="bg-[#020705] p-24">
 				<div className="mx-auto flex max-w-screen-lg items-center justify-between">
 					<div className="space-y-4">
-						<p className="font-black text-3xl text-white sm:text-4xl">entrybase</p>
+						<TextLogo className="text-white" />
 						{/* <p className=" text-neutral-500">Open source waitlist management and analytics platform</p> */}
 						<div className="flex gap-2">
 							<Link href={"https://github.com/aabassiouni/entrybase"}>
