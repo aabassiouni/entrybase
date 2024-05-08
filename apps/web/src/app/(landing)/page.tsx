@@ -31,18 +31,12 @@ function LandingPage() {
 				<div className="flex h-[350px] flex-col items-center justify-center">
 					<div className="flex flex-col items-center justify-center gap-4">
 						<div className="-z-10 absolute h-full w-full bg-[radial-gradient(#1c1917_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-						<h1 className="text-balance bg-gradient-to-t from-white to-primary bg-clip-text text-center font-bold text-4xl text-transparent sm:h-[2.1em] sm:w-2/3 sm:text-6xl">
+						<h1 className="text-balance bg-gradient-to-t from-white to-primary bg-clip-text text-center font-bold font-clash-grotesk text-4xl text-transparent tracking-wide sm:h-[2.1em] sm:w-2/3 sm:text-6xl">
 							Open source waitlist management and analytics platform
 						</h1>
 						<p className="text-center text-lg text-white sm:text-xl">
 							Validate your ideas fast. Ship even faster.
 						</p>
-						{/* <Link href={"/dashboard"}>
-							<button className="w- relative inline-flex h-12 items-center justify-center rounded-md bg-primary px-6 font-medium text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-								<div className="absolute -inset-1 -z-10 rounded-lg bg-gradient-to-b from-primary to-[#4BE7AE] opacity-75 blur" />
-								Get Started For Free
-							</button>
-						</Link> */}
 						<form action="/signup">
 							<div className="flex items-center gap-2">
 								<Input className="h-12 border-primary bg-[#071711] text-white" />
@@ -80,7 +74,7 @@ function LandingPage() {
 			</div> */}
 			<div className="mx-auto max-w-screen-lg space-y-8 px-4 py-16">
 				<div className="space-y-2">
-					<h1 className="text-balance text-center font-bold text-5xl text-white">How it works</h1>
+					<h1 className="text-balance text-center font-bold font-clash-grotesk text-5xl text-white tracking-wide">How it works</h1>
 					<p className="text-balance text-center text-lg text-neutral-400 sm:text-xl">
 						Entrybase lets you take control of your waitlist and choose who you want to invite and when.
 						Launch on your terms.
@@ -174,7 +168,7 @@ function LandingPage() {
 						flexdir={"flex-col-reverse"}
 						className="col animated-chart col-span-1 sm:col-span-2 sm:row-span-2"
 					>
-						<div className="overflow-hidden rounded bg-black p-4 blur-box sm:overflow-auto">
+						<div className="overflow-hidden rounded bg-tintedBlack p-4 blur-box sm:overflow-auto">
 							<AnimatedChart />
 						</div>
 						<div>
@@ -231,7 +225,7 @@ function LandingPage() {
 			<div className="mx-auto max-w-screen-lg space-y-8 px-4 pb-16 sm:px-0">
 				<div className="flex flex-col gap-10">
 					<div className="space-y-2">
-						<h1 className="text-balance text-center font-bold text-5xl text-white">Fully Open Source</h1>
+						<h1 className="text-balance text-center font-bold font-clash-grotesk text-5xl text-white tracking-wide">Fully Open Source</h1>
 						<p className="text-balance text-center text-neutral-400 sm:text-xl">
 							Fully open source. We believe in the power of open source and the community. Feel free to
 							review, learn from, and contribute to our codebase.

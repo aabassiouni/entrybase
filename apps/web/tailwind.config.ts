@@ -12,6 +12,11 @@ export default withUt({
 			},
 		},
 		extend: {
+			fontFamily: {
+				"clash-display": ["var(--font-clash-display)", "ui-serif"],
+				"clash-grotesk": ["var(--font-clash-grotesk)", "ui-sans-serif"],
+				inter: ["var(--font-inter)", "ui-sans-serif"],
+			},
 			colors: {
 				primary: "#4BE7AE",
 				secondary: "#0F6C4A",

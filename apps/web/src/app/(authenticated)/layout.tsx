@@ -3,11 +3,17 @@ import { Toaster } from "@/components/ui/toaster";
 import { ourFileRouter } from "@/lib/uploadthing";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-// import "@uploadthing/react/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { extractRouterConfig } from "uploadthing/server";
 import "../globals.css";
+
+const clashDisplay = localFont({
+	src: "../../fonts/ClashDisplay-Variable.ttf",
+	display: "swap",
+	variable: "--font-clash-display",
+});
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<body className={`${inter.className}  h-screen`}>
+			<body className={`${inter.className} ${clashDisplay.variable} h-screen`}>
 				<NextSSRPlugin
 					/**
 					 * The `extractRouterConfig` will extract **only** the route configs
