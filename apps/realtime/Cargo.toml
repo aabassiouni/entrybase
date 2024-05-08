@@ -1,0 +1,10 @@
+[package]
+name = "realtime"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+axum = { version = "*", features = ["ws", "macros"] }
+serde = { version = "1.0", features = ["derive"] }
+futures-util = "*"
