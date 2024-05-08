@@ -253,8 +253,9 @@ function LandingPage() {
 						<Link href={"https://github.com/aabassiouni/entrybase"}>
 							<button
 								type="button"
-								className="inline-flex h-12 animate-background-shine items-center justify-center gap-2 rounded-md border border-primary bg-[length:200%_100%] bg-[linear-gradient(110deg,#000103,45%,#4BE7AE,55%,#000103)] px-6 font-medium text-slate-400 transition-colors"
+								className="relative inline-flex h-12 animate-background-shine items-center justify-center gap-2 rounded-md border border-primary bg-[length:200%_100%] bg-[linear-gradient(110deg,#000103,45%,#4BE7AE,55%,#000103)] px-6 font-medium text-slate-400 transition-colors"
 							>
+								<div className="-inset-1 -z-10 absolute rounded-lg bg-gradient-to-b from-primary to-[#4BE7AE] opacity-75 blur" />
 								<GitHubLogoIcon className="h-6 w-6 text-white" />
 								<p className="font-semibold text-white">Star On GitHub</p>
 							</button>
