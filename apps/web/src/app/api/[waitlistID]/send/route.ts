@@ -6,12 +6,13 @@ import {
 	getWaitlistWebsiteDetails,
 	updateRemainingInvitesForWorkspace,
 } from "@/lib/db";
+import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
 import { auth } from "@clerk/nextjs";
 import { type NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(env().RESEND_API_KEY);
 
 export async function POST(request: NextRequest, context: { params: { waitlistID: string } }) {
 	console.log("sending emails");

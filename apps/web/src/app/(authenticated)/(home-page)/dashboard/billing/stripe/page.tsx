@@ -4,6 +4,7 @@ import { stripe } from "@/lib/stripe";
 import { headers } from "next/headers";
 import { getWorkspaceForTenant } from "@/lib/db";
 import { checkWorkspace } from "@/lib/auth";
+import { env } from "@/lib/env";
 
 export default async function StripeRedirect({ params }: { params: { waitlist: string }}) {
 
@@ -16,7 +17,7 @@ export default async function StripeRedirect({ params }: { params: { waitlist: s
       return redirect("/new");
     }
 
-    const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
+    const baseUrl = env().VERCEL_URL ? `https://${env().VERCEL_URL}` : "http://localhost:3000";
 	
     // If they have a subscription already, we display the portal
     if (ws.stripeCustomerID) {

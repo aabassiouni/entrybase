@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stringify } from "csv/sync";
 import * as fs from "fs";
 import { Resend } from "resend";
+import { env } from "@/lib/env";
 
 export async function POST(request: NextRequest) {
 	const user = await currentUser();
@@ -48,7 +49,7 @@ export async function POST(request: NextRequest) {
 	try {
 		fs.writeFileSync(filePath, stringify(signups));
 
-		const resend = new Resend(process.env.RESEND_API_KEY);
+		const resend = new Resend(env().RESEND_API_KEY);
 
 		const { data, error } = await resend.emails.send({
 			from: "Ali B <onboarding@resend.dev>",

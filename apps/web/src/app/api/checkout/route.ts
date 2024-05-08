@@ -1,3 +1,4 @@
+import { stripeEnv } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
 import { currentUser } from "@clerk/nextjs";
 import { headers } from "next/headers";
@@ -23,10 +24,10 @@ export async function POST(request: NextRequest) {
 		client_reference_id: user?.id,
 		line_items: [
 			{
-				price: process.env.STRIPE_PRO_PLAN_USAGE,
+				price: stripeEnv().STRIPE_PRO_PLAN_USAGE,
 			},
 			{
-				price:process.env.STRIPE_PRO_PLAN_FLAT,
+				price: stripeEnv().STRIPE_PRO_PLAN_FLAT,
 				quantity: 1,
 			},
 		],

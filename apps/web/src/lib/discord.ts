@@ -1,5 +1,7 @@
+import { env } from "./env";
+
 export async function notifyDiscord({ waitlist }: { waitlist: string }) {
-	await fetch(process.env.DISCORD_WEBHOOK_URL!, {
+	await fetch(env().DISCORD_WEBHOOK_URL!, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
