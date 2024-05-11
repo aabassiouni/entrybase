@@ -1,5 +1,6 @@
 use axum::{
     extract::{
+        rejection::JsonRejection,
         ws::{Message, WebSocket, WebSocketUpgrade},
         Path,
     },
@@ -8,8 +9,10 @@ use axum::{
     routing::{get, put},
     Extension, Json, Router,
 };
+use axum_extra::extract::WithRejection;
 use futures_util::{SinkExt, StreamExt};
 use serde::Deserialize;
+use serde_json::json;
 use std::{
     collections::HashMap,
     sync::{Arc, Mutex},
@@ -18,6 +21,31 @@ use tokio::sync::mpsc;
 
 type Sender = mpsc::UnboundedSender<String>;
 type ClientList = Arc<Mutex<HashMap<String, Vec<Sender>>>>;
+
+struct APIError {
+    message: String,
+}
+
+impl IntoResponse for APIError {
+    fn into_response(self) -> axum::response::Response {
+        println!("Error parsing JSON payload");
+        (
+            StatusCode::BAD_REQUEST,
+            Json(json!({
+                "error": "error parsing JSON",
+            })),
+        )
+            .into_response()
+    }
+}
+
+impl From<JsonRejection> for APIError {
+    fn from(rejection: JsonRejection) -> Self {
+        Self {
+            message: format!("Invalid JSON: {:?}", rejection),
+        }
+    }
+}
 
 #[derive(Deserialize)]
 struct UpdatePayload {
@@ -37,9 +65,7 @@ async fn main() {
 
     println!("Server running on http://localhost:9999");
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:9999")
-        .await
-        .unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:9999").await.unwrap();
 
     let server = axum::serve(listener, app.into_make_service()).await;
 
@@ -98,7 +124,7 @@ async fn handle_socket(socket: WebSocket, id: String, connected_waitlists: Clien
 
 async fn update_handler(
     Extension(connected_waitlists): Extension<ClientList>,
-    Json(payload): Json<UpdatePayload>,
+    WithRejection(Json(payload), _): WithRejection<Json<UpdatePayload>, APIError>,
 ) -> impl IntoResponse {
     println!("Received update: {:?}", payload.update);
     let mut waitlists = connected_waitlists.lock().unwrap();
