@@ -32,17 +32,21 @@ async fn main() {
     let app = Router::new()
         .route("/:id/ws", get(ws_handler))
         .route("/receive", put(update_handler))
+        .route("/health", get(|| async { "OK" }))
         .layer(Extension(connected_waitlists));
 
     println!("Server running on http://localhost:9999");
 
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:9999")
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:9999")
         .await
         .unwrap();
 
-    axum::serve(listener, app.into_make_service())
-        .await
-        .unwrap();
+    let server = axum::serve(listener, app.into_make_service()).await;
+
+    match server {
+        Ok(_) => println!("Server stopped"),
+        Err(e) => println!("Error: {:?}", e),
+    }
 }
 
 async fn ws_handler(
@@ -80,7 +84,7 @@ async fn handle_socket(socket: WebSocket, id: String, connected_waitlists: Clien
             Ok(Message::Text(text)) => println!("Received message: {}", text),
             Ok(Message::Close(_)) | Err(_) => {
                 println!("Connection closed");
-                break
+                break;
             }
             _ => {}
         }

@@ -90,7 +90,6 @@ export async function getSignupsCountForDay(waitlistID: string, day: string) {
 }
 
 export async function getSignupsCountForDayRange(waitlistID: string, from: string, to: string) {
-	const fromTimestamp = from + " 00:00:00";
 	const toTimestamp = to + " 23:59:59";
 
 	return await db
