@@ -29,6 +29,5 @@ export const stripeEnv = () =>
 			STRIPE_WEBHOOK_SECRET: z.string(),
 			STRIPE_PRO_PLAN_FLAT: z.string(),
 			STRIPE_PRO_PLAN_USAGE: z.string(),
-			STRIPE_PRODUCT_ID_SUPPORT: z.string(),
 		})
 		.parse(process.env);
