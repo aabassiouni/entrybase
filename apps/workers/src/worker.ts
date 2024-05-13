@@ -1,7 +1,7 @@
+import { sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { createConnection } from "./db";
-import { sql } from "drizzle-orm";
-import { Env, zEnv } from "./env";
+import { type Env, zEnv } from "./env";
 import { signupRoute } from "./routes/signup";
 
 const app = new Hono();

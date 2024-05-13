@@ -2,6 +2,7 @@ import { signups } from "@entrybase/db";
 import { newId } from "@entrybase/id";
 import { sql } from "drizzle-orm";
 import type { Context } from "hono";
+import { env } from 'hono/adapter'
 import { db } from "../db";
 
 export async function signupRoute(c: Context) {
@@ -17,7 +18,7 @@ export async function signupRoute(c: Context) {
 			email,
 		});
 
-		await fetch("http://localhost:9999/receive", {
+		await fetch(`${env(c).REALTIME_API_URL}/receive`, {
 			method: "PUT",
 			headers: {
 				"Content-Type": "application/json",
@@ -29,7 +30,7 @@ export async function signupRoute(c: Context) {
 		})
 
 		return c.json({ id: signupID, message: "Signup Successful" });
-	} catch {
+	} catch{
 		return c.json({ message: "Internal Server Error :(" }, { status: 500 });
 	}
 }
