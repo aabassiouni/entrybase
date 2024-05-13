@@ -1,9 +1,10 @@
-import React from "react";
-import { Card } from "./ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import InviteAction from "@/components/invite-action";
+import { RealtimeCount } from "@/components/realtime-count";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { getSignupsCountForMonth, getSignupsCountForWeek } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
+import React from "react";
+import { Card } from "./ui/card";
 
 async function ActionsCardStats({ waitlistID }: { waitlistID: string }) {
 	const user = await currentUser();
@@ -16,11 +17,15 @@ async function ActionsCardStats({ waitlistID }: { waitlistID: string }) {
 		<div className="flex h-full w-full items-center justify-around">
 			<div className="">
 				<h1 className="text-center text-xl font-bold">Past Week</h1>
-				<p className="text-center text-xl font-bold text-primary">{weekCount}</p>
+				<p className="text-center text-xl font-bold text-primary">
+					<RealtimeCount initialCount={Number(weekCount)} />
+				</p>
 			</div>
 			<div className="">
 				<h1 className="text-center text-xl font-bold">Past Month</h1>
-				<p className="text-center text-xl font-bold text-primary">{monthCount}</p>
+				<p className="text-center text-xl font-bold text-primary">
+					<RealtimeCount initialCount={Number(monthCount)} />
+				</p>
 			</div>
 			{/* <div className="">
 				<h1 className="text-center text-xl font-bold">Open Rate</h1>

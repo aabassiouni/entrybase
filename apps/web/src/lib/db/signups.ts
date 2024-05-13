@@ -1,19 +1,19 @@
 import "server-only";
 
-import { DBResult, Entry, EntryResponse } from "@/types";
+import type { DBResult, Entry, EntryResponse } from "@/types";
 import { signups } from "@entrybase/db";
 import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { db } from "./db";
 
 export async function getInvitesListByCount(selectionMethod: string, count: number, waitlistID: string) {
 	const orderBy =
-		selectionMethod == "random"
+		selectionMethod === "random"
 			? sql`RANDOM()`
-			: selectionMethod == "latest"
-			? desc(signups.createdAt)
-			: selectionMethod == "oldest"
-			? asc(signups.createdAt)
-			: null;
+			: selectionMethod === "latest"
+			  ? desc(signups.createdAt)
+			  : selectionMethod === "oldest"
+				  ? asc(signups.createdAt)
+				  : null;
 
 	if (!orderBy) {
 		throw new Error("invalid selection method");
@@ -59,8 +59,8 @@ export async function getSignupsEmailListforUser(waitlistID: string) {
 }
 
 export async function getSignupsCountForDay(waitlistID: string, day: string) {
-	const fromTimestamp = day + " 00:00:00";
-	const toTimestamp = day + " 23:59:59";
+	const fromTimestamp = `${day} 00:00:00`;
+	const toTimestamp = `${day} 23:59:59`;
 	return await db
 		.execute(
 			sql.raw(`WITH hourly_series AS (
@@ -90,7 +90,8 @@ export async function getSignupsCountForDay(waitlistID: string, day: string) {
 }
 
 export async function getSignupsCountForDayRange(waitlistID: string, from: string, to: string) {
-	const toTimestamp = to + " 23:59:59";
+	const fromTimestamp = `${from} 00:00:00`;
+	const toTimestamp = `${to} 23:59:59`;
 
 	return await db
 		.execute(
@@ -146,15 +147,14 @@ export async function getDayRangeChartLabelsAndValues(
 		const tooltipLabel = `${label}: ${value}`;
 		return { label, value, tooltipLabel };
 	});
-	const fromString = new Date(from).toDateString().split(" ").slice(1, 3).join(" ");
-	const toString = new Date(to).toDateString().split(" ").slice(1, 3).join(" ");
-	const dayString = `${fromString} - ${toString}`;
+	const fromDateString = new Date(from).toDateString().split(" ").slice(1, 3).join(" ");
+	const toDateString = new Date(to).toDateString().split(" ").slice(1, 3).join(" ");
+	const dayString = `${fromDateString} - ${toDateString}`;
 
 	return { entries, dayString };
 }
 
 export async function getCounts(waitlistID: string) {
-
 	const data = await db
 		.execute(
 			sql`
@@ -173,18 +173,17 @@ export async function getCounts(waitlistID: string) {
 				`,
 		)
 		.then((result) => {
-			return result.rows as { total_count: number; invited_count: number; delta: number }[];
+			return result.rows as [{ total_count: string; invited_count: string; delta: string }];
 		});
 	return {
 		total: data[0].total_count,
 		invited: data[0].invited_count,
-		waiting: data[0].total_count - data[0].invited_count,
-		delta: data[0].delta,
+		waiting: (Number.parseInt(data[0].total_count) - Number.parseInt(data[0].invited_count)).toString(),
+		delta: data[0]?.delta ?? 0,
 	};
 }
 
 export async function getSignupsCountForWeek(waitlistID: string) {
-
 	return (await db
 		.select({
 			count: sql`COUNT(*)`,
@@ -192,12 +191,11 @@ export async function getSignupsCountForWeek(waitlistID: string) {
 		.from(signups)
 		.where(and(eq(signups.waitlistID, waitlistID), sql`created_at >= CURRENT_DATE - INTERVAL '7 days'`))
 		.then((result) => {
-			return result[0].count;
+			return result[0]?.count;
 		})) as number;
 }
 
 export async function getSignupsCountForMonth(waitlistID: string) {
-
 	return (await db
 		.select({
 			count: sql`COUNT(*)`,
@@ -205,6 +203,6 @@ export async function getSignupsCountForMonth(waitlistID: string) {
 		.from(signups)
 		.where(and(eq(signups.waitlistID, waitlistID), sql`created_at >= CURRENT_DATE - INTERVAL '30 days'`))
 		.then((result) => {
-			return result[0].count;
+			return result[0]?.count;
 		})) as number;
 }

@@ -1,20 +1,22 @@
 import Chart from "@/components/Chart";
+import ActionsCard from "@/components/actions-card";
+import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
+import { MainLayout } from "@/components/layout";
+import { PageHeading } from "@/components/typography";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { checkWorkspace } from "@/lib/auth";
 import { getCounts, getDayRangeChartLabelsAndValues, getSignupsEmailListforUser } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import ActionsCard from "@/components/actions-card";
 import { currentUser } from "@clerk/nextjs";
-import { MainLayout } from "@/components/layout";
-import { PageHeading } from "@/components/typography";
-import { checkWorkspace } from "@/lib/auth";
-import { EmptyComponent, EmptyComponentDescription, EmptyComponentTitle } from "@/components/empty-component";
+import { Suspense } from "react";
+import { RealtimeCount } from "../../../../../components/realtime-count";
+import { RealtimeSwitch } from "../../../../../components/realtime-switch";
 
-// export const revalidate = 20;
+// export const dynamic = "force-dynamic";
 
 function CountCardsLoading() {
 	return (
@@ -158,30 +160,36 @@ async function CountCards({ waitlistID }: { waitlistID: string }) {
 				<CardHeader>
 					<CardTitle>Signups</CardTitle>
 				</CardHeader>
-				<CardContent className="flex items-center justify-between gap-4">
-					<p className="text-3xl font-bold">{counts.total}</p>
-					{counts.delta > 0 ? (
-						<Badge className=" relative z-30 inline-flex items-center justify-center bg-green-500 text-sm text-black dark:bg-primary">
-							<div className="absolute -inset-0 -z-20 rounded-lg bg-green-400 opacity-100 blur" />
-							<p className="z-5">{`+${counts.delta}`}</p>
+				<CardContent className="flex flex-wrap items-center justify-between gap-4">
+					<p className="font-bold text-3xl">
+						<RealtimeCount initialCount={Number(counts.total)} />
+					</p>
+					{Number.parseInt(counts.delta) > 0 ? (
+						<Badge className="relative z-30 inline-flex items-center justify-center bg-green-500 text-black text-sm dark:bg-primary">
+							<div className="-inset-0 -z-20 absolute rounded-lg bg-green-400 opacity-100 blur" />
+							<p className="z-5">
+								+<RealtimeCount initialCount={Number(counts.delta)} />
+							</p>
 						</Badge>
 					) : null}
 				</CardContent>
 			</Card>
-			<Card className="h-40 w-full ">
+			<Card className="h-40 w-full">
 				<CardHeader>
 					<CardTitle>Invites</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-3xl font-bold">{counts.invited}</p>
+					<p className="font-bold text-3xl">{counts.invited}</p>
 				</CardContent>
 			</Card>
-			<Card className="h-40 w-full ">
+			<Card className="h-40 w-full">
 				<CardHeader>
 					<CardTitle>Waiting</CardTitle>
 				</CardHeader>
 				<CardContent>
-					<p className="text-3xl font-bold">{counts.waiting}</p>
+					<p className="font-bold text-3xl">
+						<RealtimeCount initialCount={Number(counts.waiting)} />
+					</p>
 				</CardContent>
 			</Card>
 		</>
@@ -193,8 +201,11 @@ export default async function Home({ params }: { params: { waitlist: string } })
 
 	return (
 		<MainLayout>
-			<PageHeading>Dashboard</PageHeading>
-			<div className="flex flex-wrap sm:!grid sm:grid-cols-5 gap-4">
+			<PageHeading className="gap-4 justify-between">
+				Dashboard
+				<RealtimeSwitch />
+			</PageHeading>
+			<div className="flex flex-wrap sm:grid sm:grid-cols-5 gap-4">
 				<Suspense fallback={<CountCardsLoading />}>
 					<CountCards waitlistID={params.waitlist} />
 				</Suspense>

@@ -13,6 +13,8 @@
 	"dependencies": {
 		"@clerk/nextjs": "^4.29.3",
 		"@clerk/types": "^3.60.0",
+		"@entrybase/db": "workspace:^",
+		"@entrybase/id": "workspace:^",
 		"@hookform/resolvers": "^3.3.2",
 		"@neoconfetti/react": "^0.1.1",
 		"@neondatabase/serverless": "^0.6.0",
@@ -36,8 +38,6 @@
 		"@tanstack/react-table": "^8.10.7",
 		"@uploadthing/react": "^6.0.2",
 		"@upstash/redis": "^1.24.0",
-		"@entrybase/db": "workspace:^",
-		"@entrybase/id": "workspace:^",
 		"base-x": "^4.0.0",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.0.0",
@@ -60,7 +60,8 @@
 		"tailwind-merge": "^1.14.0",
 		"tailwindcss-animate": "^1.0.7",
 		"uploadthing": "^6.1.0",
-		"zod": "^3.22.4"
+		"zod": "^3.22.4",
+		"zustand": "^4.5.2"
 	},
 	"devDependencies": {
 		"@types/dompurify": "^3.0.5",
