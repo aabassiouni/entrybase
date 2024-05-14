@@ -4,17 +4,19 @@ use axum::{
         ws::{Message, WebSocket, WebSocketUpgrade},
         Path,
     },
-    http::StatusCode,
+    http::{HeaderMap, StatusCode},
     response::IntoResponse,
     routing::{get, put},
     Extension, Json, Router,
 };
 use axum_extra::extract::WithRejection;
+use clerk_rs::{validators::axum::ClerkLayer, ClerkConfiguration};
 use futures_util::{SinkExt, StreamExt};
 use serde::Deserialize;
 use serde_json::json;
 use std::{
     collections::HashMap,
+    env, fmt,
     sync::{Arc, Mutex},
 };
 use tokio::sync::mpsc;
@@ -47,6 +49,20 @@ impl From<JsonRejection> for APIError {
     }
 }
 
+#[derive(PartialEq)]
+enum AppEnv {
+    Dev,
+    Prod,
+}
+
+impl fmt::Display for AppEnv {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            AppEnv::Dev => write!(f, "dev"),
+            AppEnv::Prod => write!(f, "prod"),
+        }
+    }
+}
 #[derive(Deserialize)]
 struct UpdatePayload {
     waitlist_id: String,
@@ -55,12 +71,38 @@ struct UpdatePayload {
 
 #[tokio::main]
 async fn main() {
+    let app_env = match env::var("APP_ENV") {
+        Ok(v) if v == "prod" => AppEnv::Prod,
+        _ => AppEnv::Dev,
+    };
+
+    println!("Running in {app_env} mode");
+
+    if app_env == AppEnv::Dev {
+        match dotenvy::from_filename(".env.development") {
+            Ok(path) => println!(".env read successfully from {}", path.display()),
+            Err(e) => println!("Could not load .env file: {e}"),
+        };
+    }
+    let clerk_secret_key = env::var("CLERK_SECRET_KEY").expect("CLERK_SECRET_KEY not set");
+
     let connected_waitlists: ClientList = Arc::new(Mutex::new(HashMap::new()));
+    let config: ClerkConfiguration =
+        ClerkConfiguration::new(None, None, Some(clerk_secret_key), None);
 
     let app = Router::new()
-        .route("/:id/ws", get(ws_handler))
+        .route(
+            "/:id/ws",
+            get(ws_handler).layer(ClerkLayer::new(config, None, true)),
+        )
         .route("/receive", put(update_handler))
-        .route("/health", get(|| async { "OK" }))
+        .route(
+            "/health",
+            get(|| async {
+                println!("[/health] Health check");
+                "OK"
+            }),
+        )
         .layer(Extension(connected_waitlists));
 
     println!("Server running on http://localhost:9999");
@@ -78,9 +120,14 @@ async fn main() {
 async fn ws_handler(
     Path(id): Path<String>,
     ws: WebSocketUpgrade,
+    headers: HeaderMap,
     Extension(connected_waitlists): Extension<ClientList>,
 ) -> impl IntoResponse {
-    println!("WebSocket connection established for waitlist {}", id);
+    println!("headers: {:?}", headers);
+    println!(
+        "[/:id/ws] WebSocket connection established for waitlist {}",
+        id
+    );
     ws.on_upgrade(move |socket| handle_socket(socket, id, connected_waitlists))
 }
 
@@ -126,7 +173,7 @@ async fn update_handler(
     Extension(connected_waitlists): Extension<ClientList>,
     WithRejection(Json(payload), _): WithRejection<Json<UpdatePayload>, APIError>,
 ) -> impl IntoResponse {
-    println!("Received update: {:?}", payload.update);
+    println!("[/recieve]: Received update: {:?}", payload.update);
     let mut waitlists = connected_waitlists.lock().unwrap();
     if let Some(clients) = waitlists.get_mut(&payload.waitlist_id) {
         for sender in clients {
