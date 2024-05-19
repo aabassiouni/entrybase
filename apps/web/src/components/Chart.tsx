@@ -1,7 +1,7 @@
 "use client";
 import { useRealtimeCount } from "@/lib/store";
 import type { Entry } from "@/types";
-import React from "react";
+import React, { useDeferredValue } from "react";
 import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import type { TooltipProps } from "recharts";
 import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
@@ -25,6 +25,7 @@ function renderLegend(_value: string, entry: any) {
 
 function Chart({ data, margin }: { data: Entry[]; margin: Margin }) {
 	const { realtimeCount } = useRealtimeCount();
+	const deferredCount = useDeferredValue(realtimeCount);
 
 	const lastValue = data[data.length - 1];
 
@@ -32,11 +33,10 @@ function Chart({ data, margin }: { data: Entry[]; margin: Margin }) {
 		...data.slice(0, -1),
 		{
 			label: lastValue?.label ?? "",
-			value: (lastValue?.value ?? 0) + realtimeCount,
+			value: (lastValue?.value ?? 0) + deferredCount,
 			tooltipLabel: lastValue?.tooltipLabel ?? "",
 		},
 	];
-
 
 	return (
 		<ResponsiveContainer width="100%" minHeight={350}>
