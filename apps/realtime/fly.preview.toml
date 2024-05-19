@@ -1,0 +1,25 @@
+# fly.toml app configuration file generated for entrybase-realtime-preview on 2024-05-20T01:15:43+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'entrybase-realtime-preview'
+primary_region = 'iad'
+
+[build]
+
+[env]
+  APP_ENV = 'preview'
+
+[http_service]
+  internal_port = 9999
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

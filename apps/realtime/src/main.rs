@@ -53,13 +53,15 @@ impl From<JsonRejection> for APIError {
 enum AppEnv {
     Dev,
     Prod,
+    Preview,
 }
 
 impl fmt::Display for AppEnv {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             AppEnv::Dev => write!(f, "dev"),
-            AppEnv::Prod => write!(f, "prod"),
+            AppEnv::Prod => write!(f, "production"),
+            AppEnv::Preview => write!(f, "preview"),
         }
     }
 }
@@ -72,7 +74,8 @@ struct UpdatePayload {
 #[tokio::main]
 async fn main() {
     let app_env = match env::var("APP_ENV") {
-        Ok(v) if v == "prod" => AppEnv::Prod,
+        Ok(v) if v == "production" => AppEnv::Prod,
+        Ok(v) if v == "preview" => AppEnv::Preview,
         _ => AppEnv::Dev,
     };
 
@@ -84,6 +87,7 @@ async fn main() {
             Err(e) => println!("Could not load .env file: {e}"),
         };
     }
+
     let clerk_secret_key = env::var("CLERK_SECRET_KEY").expect("CLERK_SECRET_KEY not set");
 
     let connected_waitlists: ClientList = Arc::new(Mutex::new(HashMap::new()));

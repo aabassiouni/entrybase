@@ -1,0 +1,22 @@
+name: Deploy realtime - Production
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "apps/realtime/**"  
+
+jobs:
+  deploy:
+    name: Deploy realtime
+    runs-on: ubuntu-latest
+    environment: Production
+    concurrency: deploy-group
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: cd ./apps/realtime && flyctl deploy --remote-only -c ./fly.production.toml
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

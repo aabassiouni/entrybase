@@ -8,6 +8,9 @@ primary_region = 'iad'
 
 [build]
 
+[env]
+  APP_ENV = 'production'
+
 [http_service]
   internal_port = 9999
   force_https = true
