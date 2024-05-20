@@ -1,0 +1,15 @@
+name = "entrybase"
+main = "src/worker.ts"
+compatibility_date = "2023-12-01"
+
+
+[vars]
+REALTIME_API_URL = "http://localhost:9999"
+
+[env.preview]
+vars = { ENVIRONMENT = "preview", REALTIME_API_URL = "https://entrybase-realtime-preview.fly.dev" }
+routes = [{ pattern = "api-preview.entrybase.app", custom_domain = true }]
+
+[env.production]
+vars = { ENVIRONMENT = "production", REALTIME_API_URL = "https://realtime.entrybase.app" }
+routes = [{ pattern = "api.entrybase.app", custom_domain = true }]
