@@ -1,0 +1,29 @@
+name: Deploy Workers - Preview
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+    paths:
+      - "apps/workers/**"
+
+jobs:
+  deploy:
+    name: Deploy Workers API
+    runs-on: ubuntu-latest
+    environment: Preview
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Deploy To Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          workingDirectory: ./apps/workers
+          environment: preview
