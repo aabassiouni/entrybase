@@ -18,7 +18,7 @@ export const env = () =>
 export const dbEnv = () =>
 	z
 		.object({
-			DRIZZLE_DATABASE_URL: z.string(),
+			DATABASE_URL: z.string(),
 		})
 		.parse(process.env);
 

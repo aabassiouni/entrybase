@@ -14,6 +14,6 @@ if (process.env.NODE_ENV === "development") {
 	};
 }
 
-const neonDB = neon(dbEnv().DRIZZLE_DATABASE_URL);
+const neonDB = neon(dbEnv().DATABASE_URL);
 
 export const db = drizzle(neonDB, { schema: { invites, waitlists, email_templates, workspaces, signups } });
