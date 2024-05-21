@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 
-export const useWebSocket = (url: string, opts: { onMessage: (e: MessageEvent) => void; enabled: boolean }) => {
+export const useWebSocket = (
+	url: string,
+	opts: { onMessage: (e: MessageEvent) => void; enabled?: boolean; authToken?: string },
+) => {
 	const [ws, setWs] = useState<WebSocket | null>(null);
 	const [key, setKey] = useState(0);
+
+	const link = new URL(url);
+
+	if (opts.authToken) link.searchParams.append("token", opts.authToken);
 
 	const reconnect = useCallback(() => {
 		setKey((prev) => prev + 1);
@@ -10,7 +17,7 @@ export const useWebSocket = (url: string, opts: { onMessage: (e: MessageEvent) =
 
 	useEffect(() => {
 		if (opts.enabled) {
-			const ws = new WebSocket(url);
+			const ws = new WebSocket(link);
 			ws.onopen = () => {
 				console.log("[Connected to realtime]");
 			};
