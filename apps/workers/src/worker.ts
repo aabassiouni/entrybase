@@ -1,4 +1,3 @@
-import { sql } from "drizzle-orm";
 import { Hono } from "hono";
 import { createConnection } from "./db";
 import { type Env, zEnv } from "./env";

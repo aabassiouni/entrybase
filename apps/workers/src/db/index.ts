@@ -1,6 +1,6 @@
 import * as schema from "@entrybase/db/src/schema";
 import { neon, neonConfig } from "@neondatabase/serverless";
-import { NeonHttpDatabase, drizzle } from "drizzle-orm/neon-http";
+import { type NeonHttpDatabase, drizzle } from "drizzle-orm/neon-http";
 
 export let db: NeonHttpDatabase<typeof schema>;
 

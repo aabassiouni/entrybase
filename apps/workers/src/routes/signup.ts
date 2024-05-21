@@ -1,8 +1,7 @@
 import { signups } from "@entrybase/db";
 import { newId } from "@entrybase/id";
-import { sql } from "drizzle-orm";
 import type { Context } from "hono";
-import { env } from 'hono/adapter'
+import { env } from "hono/adapter";
 import { db } from "../db";
 
 export async function signupRoute(c: Context) {
@@ -27,10 +26,10 @@ export async function signupRoute(c: Context) {
 				waitlist_id: waitlist,
 				update: "update from workers",
 			}),
-		})
+		});
 
 		return c.json({ id: signupID, message: "Signup Successful" });
-	} catch{
-		return c.json({ message: "Internal Server Error :(" }, { status: 500 });
+	} catch {
+		return c.json({ message: "Internal Server Error" }, { status: 500 });
 	}
 }
