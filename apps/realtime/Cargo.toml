@@ -10,7 +10,5 @@ tokio = { version = "1", features = ["full"] }
 axum = { version = "*", features = ["ws", "macros"] }
 futures-util = "*"
 serde_json = "*"
-clerk-rs = { git = "https://github.com/DarrenBaldwin07/clerk-rs", branch = "main", features = [
-  'axum',
-] }
+clerk-rs = { version = "0.3.0", features = ['axum'] }
 dotenvy = "0.15.7"
