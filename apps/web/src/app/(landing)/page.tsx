@@ -22,9 +22,13 @@ function LandingPage() {
 		<div className="sm:flex-1">
 			<div className="bg- flex items-center justify-around p-4">
 				<TextLogo className="text-white" />
-				<Link href={"/dashboard"}>
-					<StyledButton>Login</StyledButton>
-				</Link>
+				{process.env.NODE_ENV === "development" ? (
+					<Link href={"/dashboard"}>
+						<StyledButton>Login</StyledButton>
+					</Link>
+				) : (
+					<Button className="invisible" />
+				)}
 			</div>
 			<div className="relative px-4 pb-10">
 				<div className="-z-10 absolute inset-0 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#020705_40%,#4BE7AE_100%)]" />
