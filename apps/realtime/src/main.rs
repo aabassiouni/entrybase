@@ -2,24 +2,28 @@ use axum::{
     extract::{
         rejection::JsonRejection,
         ws::{Message, WebSocket, WebSocketUpgrade},
-        Path,
+        Path, Query,
     },
-    http::{HeaderMap, StatusCode},
+    http::StatusCode,
     response::IntoResponse,
     routing::{get, put},
     Extension, Json, Router,
 };
 use axum_extra::extract::WithRejection;
-use clerk_rs::{validators::axum::ClerkLayer, ClerkConfiguration};
+use clerk_rs::{clerk::Clerk, ClerkConfiguration};
 use futures_util::{SinkExt, StreamExt};
 use serde::Deserialize;
 use serde_json::json;
 use std::{
     collections::HashMap,
-    env, fmt,
+    env,
     sync::{Arc, Mutex},
 };
 use tokio::sync::mpsc;
+
+use crate::utils::auth::get_auth;
+
+mod utils;
 
 type Sender = mpsc::UnboundedSender<String>;
 type ClientList = Arc<Mutex<HashMap<String, Vec<Sender>>>>;
@@ -49,22 +53,6 @@ impl From<JsonRejection> for APIError {
     }
 }
 
-#[derive(PartialEq)]
-enum AppEnv {
-    Dev,
-    Prod,
-    Preview,
-}
-
-impl fmt::Display for AppEnv {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            AppEnv::Dev => write!(f, "dev"),
-            AppEnv::Prod => write!(f, "production"),
-            AppEnv::Preview => write!(f, "preview"),
-        }
-    }
-}
 #[derive(Deserialize)]
 struct UpdatePayload {
     waitlist_id: String,
@@ -73,32 +61,17 @@ struct UpdatePayload {
 
 #[tokio::main]
 async fn main() {
-    let app_env = match env::var("APP_ENV") {
-        Ok(v) if v == "production" => AppEnv::Prod,
-        Ok(v) if v == "preview" => AppEnv::Preview,
-        _ => AppEnv::Dev,
-    };
-
-    println!("Running in {app_env} mode");
-
-    if app_env == AppEnv::Dev {
-        match dotenvy::from_filename(".env.development") {
-            Ok(path) => println!(".env read successfully from {}", path.display()),
-            Err(e) => println!("Could not load .env file: {e}"),
-        };
-    }
+    utils::env::load_env();
 
     let clerk_secret_key = env::var("CLERK_SECRET_KEY").expect("CLERK_SECRET_KEY not set");
 
     let connected_waitlists: ClientList = Arc::new(Mutex::new(HashMap::new()));
     let config: ClerkConfiguration =
         ClerkConfiguration::new(None, None, Some(clerk_secret_key), None);
+    let clerk_client = Clerk::new(config.clone());
 
     let app = Router::new()
-        .route(
-            "/:id/ws",
-            get(ws_handler).layer(ClerkLayer::new(config, None, true)),
-        )
+        .route("/:id/ws", get(ws_handler))
         .route("/receive", put(update_handler))
         .route(
             "/health",
@@ -107,7 +80,8 @@ async fn main() {
                 "OK"
             }),
         )
-        .layer(Extension(connected_waitlists));
+        .layer(Extension(connected_waitlists))
+        .layer(Extension(clerk_client));
 
     println!("Server running on http://localhost:9999");
 
@@ -124,15 +98,27 @@ async fn main() {
 async fn ws_handler(
     Path(id): Path<String>,
     ws: WebSocketUpgrade,
-    headers: HeaderMap,
+    Query(query_params): Query<HashMap<String, String>>,
     Extension(connected_waitlists): Extension<ClientList>,
+    Extension(clerk_client): Extension<Clerk>,
 ) -> impl IntoResponse {
-    println!("headers: {:?}", headers);
+    let token = query_params.get("token").unwrap();
+
+    let user_id = match get_auth(clerk_client, token).await {
+        Ok(val) => val,
+        Err(_) => {
+            return (StatusCode::UNAUTHORIZED, "Unauthorized").into_response();
+        }
+    };
+
+    println!("User ID: {:?}", user_id);
+
     println!(
         "[/:id/ws] WebSocket connection established for waitlist {}",
         id
     );
     ws.on_upgrade(move |socket| handle_socket(socket, id, connected_waitlists))
+        .into_response()
 }
 
 async fn handle_socket(socket: WebSocket, id: String, connected_waitlists: ClientList) {
