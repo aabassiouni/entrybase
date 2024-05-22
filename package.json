@@ -6,7 +6,8 @@
 	],
 	"scripts": {
 		"dev": "turbo run dev",
-		"build": "pnpm turbo run build"
+		"build": "pnpm turbo run build",
+		"prepare": "is-ci || husky"
 	},
 	"author": "Ali Bassiouni",
 	"description": "",
@@ -15,7 +16,13 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.6.0",
 		"@types/node": "^20.11.5",
+		"husky": "^9.0.11",
+		"is-ci": "^3.0.1",
+		"lint-staged": "^15.2.4",
 		"turbo": "^1.13.1",
 		"typescript": "^5"
+	},
+	"lint-staged": {
+		"*.{js,jsx,ts,tsx}": "biome check --apply"
 	}
 }
