@@ -11,17 +11,16 @@ export async function signupRoute(c: Context) {
 
 	const signupID = newId("su");
 
-	const _record = await db
-		.insert(signups)
-		.values({
+	try {
+		const _record = await db.insert(signups).values({
 			signupID,
 			waitlistID: waitlist,
 			email,
-		})
-		.catch((e) => {
-			console.log(e);
-			return c.json({ message: "Internal Server Error" }, { status: 500 });
 		});
+	} catch (e) {
+		console.log(e);
+		return c.json({ message: "Internal Server Error" }, { status: 500 });
+	}
 
 	await fetch(`${env(c).REALTIME_API_URL}/receive`, {
 		method: "PUT",
