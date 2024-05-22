@@ -78,7 +78,9 @@ function LandingPage() {
 			</div> */}
 			<div className="mx-auto max-w-screen-lg space-y-8 px-4 py-16">
 				<div className="space-y-2">
-					<h1 className="text-balance text-center font-bold font-clash-grotesk text-5xl text-white tracking-wide">How it works</h1>
+					<h1 className="text-balance text-center font-bold font-clash-grotesk text-5xl text-white tracking-wide">
+						How it works
+					</h1>
 					<p className="text-balance text-center text-lg text-neutral-400 sm:text-xl">
 						Entrybase lets you take control of your waitlist and choose who you want to invite and when.
 						Launch on your terms.
@@ -172,7 +174,7 @@ function LandingPage() {
 						flexdir={"flex-col-reverse"}
 						className="col animated-chart col-span-1 sm:col-span-2 sm:row-span-2"
 					>
-						<div className="overflow-hidden rounded bg-tintedBlack p-4 blur-box sm:overflow-auto">
+						<div className="overflow-hidden rounded bg-tinted-black p-4 blur-box sm:overflow-auto">
 							<AnimatedChart />
 						</div>
 						<div>
@@ -218,7 +220,7 @@ function LandingPage() {
 							</GradientBorderCardDescription>
 						</div>
 						<div className="group relative flex-1">
-							<div className="inline-flex h-12 w-3/4 animate-input items-center justify-center rounded-2xl border-2 border-zinc-800 bg-tintedBlack p-2 text-center">
+							<div className="inline-flex h-12 w-3/4 animate-input items-center justify-center rounded-2xl border-2 border-zinc-800 bg-tinted-black p-2 text-center">
 								<p className="text-neutral-500 text-xl">you@yourdomain.com</p>
 							</div>
 							<CursorArrowIcon className="absolute top-1/2 right-1/4 h-8 w-8 animate-cursor justify-end text-neutral-300" />
@@ -229,7 +231,9 @@ function LandingPage() {
 			<div className="mx-auto max-w-screen-lg space-y-8 px-4 pb-16 sm:px-0">
 				<div className="flex flex-col gap-10">
 					<div className="space-y-2">
-						<h1 className="text-balance text-center font-bold font-clash-grotesk text-5xl text-white tracking-wide">Fully Open Source</h1>
+						<h1 className="text-balance text-center font-bold font-clash-grotesk text-5xl text-white tracking-wide">
+							Fully Open Source
+						</h1>
 						<p className="text-balance text-center text-neutral-400 sm:text-xl">
 							Fully open source. We believe in the power of open source and the community. Feel free to
 							review, learn from, and contribute to our codebase.
@@ -249,7 +253,7 @@ function LandingPage() {
 					</div>
 				</div>
 			</div>
-			<div className="bg-[#020705] p-24">
+			<div className="bg-tinted-black p-24">
 				<div className="mx-auto flex max-w-screen-lg flex-col items-center justify-between gap-4 sm:flex-row">
 					<TextLogo className="text-white" />
 					<div className="flex justify-center gap-2">

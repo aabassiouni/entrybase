@@ -22,7 +22,7 @@ export default withUt({
 				secondary: "#0F6C4A",
 				light: "#D3FDEE",
 				text: "#D3FDEE",
-				tintedBlack: "#020705"
+				"tinted-black": "#020705"
 			},
 			keyframes: {
 				"accordion-down": {
