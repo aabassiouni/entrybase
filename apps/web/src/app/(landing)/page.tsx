@@ -5,10 +5,9 @@ import {
 	GradientBorderCardTitle,
 } from "@/components/landing/gradient-border-card";
 import "@/components/landing/landing.css";
+import { SignupForm } from "@/components/landing/signup-form";
 import { StyledButton } from "@/components/styled-button";
 import TextLogo from "@/components/text-logo";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CursorArrowIcon, GitHubLogoIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -39,12 +38,7 @@ function LandingPage() {
 						<p className="text-center text-lg text-white sm:text-xl">
 							Validate your ideas fast. Ship even faster.
 						</p>
-						<form action="/signup">
-							<div className="flex items-center gap-2">
-								<Input className="h-12 border-primary bg-[#071711] text-white" />
-								<StyledButton>Join Waitlist </StyledButton>
-							</div>
-						</form>
+						<SignupForm />
 					</div>
 				</div>
 				<div className="flex items-center justify-center">
