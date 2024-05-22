@@ -22,12 +22,10 @@ function LandingPage() {
 		<div className="sm:flex-1">
 			<div className="bg- flex items-center justify-around p-4">
 				<TextLogo className="text-white" />
-				{process.env.NODE_ENV === "development" ? (
+				{process.env.NODE_ENV === "development" && (
 					<Link href={"/dashboard"}>
 						<StyledButton>Login</StyledButton>
 					</Link>
-				) : (
-					<Button className="invisible" />
 				)}
 			</div>
 			<div className="relative px-4 pb-10">
