@@ -250,51 +250,37 @@ function LandingPage() {
 				</div>
 			</div>
 			<div className="bg-[#020705] p-24">
-				<div className="mx-auto flex max-w-screen-lg items-center justify-between">
-					<div className="space-y-4">
-						<TextLogo className="text-white" />
-						{/* <p className=" text-neutral-500">Open source waitlist management and analytics platform</p> */}
-						<div className="flex gap-2">
-							<Link href={"https://github.com/aabassiouni/entrybase"}>
-								<GitHubLogoIcon className="h-6 w-6 text-white" />
-							</Link>
-							<svg
-								width="24"
-								height="24"
-								viewBox="0 0 1200 1227"
-								fill="none"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"
-									fill="white"
-								/>
-							</svg>
-						</div>
+				<div className="mx-auto flex max-w-screen-lg flex-col items-center justify-between gap-4 sm:flex-row">
+					<TextLogo className="text-white" />
+					<div className="flex justify-center gap-2">
+						<Link href={"https://github.com/aabassiouni/entrybase"}>
+							<GitHubLogoIcon className="h-6 w-6 text-white" />
+						</Link>
+						<svg
+							width="24"
+							height="24"
+							viewBox="0 0 1200 1227"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path
+								d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163ZM569.165 687.828L521.697 619.934L144.011 79.6944H306.615L611.412 515.685L658.88 583.579L1055.08 1150.3H892.476L569.165 687.854V687.828Z"
+								fill="white"
+							/>
+						</svg>
 					</div>
 					<div>
-						<p className="text-neutral-500">©2024 Entrybase. All rights reserved.</p>
+						<p className="text-center text-neutral-500">©2024 Entrybase. All rights reserved.</p>
 						<div className="flex items-center justify-center gap-4">
 							<Link href={"/privacy"}>
-								<p className="cursor-pointer text-neutral-500">Privacy Policy</p>
+								<p className="cursor-pointer text-center text-neutral-500">Privacy Policy</p>
 							</Link>
 							<Link href={"/terms"}>
-								<p className="cursor-pointer text-neutral-500">Terms of Service</p>
+								<p className="cursor-pointer text-center text-neutral-500">Terms of Service</p>
 							</Link>
 						</div>
 					</div>
 				</div>
-				{/* <div className="mx-auto flex max-w-screen-lg flex-col items-center justify-center">
-					<p className="text-center text-neutral-500">© 2022 Entrybase. All rights reserved.</p>
-					<div className="flex items-center justify-center gap-4">
-						<Link href={"/privacy"}>
-							<p className="cursor-pointer text-neutral-500">Privacy Policy</p>
-						</Link>
-						<Link href={"/terms"}>
-							<p className="cursor-pointer text-neutral-500">Terms of Service</p>
-						</Link>
-					</div>
-				</div> */}
 			</div>
 		</div>
 	);
