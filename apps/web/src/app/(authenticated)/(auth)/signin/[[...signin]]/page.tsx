@@ -1,5 +1,5 @@
 import { SignIn } from "@clerk/nextjs";
 
 export default function Page() {
-	return <SignIn />;
+  return process.env.NODE_ENV === "development" ? <SignIn /> : null;
 }
