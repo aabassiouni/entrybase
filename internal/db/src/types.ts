@@ -1,14 +1,8 @@
-import { InferModel } from "drizzle-orm";
-import {
-  email_templates,
-  invites,
-  signups,
-  waitlists,
-  workspaces,
-} from "./schema";
+import type { InferSelectModel } from "drizzle-orm";
+import type { email_templates, invites, signups, waitlists, workspaces } from "./schema";
 
-export type EmailTemplate = InferModel<typeof email_templates>;
-export type Invite = InferModel<typeof invites>;
-export type Signup = InferModel<typeof signups>;
-export type Waitlist = InferModel<typeof waitlists>;
-export type Workspace = InferModel<typeof workspaces>;
+export type EmailTemplate = InferSelectModel<typeof email_templates>;
+export type Invite = InferSelectModel<typeof invites>;
+export type Signup = InferSelectModel<typeof signups>;
+export type Waitlist = InferSelectModel<typeof waitlists>;
+export type Workspace = InferSelectModel<typeof workspaces>;
