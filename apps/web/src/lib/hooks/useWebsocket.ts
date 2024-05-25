@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/nextjs";
 import { useCallback, useEffect, useState } from "react";
 
 export const useWebSocket = (
@@ -6,15 +7,23 @@ export const useWebSocket = (
     onMessage: (e: MessageEvent) => void;
     onClose?: (e: CloseEvent) => void;
     enabled?: boolean;
-    authToken?: string;
+    authToken?: boolean;
   },
 ) => {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [key, setKey] = useState(0);
+  const [token, setToken] = useState<string | null>(null);
+  const { getToken } = useAuth();
 
   const link = new URL(url);
 
-  if (opts.authToken) link.searchParams.append("token", opts.authToken);
+  async function fetchToken() {
+    setToken(await getToken());
+  }
+
+  if (opts.authToken) {
+    fetchToken();
+  }
 
   const reconnect = useCallback(() => {
     setKey((prev) => prev + 1);
@@ -22,7 +31,12 @@ export const useWebSocket = (
 
   useEffect(() => {
     if (opts.enabled) {
+      if (token) {
+        link.searchParams.set("token", token);
+      }
+
       const ws = new WebSocket(link);
+
       ws.onopen = () => {
         console.log("[Connected to realtime]");
       };
@@ -33,6 +47,8 @@ export const useWebSocket = (
       ws.onmessage = opts.onMessage;
       ws.onerror = (e) => {
         console.error("[Realtime error]", e);
+        console.log("refreshing token");
+        fetchToken();
       };
 
       setWs(ws);

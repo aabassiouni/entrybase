@@ -2,9 +2,8 @@
 import { Switch } from "@/components/ui/switch";
 import { useWebSocket } from "@/lib/hooks/useWebsocket";
 import { useRealtimeCountActions } from "@/lib/store";
-import { useAuth } from "@clerk/nextjs";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 export function RealtimeSwitch() {
   const router = useRouter();
@@ -12,26 +11,17 @@ export function RealtimeSwitch() {
   const { incrementRealtimeCount, resetRealtimeCount } = useRealtimeCountActions();
 
   const [enabled, setEnabled] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-  const { getToken } = useAuth();
 
   const { ws, reconnect } = useWebSocket(`${process.env.NEXT_PUBLIC_REALTIME_URL}/${params.waitlist}/ws`, {
     onMessage: () => {
       incrementRealtimeCount();
     },
-    onClose: () => setEnabled(false),
+    onClose: () => {
+      setEnabled(false);
+    },
     enabled,
-    authToken: token ?? undefined,
+    authToken: true,
   });
-
-  useEffect(() => {
-    async function fetchToken() {
-      const token = await getToken();
-      setToken(token);
-    }
-
-    fetchToken();
-  }, []);
 
   return (
     <div className="flex items-center gap-2">
