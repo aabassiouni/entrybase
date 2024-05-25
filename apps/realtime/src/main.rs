@@ -107,6 +107,7 @@ async fn ws_handler(
     let user_id = match get_auth(clerk_client, token).await {
         Ok(val) => val,
         Err(_) => {
+            println!("Unauthorized Request to WebSocket");
             return (StatusCode::UNAUTHORIZED, "Unauthorized").into_response();
         }
     };
@@ -164,9 +165,9 @@ async fn update_handler(
     Extension(connected_waitlists): Extension<ClientList>,
     WithRejection(Json(payload), _): WithRejection<Json<UpdatePayload>, APIError>,
 ) -> impl IntoResponse {
-    println!("[/recieve]: Received update: {:?}", payload.update);
-    let mut waitlists = connected_waitlists.lock().unwrap();
-    if let Some(clients) = waitlists.get_mut(&payload.waitlist_id) {
+    println!("[/recieve]: Sending update to: {:?}", payload.waitlist_id);
+    
+    if let Some(clients) = connected_waitlists.lock().unwrap().get_mut(&payload.waitlist_id) {
         for sender in clients {
             if sender.send(payload.update.clone()).is_err() {}
         }
