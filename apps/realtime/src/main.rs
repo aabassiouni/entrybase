@@ -147,6 +147,7 @@ async fn handle_socket(socket: WebSocket, id: String, connected_waitlists: Clien
             Ok(Message::Text(text)) => println!("Received message: {}", text),
             Ok(Message::Close(_)) | Err(_) => {
                 println!("Connection closed");
+                connected_waitlists.lock().unwrap().remove(&id);
                 break;
             }
             _ => {}
