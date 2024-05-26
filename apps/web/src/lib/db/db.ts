@@ -7,11 +7,11 @@ import { dbEnv, env } from "../env";
 
 neonConfig.fetchConnectionCache = true;
 if (process.env.NODE_ENV === "development") {
-	neonConfig.fetchEndpoint = (host) => {
-		const protocol = host === "db.localtest.me" ? "http" : "https";
-		const port = host === "db.localtest.me" ? 4444 : 443;
-		return `${protocol}://${host}:${port}/sql`;
-	};
+  neonConfig.fetchEndpoint = (host) => {
+    const protocol = host === "db.localtest.me" ? "http" : "https";
+    const port = host === "db.localtest.me" ? 4444 : 443;
+    return `${protocol}://${host}:${port}/sql`;
+  };
 }
 
 const neonDB = neon(dbEnv().DATABASE_URL);

@@ -1,6 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "experimentalUI": true, 
+  "experimentalUI": true,
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
@@ -28,13 +28,7 @@
         "UPLOADTHING_SECRET",
         "UPLOADTHING_APP_ID"
       ],
-      "outputs": [
-        "dist/**",
-        ".output/**",
-        ".nuxt/**",
-        ".next/**",
-        "!.next/cache/**"
-      ]
+      "outputs": ["dist/**", ".output/**", ".nuxt/**", ".next/**", "!.next/cache/**"]
     },
     "dev": {
       "cache": false,

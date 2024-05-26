@@ -31,5 +31,4 @@ export function createConnection({
   const neonDB = neon(databaseURL);
   db = drizzle(neonDB, { schema: { ...schema } });
   initialized = true;
-  
 }

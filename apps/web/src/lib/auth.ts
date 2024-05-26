@@ -1,39 +1,39 @@
 import { auth } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 import { getWorkspaceForTenant } from "./db";
 import { db } from "./db/db";
-import { redirect } from "next/navigation";
 
 export function getTenantID() {
-	const { userId, orgId } = auth();
+  const { userId, orgId } = auth();
 
-	return orgId ?? userId ?? null;
+  return orgId ?? userId ?? null;
 }
 
 export async function checkWorkspace(waitlistID?: string) {
-	const tenantID = getTenantID();
+  const tenantID = getTenantID();
 
-	if (!tenantID) {
-		return null;
-	}
-    
-	const workspace = await getWorkspaceForTenant(tenantID);
+  if (!tenantID) {
+    return null;
+  }
 
-	if (!workspace) {
-		return null;
-	}
+  const workspace = await getWorkspaceForTenant(tenantID);
 
-	if (waitlistID) {
-		const res = await db.query.waitlists.findFirst({
-			where: (table, { and, eq }) =>
-				and(eq(table.workspaceID, workspace.workspaceID), eq(table.waitlistID, waitlistID)),
-			columns: {
-				waitlistID: true,	
-			},
-		});
-		if (!res) {
-			redirect("/dashboard");
-		}
-	}
+  if (!workspace) {
+    return null;
+  }
 
-	return workspace;
+  if (waitlistID) {
+    const res = await db.query.waitlists.findFirst({
+      where: (table, { and, eq }) =>
+        and(eq(table.workspaceID, workspace.workspaceID), eq(table.waitlistID, waitlistID)),
+      columns: {
+        waitlistID: true,
+      },
+    });
+    if (!res) {
+      redirect("/dashboard");
+    }
+  }
+
+  return workspace;
 }

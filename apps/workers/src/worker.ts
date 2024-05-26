@@ -1,14 +1,14 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { createConnection } from "./db";
 import { type Env, zEnv } from "./env";
 import { signupRoute } from "./routes/signup";
-import { cors } from "hono/cors";
 
 const app = new Hono();
 app.use("/*", cors());
 
 app.get("/", async (c) => {
-	return c.text("Hello Hono!");
+  return c.text("Hello Hono!");
 });
 
 app.post("/:waitlist/signup", signupRoute);
@@ -23,7 +23,7 @@ export default {
           message: "Some environment variables are missing or are invalid",
           errors: parsedEnv.error,
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
     createConnection({

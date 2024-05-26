@@ -1,24 +1,24 @@
 {
-	"name": "@entrybase/api",
-	"scripts": {
-		"build": "tsc",
-		"dev": "pnpm build && wrangler dev",
-		"deploy": "pnpm build && wrangler deploy"
-	},
-	"dependencies": {
-		"@entrybase/db": "workspace:^",
-		"@entrybase/id": "workspace:^",
-		"@neondatabase/serverless": "^0.7.2",
-		"base-x": "^4.0.0",
-		"drizzle-orm": "^0.28.6",
-		"hono": "^3.12.7",
-		"typescript": "^5.3.3",
-		"zod": "^3.22.4"
-	},
-	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20240512.0",
-		"drizzle-kit": "^0.20.13",
-		"tsx": "^4.7.0",
-		"wrangler": "^3.57.0"
-	}
+  "name": "@entrybase/api",
+  "scripts": {
+    "build": "tsc",
+    "dev": "pnpm build && wrangler dev",
+    "deploy": "pnpm build && wrangler deploy"
+  },
+  "dependencies": {
+    "@entrybase/db": "workspace:^",
+    "@entrybase/id": "workspace:^",
+    "@neondatabase/serverless": "^0.7.2",
+    "base-x": "^4.0.0",
+    "drizzle-orm": "^0.28.6",
+    "hono": "^3.12.7",
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240512.0",
+    "drizzle-kit": "^0.20.13",
+    "tsx": "^4.7.0",
+    "wrangler": "^3.57.0"
+  }
 }

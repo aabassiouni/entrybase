@@ -27,7 +27,7 @@ export function CopyButton({ value, className, src, ...props }: CopyButtonProps)
     <button
       type="button"
       className={cn(
-        "relative z-20 h-8 inline-flex items-center justify-center rounded-md border-border p-1 text-sm font-medium text-primary transition-all hover:border-primary hover:bg-secondary focus:outline-none ",
+        "relative z-20 inline-flex h-8 items-center justify-center rounded-md border-border p-1 font-medium text-primary text-sm transition-all hover:border-primary hover:bg-secondary focus:outline-none",
         className,
       )}
       onClick={() => {
@@ -39,7 +39,7 @@ export function CopyButton({ value, className, src, ...props }: CopyButtonProps)
       {...props}
     >
       <span className="sr-only">Copy</span>
-      {hasCopied ? <CopyCheck className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+      {hasCopied ? <CopyCheck className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
     </button>
   );
 }

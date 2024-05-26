@@ -1,10 +1,13 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.6.0/schema.json",
+  "files": {
+    "ignore": ["apps/web/src/components/ui/**/*"]
+  },
   "organizeImports": {
     "enabled": true
   },
   "formatter": {
-    "lineEnding": "crlf",
+    "lineEnding": "lf",
     "enabled": true,
     "lineWidth": 120,
     "indentStyle": "space",
@@ -40,7 +43,7 @@
         "noForEach": "off"
       },
       "nursery": {
-        "useSortedClasses": "warn"
+        "useSortedClasses": "error"
       }
     },
     "ignore": ["node_modules", ".next", "dist", ".wrangler"]
