@@ -48,9 +48,10 @@ function LandingPage() {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <div className="sm:block sm:w-3/4">
+          <div className="relative rounded-3xl sm:block sm:w-3/4">
+            <BorderBeam borderWidth={2} colorFrom={"#4be7ae"} colorTo="#ffffff" />
             <Image
-              className="mx-auto rounded-3xl border-4 border-neutral-700 shadow-md"
+              className="mx-auto rounded-3xl border-2 border-neutral-700 shadow-md"
               src={homepageImg}
               alt="homepage"
               priority={true}

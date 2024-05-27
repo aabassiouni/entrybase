@@ -97,8 +97,14 @@ export default withUt({
             backgroundPosition: "-200% 0",
           },
         },
+        "border-beam": {
+          "100%": {
+            "offset-distance": "100%",
+          },
+        },
       },
       animation: {
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         "domain-link-in": "domain-link-in 0.8s ease-in-out forwards ",
         "domain-link-out": "domain-link-out 0.8s ease-in-out forwards",
         "domain-cursor-in": "domain-cursor-in 0.8s ease-in-out forwards",
