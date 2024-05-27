@@ -12,7 +12,7 @@
     "lineWidth": 120,
     "indentStyle": "space",
     "indentWidth": 2,
-    "ignore": ["node_modules", ".next", "dist", ".wrangler"]
+    "ignore": ["node_modules", ".next", "dist", ".wrangler", "apps/realtime/target/**"]
   },
   "linter": {
     "enabled": true,
@@ -46,6 +46,6 @@
         "useSortedClasses": "error"
       }
     },
-    "ignore": ["node_modules", ".next", "dist", ".wrangler"]
+    "ignore": ["node_modules", ".next", "dist", ".wrangler", "apps/realtime/target/**"]
   }
 }
