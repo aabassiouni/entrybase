@@ -46,7 +46,6 @@ export default function LandingLayout({
       <body
         className={`${
           inter.className
-          // clashGrotesk.className
           // biome-ignore lint/nursery/useSortedClasses: <explanation>
         } ${clashDisplay.variable} ${clashGrotesk.variable} flex h-screen bg-[#020705]`}
       >
