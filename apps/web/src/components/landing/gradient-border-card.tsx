@@ -12,7 +12,7 @@ export function GradientBorderCard({
         className,
       )}
     >
-      <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] group-hover:bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)]" />
+      <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] group-hover:animate-[appear_0.3s_linear] group-hover:bg-[conic-gradient(from_90deg_at_50%_50%,#4BE7AE_0%,#043E29_50%,#4BE7AE_100%)]" />
       <div
         className={cn(
           "flex h-full w-full justify-end gap-4 rounded bg-neutral-900 p-4 backdrop-blur-3xl sm:flex-col",
