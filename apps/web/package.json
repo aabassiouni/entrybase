@@ -45,6 +45,7 @@
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.28.6",
     "embla-carousel-react": "8.0.0-rc17",
+    "framer-motion": "^11.2.6",
     "isomorphic-dompurify": "^2.3.0",
     "lucide-react": "^0.287.0",
     "next": "14.2.3",
