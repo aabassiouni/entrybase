@@ -104,7 +104,7 @@ function LandingPage() {
             <div className="ml-6 flex flex-col gap-2 sm:pt-6">
               <p className="font-medium text-lg text-zinc-200">Create Waitlist</p>
               <p className="text-neutral-500 sm:max-w-xs">
-                Just paste or type the URL of the website you want to save, and your bookmark will be instantly stored.
+                Create a waitlist in minutes. Customize your waitlist with your branding and messaging.
               </p>
             </div>
           </li>
@@ -135,7 +135,7 @@ function LandingPage() {
             <div className="ml-6 space-y-2 sm:ml-0 sm:pt-6">
               <p className="font-medium text-lg text-zinc-200">Integrate API</p>
               <p className="text-neutral-500 sm:max-w-xs">
-                Add custom tags to each bookmark, making it a breeze to find and access your most treasured pages.
+                Seamlessly integrate your waitlist into your website or app with our API. Add to your existing workflow.
               </p>
             </div>
           </li>
@@ -149,7 +149,7 @@ function LandingPage() {
             <div className="ml-6 space-y-2 sm:ml-0 sm:pt-6">
               <p className="font-medium text-lg text-zinc-200">Invite Signups</p>
               <p className="text-neutral-500 sm:max-w-xs">
-                Easily filter your bookmarks by tags or experience lightning-fast searching with the command menu.
+                Invite your audience to join your waitlist. Craft tailored invitations that resonate with your audience.
               </p>
             </div>
           </li>
