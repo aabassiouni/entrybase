@@ -1,3 +1,4 @@
+import AnimateIn from "@/components/landing/animate-in";
 import { AnimatedChart } from "@/components/landing/animated-chart";
 import {
   GradientBorderCard,
@@ -32,11 +33,17 @@ function LandingPage() {
         <div className="flex h-[350px] flex-col items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-4">
             <div className="-z-10 absolute h-full w-full bg-[radial-gradient(#1c1917_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-            <h1 className="text-balance bg-gradient-to-t from-white to-primary bg-clip-text text-center font-bold font-clash-grotesk text-4xl text-transparent tracking-wide sm:h-[2.1em] sm:w-2/3 sm:text-6xl">
-              Open source waitlist management and analytics platform
-            </h1>
-            <p className="text-center text-lg text-white sm:text-xl">Validate your ideas fast. Ship even faster.</p>
-            <SignupForm />
+            <AnimateIn>
+              <h1 className="mx-auto text-balance bg-gradient-to-t from-white to-primary bg-clip-text text-center font-bold font-clash-grotesk text-4xl text-transparent tracking-wide sm:h-[2.1em] sm:w-2/3 sm:text-6xl">
+                Open source waitlist management and analytics platform
+              </h1>
+            </AnimateIn>
+            <AnimateIn>
+              <p className="text-center text-lg text-white sm:text-xl">Validate your ideas fast. Ship even faster.</p>
+            </AnimateIn>
+            <AnimateIn>
+              <SignupForm />
+            </AnimateIn>
           </div>
         </div>
         <div className="flex items-center justify-center">
