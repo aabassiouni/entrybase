@@ -21,5 +21,6 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "biome check --apply"
-  }
+  },
+  "packageManager": "pnpm@9.1.3" 
 }
