@@ -18,6 +18,8 @@ import homepageImg from "/public/homepage.png";
 import apiBentoImg from "./apiBentoImg.png";
 import invitationBentoImg from "./invitationBentoImg.png";
 
+export const dynamic = "error";
+
 function LandingPage() {
   return (
     <div className="sm:flex-1">
