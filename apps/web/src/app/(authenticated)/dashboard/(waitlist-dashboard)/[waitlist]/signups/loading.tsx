@@ -20,7 +20,7 @@ function DataTableLoading() {
   return (
     <>
       <DataTablePaginationLoading />
-      <div className="rounded-md border border-gray-800">
+      <div className="rounded-md border border-neutral-700">
         <Table className="">
           <TableHeader className="">
             <TableRow>
