@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { Archive, ArrowLeftCircle, Home, LineChart, List, Mail, SendHorizonal, Settings } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { SidebarItem } from "./sidebar-item";
 import SidebarUserButton from "./sidebar-user-button";
 import TeamSelect from "./team-select";
 import TextLogo from "./text-logo";
@@ -16,17 +17,6 @@ function WaitlistSelectLoading() {
         <Skeleton className="h-10" />
       </div>
     </>
-  );
-}
-
-function SidebarItem({ icon, children, href }: { icon: React.ReactNode; children: React.ReactNode; href: string }) {
-  return (
-    <Link href={href}>
-      <Button variant="ghost" className="h-10 w-full justify-start gap-2 p-4 text-base">
-        <div className="rounded-md bg-primary p-1">{icon}</div>
-        {children}
-      </Button>
-    </Link>
   );
 }
 
