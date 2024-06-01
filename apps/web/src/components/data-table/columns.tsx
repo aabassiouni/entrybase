@@ -43,36 +43,45 @@ export const signupColumns: ColumnDef<Signup>[] = [
     accessorKey: "email",
     header: "Email",
     enableSorting: false,
+    meta: { displayName: "Email" },
   },
   {
     accessorKey: "firstName",
     header: "First Name",
     enableSorting: false,
+    meta: { displayName: "First Name" },
   },
   {
     accessorKey: "lastName",
     header: "Last Name",
     enableSorting: false,
+    meta: { displayName: "Last Name" },
   },
   {
     accessorKey: "createdAt",
     header: ({ column }) => {
       return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        <div className="flex items-center">
           Signed Up On
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+          <Button size={"icon"} variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+            <ArrowUpDown className="h-4 w-4" />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
       const date = new Date(row.getValue("createdAt"));
-      const formattedDate = date.toDateString();
+      const formattedDate = `${date.toDateString()} ${date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`;
       return (
         <div>
-          <span className="w-fit truncate px-4">{formattedDate}</span>
+          <span className="w-fit truncate">{formattedDate}</span>
         </div>
       );
     },
+    meta: { displayName: "Signed Up On" },
   },
   {
     accessorKey: "status",
@@ -96,6 +105,7 @@ export const signupColumns: ColumnDef<Signup>[] = [
 
       return <span className="inline-flex px-4">{capitalizedValue}</span>;
     },
+    meta: { displayName: "Status" },
   },
   {
     id: "actions",
