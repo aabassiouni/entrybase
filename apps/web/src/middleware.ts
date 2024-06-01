@@ -13,6 +13,11 @@ export default async function middleware(request: NextRequest, evt: NextFetchEve
       }
       const workspace = await getWorkspaceForTenant(auth.userId!);
 
+      // only allow me
+      if (auth.userId !== process.env.USER_ID) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+
       // create a workspace if there isn't one
       if (!workspace && auth.userId && request.nextUrl.pathname !== "/dashboard/setup") {
         console.log("no workspace found, creating one");
