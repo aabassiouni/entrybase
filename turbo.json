@@ -1,12 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "experimentalUI": true,
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "env": [
-        "NEXT_PUBLIC_*",
-        "!NEXT_PUBLIC_VERCEL_*",
+        "NEXT_PUBLIC_\\*",
+        "\\!NEXT_PUBLIC_VERCEL_\\*",
         "CLERK_WEBHOOK_SECRET",
         "CLERK_SECRET_KEY",
         "DATABASE_PASSWORD",
