@@ -28,6 +28,7 @@ export function RealtimeSwitch() {
       <p className="items-center font-medium text-lg tracking-tight">Enable Realtime</p>
       <Switch
         checked={enabled}
+        className="dark:data-[state=checked]:bg-primary"
         onCheckedChange={(checked) => {
           if (checked) {
             router.refresh();
