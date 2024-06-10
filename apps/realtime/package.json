@@ -1,0 +1,13 @@
+{
+  "name": "@entrybase/realtime",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "cargo watch -x run",
+    "build": "cargo build --release",
+    "start": "cargo run --release"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
