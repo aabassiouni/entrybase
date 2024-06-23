@@ -34,7 +34,7 @@ async function HomePage() {
   return (
     <>
       <PageHeading>Waitlists</PageHeading>
-      <div className="sm:!grid flex flex-wrap gap-4 sm:grid-cols-3 sm:gap-10">
+      <div className="flex flex-wrap gap-8 sm:grid sm:grid-cols-[repeat(auto-fill,_minmax(330px,_auto))]">
         <CreateWaitlistDialog>
           <Card className="flex h-32 w-full cursor-pointer flex-col items-center justify-center sm:h-60 sm:w-[330px]">
             <Plus className="h-10 w-10 text-primary" />
