@@ -1,4 +1,7 @@
 {
   "rust-analyzer.linkedProjects": ["apps/realtime/Cargo.toml"],
-  "editor.defaultFormatter": "biomejs.biome"
+  "editor.defaultFormatter": "biomejs.biome",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }

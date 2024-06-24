@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@/components/context/theme-provider";
+import { CSPostHogProvider } from "@/components/posthog-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { ourFileRouter } from "@/lib/uploadthing";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -22,7 +23,11 @@ export const metadata: Metadata = {
   description: "Waitlist management and analytics for your SaaS",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body
@@ -40,9 +45,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <ThemeProvider attribute="class" defaultTheme="dark" enableColorScheme disableTransitionOnChange>
-          <ClerkProvider>{children}</ClerkProvider>
-        </ThemeProvider>
+        <CSPostHogProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableColorScheme disableTransitionOnChange>
+            <ClerkProvider>{children}</ClerkProvider>
+          </ThemeProvider>
+        </CSPostHogProvider>
         <Toaster />
       </body>
     </html>
