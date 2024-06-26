@@ -167,12 +167,12 @@ function LandingPage() {
         </ul>
       </div>
       <div className="flex justify-center px-4 pb-8">
-        <div className="grid max-w-screen-lg flex-1 grid-cols-1 grid-rows-4 gap-4 sm:grid-cols-5 sm:grid-rows-5">
+        <div className="grid max-w-screen-lg flex-1 grid-cols-1 grid-rows-4 gap-4 md:grid-cols-5 md:grid-rows-5">
           <GradientBorderCard
             flexdir={"flex-col-reverse"}
-            className="col animated-chart col-span-1 sm:col-span-2 sm:row-span-2"
+            className="col animated-chart col-span-1 md:col-span-2 md:row-span-2"
           >
-            <div className="overflow-hidden rounded bg-tinted-black p-4 blur-box sm:overflow-auto">
+            <div className="overflow-hidden rounded bg-tinted-black p-4 blur-box md:overflow-auto">
               <AnimatedChart />
             </div>
             <div>
@@ -182,7 +182,7 @@ function LandingPage() {
               </GradientBorderCardDescription>
             </div>
           </GradientBorderCard>
-          <GradientBorderCard flexdir="flex-col" className="sm:col-span-3 sm:row-span-2">
+          <GradientBorderCard flexdir="flex-col" className="md:col-span-3 md:row-span-2">
             <div>
               <GradientBorderCardTitle>Custom Invitations</GradientBorderCardTitle>
               <GradientBorderCardDescription>
@@ -195,7 +195,7 @@ function LandingPage() {
               <Image className="z-10" src={invitationBentoImg} width={400} alt="api" />
             </div>
           </GradientBorderCard>
-          <GradientBorderCard flexdir="flex-col-reverse" className="sm:col-span-3 sm:row-span-2">
+          <GradientBorderCard flexdir="flex-col-reverse" className="md:col-span-3 md:row-span-2">
             <div className="flex h-full items-center justify-center bg-rd-600">
               <div className="absolute top-0 right-0 bottom-0 left-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
               <Image className="z-10" src={apiBentoImg} width={400} alt="api" />
@@ -207,7 +207,7 @@ function LandingPage() {
               </GradientBorderCardDescription>
             </div>
           </GradientBorderCard>
-          <GradientBorderCard flexdir="flex-col" className="sm:col-span-2 sm:row-span-2">
+          <GradientBorderCard flexdir="flex-col" className="md:col-span-2 md:row-span-2">
             <div>
               <GradientBorderCardTitle>Custom Domains</GradientBorderCardTitle>
               <GradientBorderCardDescription>
