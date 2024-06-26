@@ -3,6 +3,7 @@ import { CreditCard, Menu, User, Users } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import SidebarUserButton from "./sidebar-user-button";
 import TeamSelect from "./team-select";
+import TextLogo from "./text-logo";
 import { Separator } from "./ui/separator";
 
 function HomeMobileTopbar() {
@@ -27,7 +28,7 @@ function HomeMobileTopbar() {
   ];
 
   return (
-    <div className="sm:!hidden flex items-center gap-2 rounded-b-2xl border-neutral-800 border-b bg-black px-4 py-6">
+    <div className="flex items-center gap-2 rounded-b-2xl border-neutral-800 border-b bg-black px-4 py-6 sm:hidden">
       <Sheet>
         <SheetTrigger>
           <Menu />
@@ -46,7 +47,7 @@ function HomeMobileTopbar() {
         </SheetContent>
       </Sheet>
       <div className="flex w-full justify-between">
-        <h1 className="text-center font-black text-4xl">w</h1>
+        <TextLogo />
         <TeamSelect className="w-1/2 p-0" />
       </div>
     </div>

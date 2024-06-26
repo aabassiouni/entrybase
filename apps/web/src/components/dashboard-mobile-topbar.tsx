@@ -62,7 +62,7 @@ function MobileTopbar({ wtSegment }: { wtSegment: string }) {
     },
   ];
   return (
-    <div className="sm:!hidden flex items-center gap-2 rounded-b-2xl border-neutral-800 border-b bg-black px-4 py-6">
+    <div className="flex items-center gap-2 rounded-b-2xl border-neutral-800 border-b bg-black px-4 py-6 md:hidden">
       <Sheet>
         <SheetTrigger>
           <Menu />

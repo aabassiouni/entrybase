@@ -66,7 +66,7 @@ export default function DashboardSidebar({ wtSegment }: { wtSegment: string }) {
   ];
 
   return (
-    <div className="hidden min-h-screen w-72 shrink-0 flex-col items-center justify-between rounded-r-2xl border-neutral-800 border-r bg-primary/50 sm:flex dark:bg-black">
+    <div className="hidden min-h-screen w-72 shrink-0 flex-col items-center justify-between rounded-r-2xl border-neutral-800 border-r bg-primary/50 md:flex dark:bg-black">
       <div>
         <div className="py-10">
           <Link href="/dashboard">

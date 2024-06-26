@@ -99,10 +99,10 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
               {emailsList.map((email, i) => (
                 <div
                   key={i}
-                  className="flex flex-col justify-between rounded-md border-[1.5px] border-neutral-800 p-3 px-6 text-center sm:flex-row"
+                  className="flex w-full min-w-fit flex-col justify-between overflow-x-scroll rounded-md border-[1.5px] border-neutral-800 p-3 px-6 text-center sm:flex-row"
                 >
                   <span>{email.email}</span>
-                  <span className="text-neutral-500">{`${email.dateCreated.toDateString()} ${email.dateCreated.toLocaleTimeString(
+                  <span className="flex-shrink-0 text-neutral-500">{`${email.dateCreated.toDateString()} ${email.dateCreated.toLocaleTimeString(
                     [],
                     { hour: "2-digit", minute: "2-digit" },
                   )}`}</span>
@@ -211,7 +211,7 @@ export default async function Home({ params }: { params: { waitlist: string } })
         Dashboard
         <RealtimeSwitch />
       </PageHeading>
-      <div className="flex flex-wrap gap-4 sm:grid sm:grid-cols-5">
+      <div className="flex grid-rows-2 flex-wrap gap-4 sm:grid lg:grid-cols-5 md:grid-cols-3 md:grid-rows-none">
         <Suspense fallback={<CountCardsLoading />}>
           <CountCards waitlistID={params.waitlist} />
         </Suspense>

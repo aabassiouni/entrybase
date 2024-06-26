@@ -5,7 +5,7 @@ import DashboardSidebar from "@/components/dashboard-sidebar";
 
 export default function DashboardLayout({ children, params }: { children: React.ReactNode; params: any }) {
   return (
-    <div className="h-screen sm:flex">
+    <div className="min-h-screen md:flex">
       <InviteProvider>
         <MobileTopbar wtSegment={params.waitlist} />
         <DashboardSidebar wtSegment={params.waitlist} />
