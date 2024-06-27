@@ -99,7 +99,7 @@ async function LatestSignupsCard({ waitlistID }: { waitlistID: string }) {
               {emailsList.map((email, i) => (
                 <div
                   key={i}
-                  className="flex w-full min-w-fit flex-col justify-between overflow-x-scroll rounded-md border-[1.5px] border-neutral-800 p-3 px-6 text-center sm:flex-row"
+                  className="hide-scrollbar flex w-full min-w-fit flex-col justify-between gap-2 overflow-x-scroll rounded-md border-[1.5px] border-neutral-800 p-3 px-6 text-center sm:flex-row"
                 >
                   <span>{email.email}</span>
                   <span className="flex-shrink-0 text-neutral-500">{`${email.dateCreated.toDateString()} ${email.dateCreated.toLocaleTimeString(
