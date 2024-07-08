@@ -15,9 +15,8 @@ export type Counts = {
 };
 
 export type Entry = {
-  label: string;
-  value: number;
-  tooltipLabel: string;
+  day: string;
+  signups: number;
 };
 
 export type EmailTemplateProps = {

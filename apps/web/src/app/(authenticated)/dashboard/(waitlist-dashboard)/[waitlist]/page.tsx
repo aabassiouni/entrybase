@@ -142,7 +142,7 @@ async function PastWeekChart({ waitlistID }: { waitlistID: string }) {
       <CardContent className="p-4">
         <Chart
           data={pastWeekSignupsData.entries}
-          margin={{
+          chartMargin={{
             top: 5,
             right: 20,
             left: 0,

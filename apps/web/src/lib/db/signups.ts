@@ -126,10 +126,9 @@ export async function getDayChartLabelsAndValues(waitlist: string, day: string):
   const data = await getSignupsCountForDay(waitlist, day);
 
   const entries: Entry[] = data.map((row) => {
-    const label = new Date(row.timestep).toLocaleTimeString("en-US", { hour: "numeric", hour12: true });
-    const value = Number(row.signups_count);
-    const tooltipLabel = `${label}: ${value}`;
-    return { label, value, tooltipLabel };
+    const day = new Date(row.timestep).toLocaleTimeString("en-US", { hour: "numeric", hour12: true });
+    const signups = Number(row.signups_count);
+    return { day, signups };
   });
   const dayString = new Date(day).toDateString().split(" ").slice(1, 3).join(" ");
   return { entries, dayString };
@@ -143,10 +142,9 @@ export async function getDayRangeChartLabelsAndValues(
   const data = await getSignupsCountForDayRange(waitlist, from, to);
 
   const entries: Entry[] = data.map((row) => {
-    const label = new Date(row.timestep).toDateString().split(" ").slice(1, 3).join(" ");
-    const value = Number(row.signups_count);
-    const tooltipLabel = `${label}: ${value}`;
-    return { label, value, tooltipLabel };
+    const day = new Date(row.timestep).toDateString().split(" ").slice(1, 3).join(" ");
+    const signups = Number(row.signups_count);
+    return { day, signups };
   });
   const fromDateString = new Date(from).toDateString().split(" ").slice(1, 3).join(" ");
   const toDateString = new Date(to).toDateString().split(" ").slice(1, 3).join(" ");

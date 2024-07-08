@@ -1,29 +1,28 @@
 "use client";
+
 import { useRealtimeCount } from "@/lib/store";
+import { cn } from "@/lib/utils";
 import type { Entry } from "@/types";
 import React, { useDeferredValue } from "react";
-import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import type { TooltipProps } from "recharts";
-import type { NameType, ValueType } from "recharts/types/component/DefaultTooltipContent";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import type { Margin } from "recharts/types/util/types";
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "./ui/chart";
 
-function CustomTooltip({ active, payload }: TooltipProps<ValueType, NameType>) {
-  if (active && payload && payload.length) {
-    return (
-      <div className="custom-tooltip rounded-lg bg-white px-2 py-3">
-        <p className="text-black">{payload[0]?.payload.tooltipLabel}</p>
-      </div>
-    );
-  }
-}
+const chartConfig = {
+  signups: {
+    label: "Signups",
+    color: "#4BE7AE",
+  },
+} satisfies ChartConfig;
 
-function renderLegend(_value: string, entry: any) {
-  const { color } = entry;
-
-  return <span style={{ color }}>Signups</span>;
-}
-
-function Chart({ data, margin }: { data: Entry[]; margin: Margin }) {
+function Chart({ data, chartMargin, className }: { data: Entry[]; chartMargin: Margin; className?: string }) {
   const { realtimeCount } = useRealtimeCount();
   const deferredCount = useDeferredValue(realtimeCount);
 
@@ -32,30 +31,35 @@ function Chart({ data, margin }: { data: Entry[]; margin: Margin }) {
   const realtimeData: Entry[] = [
     ...data.slice(0, -1),
     {
-      label: lastValue?.label ?? "",
-      value: (lastValue?.value ?? 0) + deferredCount,
-      tooltipLabel: lastValue?.tooltipLabel ?? "",
+      day: lastValue?.day ?? "",
+      signups: (lastValue?.signups ?? 0) + deferredCount,
     },
   ];
 
   return (
-    <ResponsiveContainer width="100%" minHeight={350}>
-      <AreaChart data={realtimeData} margin={margin}>
+    <ChartContainer config={chartConfig} className={cn("min-h-[350px] w-full", className)}>
+      <AreaChart accessibilityLayer data={realtimeData} margin={chartMargin}>
+        <CartesianGrid vertical={false} strokeOpacity={0.1} />
         <defs>
-          <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#4BE7AE" stopOpacity={0.8} />
-            <stop offset="95%" stopColor="#4BE7AE" stopOpacity={0} />
+          <linearGradient id="fillSignups" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="var(--color-signups)" stopOpacity={0.8} />
+            <stop offset="95%" stopColor="var(--color-signups)" stopOpacity={0.1} />
           </linearGradient>
         </defs>
-        <XAxis tickLine={false} dataKey="label" />
-        <YAxis scale={"auto"} allowDecimals={false} tickLine={false} />
-
-        <Tooltip content={<CustomTooltip />} />
-        <Legend formatter={renderLegend} />
-        <CartesianGrid vertical={false} strokeOpacity={0.1} strokeDasharray={"3 3"} />
-        <Area dot={true} type={"monotone"} dataKey="value" stroke="#AFF4DB" fillOpacity={1} fill="url(#colorUv)" />
+        <XAxis tickMargin={8} tickLine={false} axisLine={false} dataKey="day" />
+        <YAxis tickMargin={8} axisLine={false} scale={"auto"} allowDecimals={false} tickLine={false} />
+        <ChartTooltip content={<ChartTooltipContent />} />
+        <ChartLegend content={<ChartLegendContent />} />
+        <Area
+          dot={true}
+          type={"monotone"}
+          dataKey="signups"
+          stroke="#AFF4DB"
+          fillOpacity={1}
+          fill="url(#fillSignups)"
+        />
       </AreaChart>
-    </ResponsiveContainer>
+    </ChartContainer>
   );
 }
 
