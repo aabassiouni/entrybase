@@ -11,7 +11,7 @@ export default function AnalyticsPageLoading() {
       <div className="p-2" />
       <Skeleton className="h-[420px] w-full" />
       <div className="py-4">
-        <div className="rounded-md border border-gray-800">
+        <div className="rounded-md border border-neutral-700">
           <Table>
             <TableHeader>
               <TableRow>
