@@ -83,10 +83,11 @@ async function BillingSettingsPage() {
     return redirect("/dashboard");
   }
 
-  const usageAmount = (workspace.remainingInvites - 1000) * -1;
-  const limit = workspace.plan === "free" ? 1000 : 3000;
-  const waitlistsUsed = await getWaitlistsForUser(workspace.workspaceID).then((waitlists) => waitlists.length);
+  const usageLimit = workspace.plan === "free" ? 1000 : 3000;
   const waitlistsLimit = workspace.plan === "free" ? 5 : undefined;
+
+  const usageAmount = (workspace.remainingInvites - usageLimit) * -1;
+  const waitlistsUsed = await getWaitlistsForUser(workspace.workspaceID).then((waitlists) => waitlists.length);
 
   return (
     <>
@@ -132,9 +133,9 @@ async function BillingSettingsPage() {
               <Progress value={(waitlistsUsed / 5) * 100} />
               <div className="flex items-center justify-between">
                 <h1 className="font-medium text-lg">Invite emails sent</h1>
-                <p>{`${usageAmount}/1000`}</p>
+                <p>{`${usageAmount}/${usageLimit}`}</p>
               </div>
-              <Progress value={((usageAmount ?? 0) / limit) * 100} />
+              <Progress value={((usageAmount ?? 0) / usageLimit) * 100} />
             </CardContent>
           </div>
           <PaymentMethod workspace={workspace} />
