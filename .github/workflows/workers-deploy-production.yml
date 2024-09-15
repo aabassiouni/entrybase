@@ -24,6 +24,7 @@ jobs:
       - name: Deploy To Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
+          preCommands: pnpm install
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           workingDirectory: ./apps/workers
           environment: production
