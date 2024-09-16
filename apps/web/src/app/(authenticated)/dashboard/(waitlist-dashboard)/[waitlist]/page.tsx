@@ -211,7 +211,7 @@ export default async function Home({ params }: { params: { waitlist: string } })
         Dashboard
         <RealtimeSwitch />
       </PageHeading>
-      <div className="flex grid-rows-2 flex-wrap gap-4 sm:grid lg:grid-cols-5 md:grid-cols-3 md:grid-rows-none">
+      <div className="flex grid-rows-2 flex-wrap gap-4 sm:grid md:grid-cols-3 md:grid-rows-none lg:grid-cols-5">
         <Suspense fallback={<CountCardsLoading />}>
           <CountCards waitlistID={params.waitlist} />
         </Suspense>

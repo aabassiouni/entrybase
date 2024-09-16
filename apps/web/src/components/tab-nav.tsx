@@ -19,7 +19,7 @@ function NavItem({
   return (
     <div
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 font-medium text-sm ring-offset-white transition-all disabled:pointer-events-none dark:data-[state=active]:text-neutral-50 disabled:opacity-50 focus-visible:outline-none dark:focus-visible:ring-neutral-300 focus-visible:ring-2 focus-visible:ring-neutral-950 dark:ring-offset-neutral-950 focus-visible:ring-offset-2",
+        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 font-medium text-sm ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-neutral-950 dark:data-[state=active]:text-neutral-50 dark:focus-visible:ring-neutral-300",
         selectedLayoutSegment === segment &&
           "bg-white text-neutral-950 shadow-sm dark:bg-neutral-950 dark:text-neutral-50",
       )}

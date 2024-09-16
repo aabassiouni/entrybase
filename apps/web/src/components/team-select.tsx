@@ -76,7 +76,7 @@ function TeamSelect({ className }: { className?: string }) {
           <Link href={"/dashboard/new"}>
             <button
               type="button"
-              className="relative flex w-full items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none dark:focus:bg-neutral-800 focus:bg-neutral-100 hover:bg-neutral-800 dark:focus:text-neutral-50 focus:text-neutral-900"
+              className="relative flex w-full items-center rounded-sm py-1.5 pr-2 pl-8 text-sm outline-none hover:bg-neutral-800 focus:bg-neutral-100 focus:text-neutral-900 dark:focus:bg-neutral-800 dark:focus:text-neutral-50"
             >
               <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
                 <PlusCircledIcon className="h-4 w-4" />

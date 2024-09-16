@@ -82,7 +82,7 @@ function TeamMembers() {
         {memberships?.data?.map(({ id, role, publicUserData }) => (
           <TableRow key={id}>
             <TableCell>
-              <div className="flex w-full items-center gap-2 max-sm:m-0 md:flex-grow max-sm:gap-1 max-sm:text-xs">
+              <div className="flex w-full items-center gap-2 max-sm:m-0 max-sm:gap-1 max-sm:text-xs md:flex-grow">
                 <Avatar>
                   <AvatarImage src={publicUserData.imageUrl} />
                   <AvatarFallback>{publicUserData.identifier.slice(0, 2)}</AvatarFallback>

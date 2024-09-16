@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.9.1/schema.json",
   "files": {
-    "ignore": ["apps/web/src/components/ui/**/*"]
+    "ignore": ["apps/web/src/components/ui/**/*", ".next", "dist", ".wrangler", "apps/realtime/target/**"]
   },
   "organizeImports": {
     "enabled": true

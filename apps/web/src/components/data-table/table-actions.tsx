@@ -39,7 +39,7 @@ function TableActions({ id, email }: { id: string; email: string }) {
             <SendHorizonal className="mr-2 h-3 w-3" />
             <p>Invite</p>
           </DropdownMenuItem>
-          <DropdownMenuItem className="bg-red-900/50 text-red-200 dark:focus:bg-red-950 dark:hover:bg-red-950 dark:focus:text-red-200">
+          <DropdownMenuItem className="bg-red-900/50 text-red-200 dark:focus:bg-red-950 dark:focus:text-red-200 dark:hover:bg-red-950">
             <DeleteButton id={id} open={open} setOpen={setOpen} />
           </DropdownMenuItem>
         </DropdownMenuContent>

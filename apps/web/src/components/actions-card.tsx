@@ -37,7 +37,7 @@ async function ActionsCardStats({ waitlistID }: { waitlistID: string }) {
 
 function ActionsCard({ waitlistID }: { waitlistID: string }) {
   return (
-    <div className="h-32 w-full lg:col-span-2 sm:col-span-3 sm:h-full">
+    <div className="h-32 w-full sm:col-span-3 sm:h-full lg:col-span-2">
       <Carousel className="h-full">
         <Card className="flex h-full w-full items-center px-4">
           <CarouselPrevious className="relative" />

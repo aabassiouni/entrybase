@@ -39,7 +39,7 @@ async function WaitlistSettingsPage({ params }: { params: { waitlist: string } }
         <CardDescription>This is your waitlist ID.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="inline-flex h-10 w-80 items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm ring-offset-white disabled:cursor-not-allowed dark:border-neutral-800 file:border-0 dark:bg-neutral-950 file:bg-transparent file:font-medium dark:placeholder:text-neutral-400 file:text-sm placeholder:text-neutral-500 disabled:opacity-50 focus-visible:outline-none dark:focus-visible:ring-neutral-300 focus-visible:ring-2 focus-visible:ring-neutral-950 hover:ring-2 hover:ring-primary dark:ring-offset-neutral-950 focus-visible:ring-offset-2">
+        <div className="inline-flex h-10 w-80 items-center justify-between rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-neutral-500 hover:ring-2 hover:ring-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:ring-offset-neutral-950 dark:focus-visible:ring-neutral-300 dark:placeholder:text-neutral-400">
           {params.waitlist}
           <CopyButton value={params.waitlist} />
         </div>
