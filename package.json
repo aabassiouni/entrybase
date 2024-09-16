@@ -11,7 +11,7 @@
   "private": true,
   "version": "1.0.0",
   "devDependencies": {
-    "@biomejs/biome": "1.6.0",
+    "@biomejs/biome": "1.9.1",
     "@types/node": "^20.11.5",
     "husky": "^9.0.11",
     "is-ci": "^3.0.1",
