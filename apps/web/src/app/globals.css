@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 .hide-scrollbar::-webkit-scrollbar {
-	display: none; /* Chrome Safari */
-	scrollbar-width: none; /* Firefox */
+  display: none; /* Chrome Safari */
+  scrollbar-width: none; /* Firefox */
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-	/* display: none; <- Crashes Chrome on hover */
-	-webkit-appearance: none;
-	margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 input[type="number"] {
-	-moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield; /* Firefox */
 }

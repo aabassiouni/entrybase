@@ -1,44 +1,43 @@
 path {
-    transition: stroke-dashoffset 2s ease;
+  transition: stroke-dashoffset 2s ease;
 }
 
 .animated-chart:hover path {
-    stroke-dashoffset: 0;
+  stroke-dashoffset: 0;
 }
 
 .animated-area {
-    transition: fill-opacity 2s ease;
+  transition: fill-opacity 2s ease;
 }
 
 .animated-chart:hover .animated-area {
-    fill-opacity: 0.8;
+  fill-opacity: 0.8;
 }
 
 .animate-input {
-    transition: transform 0.8s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .group:hover .animate-input {
-    transform: translateY(2.5rem) translateX(1.5rem);
+  transform: translateY(2.5rem) translateX(1.5rem);
 }
 
 .animate-cursor {
-    transition: transform 0.8s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .group:hover .animate-cursor {
-    transform: translateY(-1.25rem) translateX(-1.25rem);
-
+  transform: translateY(-1.25rem) translateX(-1.25rem);
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* For IE, Edge and Firefox */
 .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 @keyframes appear {
