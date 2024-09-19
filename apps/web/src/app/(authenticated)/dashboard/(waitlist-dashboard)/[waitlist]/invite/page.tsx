@@ -14,6 +14,8 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ToastAction } from "@radix-ui/react-toast";
+import { useMutation } from "@tanstack/react-query";
 import { Mail, X } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -23,17 +25,91 @@ import * as z from "zod";
 
 const formSchema = z.object({
   inviteCount: z.coerce.number(),
-  selectionMethod: z.enum(["latest", "oldest", "random"]),
+  selectionMethod: z.enum(["latest", "oldest", "random"]).optional(),
 });
+
+const useSendInvites = ({
+  onError,
+  onSuccess,
+}: {
+  onError?: (err: Response) => void;
+  onSuccess?: (data: { message: string }) => void;
+}) => {
+  return useMutation({
+    mutationFn: async (
+      data: z.infer<typeof formSchema> & {
+        waitlist: string;
+        type: "count" | "list";
+      } & {
+        invitesList?: { email: string; id: string }[];
+      },
+    ) => {
+      const res = await fetch(`/api/${data.waitlist}/send?type=${data.type}`, {
+        method: "POST",
+        body: JSON.stringify({
+          inviteCount: data.inviteCount,
+          selectionMethod: data.selectionMethod,
+          invitesList: data.invitesList,
+        }),
+      });
+      return res.json();
+    },
+    onSuccess: (data) => {
+      onSuccess?.(data);
+    },
+    onError: (err: Response) => {
+      onError?.(err);
+    },
+  });
+};
 
 function InvitePage() {
   const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
+  const { waitlist } = useParams<{ waitlist: string }>();
+
+  const router = useRouter();
+
   const { invites, setInvites } = useInvites();
   const { toast } = useToast();
 
-  const { waitlist } = useParams();
-  const router = useRouter();
+  const defaultCount = searchParams.get("count");
+
+  const { mutate: sendInvites, isPending: isLoading } = useSendInvites({
+    onSuccess: () => {
+      router.push(`/dashboard/${waitlist}/invite/success`);
+    },
+    onError: async (err) => {
+      const data = await err.json();
+      if (err.status === 400) {
+        if (data.code === "NO_WEBSITE_DETAILS") {
+          toast({
+            title: "Error",
+            description:
+              "You have not set up your website details. Go to Waitlist Settings to add your waitlist details",
+            variant: "destructive",
+            action: (
+              <ToastAction
+                altText={"Go to Waitlist Settings"}
+                onClick={() => router.push(`/dashboard/${waitlist}/settings`)}
+              >
+                Go to Waitlist Settings
+              </ToastAction>
+            ),
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "An error occurred while sending invites",
+            variant: "destructive",
+          });
+        }
+      }
+      if (err.status === 200) {
+        router.push(`/dashboard/${waitlist}/invite/success`);
+      }
+      console.log(err);
+    },
+  });
 
   const selectForm = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,63 +126,24 @@ function InvitePage() {
     },
   });
 
-  const defaultCount = searchParams.get("count");
   async function handleFormSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    const data = await fetch(`/api/${waitlist}/send?type=count`, {
-      method: "POST",
-      body: JSON.stringify({ inviteCount: values.inviteCount, selectionMethod: values.selectionMethod }),
+    sendInvites({
+      inviteCount: values.inviteCount,
+      selectionMethod: values.selectionMethod,
+      waitlist: waitlist,
+      type: "count",
     });
-    const res = await data.json();
-    if (data.status === 400) {
-      if (res.code === "NO_WEBSITE_DETAILS") {
-        toast({
-          title: "Error",
-          description: "You have not set up your website details. Go to Waitlist Settings to add your waitlist details",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "An error occurred while sending invites",
-          variant: "destructive",
-        });
-      }
-    }
-    if (data.status === 200) {
-      router.push(`/dashboard/${waitlist}/invite/success`);
-    }
-    setIsLoading(false);
   }
 
   async function handleSendInvitesList() {
-    setIsLoading(true);
-    const data = await fetch(`/api/${waitlist}/send?type=list`, {
-      cache: "no-store",
-      method: "POST",
-      body: JSON.stringify({ inviteCount: invites.length, invitesList: invites }),
+    sendInvites({
+      inviteCount: invites.length,
+      invitesList: invites,
+      waitlist: waitlist,
+      type: "list",
     });
-    const res = await data.json();
-    if (data.status === 400) {
-      if (res.code === "NO_WEBSITE_DETAILS") {
-        toast({
-          title: "Error",
-          description: "You have not set up your website details. Go to Waitlist Settings to add your waitlist details",
-          variant: "destructive",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "An error occurred while sending invites",
-          variant: "destructive",
-        });
-      }
-    }
-    if (data.status === 200) {
-      router.push(`/dashboard/${waitlist}/invite/success`);
-    }
-    setIsLoading(false);
   }
+
   return (
     <MainLayout>
       <PageHeading>Invite</PageHeading>
