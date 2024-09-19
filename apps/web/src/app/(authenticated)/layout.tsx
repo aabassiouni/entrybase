@@ -8,6 +8,7 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { extractRouterConfig } from "uploadthing/server";
 import "../globals.css";
+import { ReactQueryProvider } from "@/components/context/react-query-provider";
 
 const clashDisplay = localFont({
   src: "../../fonts/ClashDisplay-Variable.ttf",
@@ -40,9 +41,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <ThemeProvider attribute="class" defaultTheme="dark" enableColorScheme disableTransitionOnChange>
-          <ClerkProvider>{children}</ClerkProvider>
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableColorScheme disableTransitionOnChange>
+            <ClerkProvider>{children}</ClerkProvider>
+          </ThemeProvider>
+        </ReactQueryProvider>
         <Toaster />
       </body>
     </html>

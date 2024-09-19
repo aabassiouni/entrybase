@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "../globals.css";
+import { ReactQueryProvider } from "@/components/context/react-query-provider";
 
 const clashDisplay = localFont({
   src: "../../fonts/ClashDisplay-Variable.ttf",
@@ -49,7 +50,7 @@ export default function LandingLayout({
           // biome-ignore lint/nursery/useSortedClasses: <explanation>
         } ${clashDisplay.variable} ${clashGrotesk.variable} flex h-screen bg-[#020705]`}
       >
-        {children}
+        <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>
   );
