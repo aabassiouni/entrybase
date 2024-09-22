@@ -2,7 +2,7 @@
   "name": "entrybase",
   "workspaces": ["apps/*", "packages/*"],
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --filter=./apps/*",
     "build": "pnpm turbo run build",
     "prepare": "is-ci || husky"
   },
