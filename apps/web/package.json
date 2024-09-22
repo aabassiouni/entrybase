@@ -15,6 +15,7 @@
     "@clerk/types": "^3.60.0",
     "@entrybase/db": "workspace:^",
     "@entrybase/id": "workspace:^",
+    "@entrybase/email": "workspace:^",
     "@hookform/resolvers": "^3.3.2",
     "@neoconfetti/react": "^0.1.1",
     "@neondatabase/serverless": "^0.6.0",

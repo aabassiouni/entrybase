@@ -3,6 +3,7 @@ import { checkWorkspace } from "@/lib/auth";
 import { getSignupsList } from "@/lib/db";
 import { env } from "@/lib/env";
 import { currentUser } from "@clerk/nextjs";
+import { ExportTemplate } from "@entrybase/email";
 import { stringify } from "csv/sync";
 import { type NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -54,14 +55,14 @@ export async function POST(request: NextRequest) {
     const { error } = await resend.emails.send({
       from: "Ali B <onboarding@resend.dev>",
       to: user.emailAddresses[0].emailAddress,
-      subject: "Signups CSV",
+      subject: "Your signups are ready!",
       attachments: [
         {
           filename: `${filename}.csv`,
           content: fs.readFileSync(filePath, "base64"),
         },
       ],
-      html: `<p>Here is your CSV file for ${waitlist}.</p>`,
+      react: ExportTemplate(),
     });
 
     if (error) {

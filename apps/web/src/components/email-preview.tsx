@@ -1,10 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { getEmailTemplateForUser, getWaitlistWebsiteDetails } from "@/lib/db";
 import { currentUser } from "@clerk/nextjs";
+import { InviteTemplate, SignupTemplate } from "@entrybase/email";
 import { renderAsync } from "@react-email/components";
 import { sanitize } from "isomorphic-dompurify";
-import InviteTemplate from "./email/invite-template";
-import SignupTemplate from "./email/signup-template";
 
 async function EmailPreview({ waitlistID, template }: { waitlistID: string; template: "invite" | "signup" }) {
   const user = await currentUser();

@@ -1,4 +1,3 @@
-import InviteTemplate from "@/components/email/invite-template";
 import { checkWorkspace } from "@/lib/auth";
 import {
   createInvite,
@@ -10,6 +9,7 @@ import {
 import { env } from "@/lib/env";
 import { stripe } from "@/lib/stripe";
 import { auth } from "@clerk/nextjs";
+import { InviteTemplate } from "@entrybase/email";
 import { type NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
