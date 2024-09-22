@@ -7,14 +7,14 @@ import { Button } from "./ui/button";
 
 const useExportCsvMutation = () => {
   return useMutation({
-    mutationFn: async (params: { waitlist: string }) => {
+    mutationFn: async (params: { waitlistId: string }) => {
       const res = await fetch("/api/export", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          waitlist: params.waitlist,
+          waitlistId: params.waitlistId,
         }),
       });
       return res.json();
@@ -31,7 +31,7 @@ function ExportToCsvButton({ className }: { className?: string }) {
     <Button
       disabled={isPending}
       onClick={() => {
-        exportCsv({ waitlist });
+        exportCsv({ waitlistId: waitlist });
       }}
       className={cn("h-8 px-3 py-2", className)}
     >

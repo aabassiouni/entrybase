@@ -15,14 +15,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "no user" }, { status: 401 });
   }
 
-  const { waitlist } = await request.json();
-  const workspace = await checkWorkspace(waitlist);
+  const { waitlistId } = await request.json();
+
+  const workspace = await checkWorkspace(waitlistId);
+  const waitlist = await getWaitlistByID(waitlistId);
+
+  if (!waitlist) {
+    return NextResponse.json({ message: "waitlist not found" }, { status: 401 });
+  }
+
+  const { waitlistName } = waitlist;
 
   if (!workspace) {
     return NextResponse.json({ message: "not your waitlist" }, { status: 401 });
   }
 
-  const signups = await getSignupsList(waitlist).then((res) => {
+  const signups = await getSignupsList(waitlistId).then((res) => {
     const data = res.map((signup) => {
       return {
         email: signup.email,
@@ -44,7 +52,7 @@ export async function POST(request: NextRequest) {
     ];
   });
 
-  const filename = `${waitlist}-signups`;
+  const filename = `${waitlistName}-signups`;
   const filePath = process.env.NODE_ENV === "production" ? `/tmp/${filename}.csv` : `${filename}.csv`;
 
   try {
