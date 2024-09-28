@@ -4,11 +4,13 @@ import { useWebSocket } from "@/lib/hooks/useWebsocket";
 import { useRealtimeCountActions } from "@/lib/store";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useToast } from "./ui/use-toast";
 
 export function RealtimeSwitch() {
   const router = useRouter();
   const params = useParams<{ waitlist: string }>();
   const { incrementRealtimeCount, resetRealtimeCount } = useRealtimeCountActions();
+  const toast = useToast();
 
   const [enabled, setEnabled] = useState(false);
 
@@ -34,11 +36,19 @@ export function RealtimeSwitch() {
             router.refresh();
             resetRealtimeCount();
             reconnect();
+            toast.toast({
+              title: "Realtime Enabled",
+              description: "Your signups will be updated as they come in.",
+            });
           } else {
             if (ws) {
               router.refresh();
               resetRealtimeCount();
               ws.close();
+              toast.toast({
+                title: "Realtime Disabled",
+                description: "Signups will no longer update in real-time. Refresh the page to see new signups.",
+              });
             }
           }
           setEnabled(!enabled);
