@@ -1,6 +1,7 @@
 import EmailPreview from "@/components/email-preview";
 import TemplateSelect from "@/components/template-select";
 import { PageHeading } from "@/components/typography";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { checkWorkspace } from "@/lib/auth";
@@ -82,26 +83,20 @@ async function EmailPreviewPage({
   return (
     <div className="flex w-full flex-wrap">
       <div className="flex w-full flex-col p-4 sm:w-1/2 sm:p-10">
-        <PageHeading className="gap-4">
-          Email Preview
-          {plan === "free" && (
-            <TooltipProvider delayDuration={200}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="rounded-full border border-zinc-800 bg-zinc-900 p-1">
-                    <InfoIcon className="h-5 w-5" />
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent className="w-52" side="bottom">
-                  <p>Custom email templates are available in Pro Workspaces.</p>
-                  <Link href={"/dashboard/new"} className="mx-auto text-center underline">
-                    Upgrade Now
-                  </Link>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-        </PageHeading>
+        <PageHeading className="gap-4">Email Preview</PageHeading>
+        {plan === "free" && (
+          <div className="pb-4">
+            <Alert className="border-primary bg-[#071711] text-white">
+              <AlertDescription className="flex items-center gap-2">
+                <InfoIcon className="h-5 w-5" />
+                <Link href={"/dashboard/billing"} className="underline">
+                  Upgrade
+                </Link>{" "}
+                to a pro plan to customize your email templates.
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
         <TemplateSelect waitlistID={params.waitlist} />
         <div className="space-y-2">
           <TemplateForm
