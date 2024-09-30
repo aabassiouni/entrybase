@@ -53,13 +53,13 @@ async function EmailPreview({ waitlistID, template }: { waitlistID: string; temp
             <p className="w-20 rounded-l-md border-neutral-800 border-t border-b border-l bg-neutral-900 p-1 px-2">
               From:
             </p>
-            <span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">x@gmail.com</span>
+            <span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">example@gmail.com</span>
           </div>
           <div className="flex items-center text-sm">
             <p className="w-20 rounded-l-md border-neutral-800 border-t border-b border-l bg-neutral-900 p-1 px-2">
               To:
             </p>
-            <span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">x@gmail.com</span>
+            <span className="w-full rounded-r-md border border-[#002417] bg-black p-1 px-2">example@gmail.com</span>
           </div>
           <div className="flex items-center text-sm">
             <p className="w-20 rounded-l-md border-neutral-800 border-t border-b border-l bg-neutral-900 p-1 px-2">
