@@ -32,24 +32,27 @@ export function RealtimeSwitch() {
         checked={enabled}
         className="dark:data-[state=checked]:bg-primary"
         onCheckedChange={(checked) => {
-          if (checked) {
-            router.refresh();
-            resetRealtimeCount();
-            reconnect();
-            toast.toast({
-              title: "Realtime Enabled",
-              description: "Your signups will be updated as they come in.",
-            });
-          } else {
-            if (ws) {
+          switch (checked) {
+            case true:
               router.refresh();
               resetRealtimeCount();
-              ws.close();
+              reconnect();
               toast.toast({
-                title: "Realtime Disabled",
-                description: "Signups will no longer update in real-time. Refresh the page to see new signups.",
+                title: "Realtime Enabled",
+                description: "Your signups will be updated as they come in.",
               });
-            }
+              break;
+            case false:
+              if (ws) {
+                router.refresh();
+                resetRealtimeCount();
+                ws.close();
+                toast.toast({
+                  title: "Realtime Disabled",
+                  description: "Signups will no longer update in real-time. Refresh the page to see new signups.",
+                });
+              }
+              break;
           }
           setEnabled(!enabled);
         }}
