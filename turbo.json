@@ -34,5 +34,6 @@
     "start": {
       "cache": false
     }
-  }
+  },
+  "ui": "tui"
 }
