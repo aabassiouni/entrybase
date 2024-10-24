@@ -1,6 +1,6 @@
 import * as fs from "node:fs";
 import { checkWorkspace } from "@/lib/auth";
-import { getSignupsList } from "@/lib/db";
+import { getSignupsList, getWaitlistByID } from "@/lib/db";
 import { env } from "@/lib/env";
 import { currentUser } from "@clerk/nextjs";
 import { ExportTemplate } from "@entrybase/email";
