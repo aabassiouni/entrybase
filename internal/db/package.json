@@ -14,10 +14,10 @@
     "@neondatabase/serverless": "^0.6.0",
     "@types/node": "^20.11.5",
     "dotenv": "^16.3.1",
-    "drizzle-orm": "^0.33.0"
+    "drizzle-orm": "^0.35.3"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.24.2",
+    "drizzle-kit": "^0.26.2",
     "tsx": "^4.7.0",
     "typescript": "^5.2.2"
   },

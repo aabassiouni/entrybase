@@ -1,8 +1,7 @@
 import "server-only";
 
 import type { DBResult, Entry, EntryResponse } from "@/types";
-import { signups } from "@entrybase/db";
-import { and, asc, desc, eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, signups, sql } from "@entrybase/db";
 import { db } from "./db";
 
 export async function getInvitesListByCount(selectionMethod: string, count: number, waitlistID: string) {

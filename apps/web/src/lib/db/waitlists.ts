@@ -1,6 +1,6 @@
 import { waitlists } from "@entrybase/db";
+import { and, desc, eq, isNotNull, isNull } from "@entrybase/db";
 import { newId } from "@entrybase/id";
-import { and, desc, eq, isNotNull, isNull } from "drizzle-orm";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { utapi } from "../uploadthing/server";
 import { selectRandomTwColor } from "../utils";
