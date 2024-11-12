@@ -1,8 +1,7 @@
 import { db } from "./db";
 
-import { type Workspace, workspaces } from "@entrybase/db";
+import { type Workspace, and, eq, isNull, workspaces } from "@entrybase/db";
 import { newId } from "@entrybase/id";
-import { and, eq, isNull } from "drizzle-orm";
 
 export async function getWorkspaceForTenant(tenantID: string) {
   const workspace = await db.query.workspaces.findFirst({

@@ -1,9 +1,8 @@
 import "server-only";
 
-import { email_templates, invites, signups, waitlists, workspaces } from "@entrybase/db";
+import { drizzle, email_templates, invites, signups, waitlists, workspaces } from "@entrybase/db";
 import { neon, neonConfig } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
-import { dbEnv, env } from "../env";
+import { dbEnv } from "../env";
 
 neonConfig.fetchConnectionCache = true;
 if (process.env.NODE_ENV === "development") {

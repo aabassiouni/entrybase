@@ -8,7 +8,6 @@ import { clerkClient, currentUser } from "@clerk/nextjs";
 import type { Workspace } from "@entrybase/db";
 import { workspaces } from "@entrybase/db";
 import { newId } from "@entrybase/id";
-import { eq } from "drizzle-orm";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";

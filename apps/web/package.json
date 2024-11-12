@@ -45,7 +45,6 @@
     "clsx": "^2.0.0",
     "csv": "^6.3.6",
     "dotenv": "^16.3.1",
-    "drizzle-orm": "^0.33.0",
     "embla-carousel-react": "8.0.0-rc17",
     "framer-motion": "^11.2.6",
     "isomorphic-dompurify": "^2.3.0",
