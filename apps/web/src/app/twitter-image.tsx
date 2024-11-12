@@ -8,9 +8,9 @@ export default async function GET() {
     res.arrayBuffer(),
   );
 
-  const homepageImg = await fetch(new URL("../../public/homepage.png", import.meta.url)).then((res) =>
-    res.arrayBuffer(),
-  );
+  // const homepageImg = await fetch(new URL("../../public/homepage.png", import.meta.url)).then((res) =>
+  //   res.arrayBuffer(),
+  // );
 
   return new ImageResponse(
     <div
@@ -66,7 +66,7 @@ export default async function GET() {
         >
           Open source waitlist management and analytics platform
         </h1>
-        <img
+        {/* <img
           alt="OG"
           width="90%"
           //@ts-ignore
@@ -80,7 +80,7 @@ export default async function GET() {
             borderTopLeftRadius: "1.5rem",
             borderTopRightRadius: "1.5rem",
           }}
-        />
+        /> */}
       </div>
     </div>,
     {
